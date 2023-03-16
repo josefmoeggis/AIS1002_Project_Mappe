@@ -1,6 +1,7 @@
 
 #include "threepp/extras/imgui/imgui_context.hpp"
 #include "threepp/threepp.hpp"
+#include "iostream"
 
 using namespace threepp;
 
