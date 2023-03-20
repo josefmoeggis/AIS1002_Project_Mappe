@@ -6,54 +6,22 @@
 using namespace threepp;
 
 int main() {
-
+    // Canvas creation
     Canvas canvas;
     GLRenderer renderer(canvas);
     renderer.setClearColor(Color::aliceblue);
 
+    // Setting up camera
     auto camera = PerspectiveCamera::create();
     camera->position.z = 5;
 
     OrbitControls controls{camera, canvas};
 
+    // Scene creation
     auto scene = Scene::create();
 
-    auto group = Group::create();
-    scene->add(group);
 
-    {
-        auto geometry = BoxGeometry::create();
-        auto material = MeshBasicMaterial::create();
-        material->color = Color::green;
-        auto mesh = Mesh::create(geometry, material);
-        mesh->position.x = -1;
-        group->add(mesh);
-    }
-
-    {
-        auto geometry = BoxGeometry::create();
-        auto material = MeshBasicMaterial::create();
-        material->color = Color::yellow;
-        auto mesh = Mesh::create(geometry, material);
-        mesh->position.x = 1;
-        group->add(mesh);
-    }
-    {
-        auto geometry = BoxGeometry::create();
-        auto material = MeshBasicMaterial::create();
-        material->color = Color::purple;
-        auto mesh = Mesh::create(geometry, material);
-        mesh->position.x = 3;
-        group->add(mesh);
-    }
-    {
-        auto geometry = BoxGeometry::create();
-        auto material = MeshBasicMaterial::create();
-        material->color = Color::seagreen;
-        auto mesh = Mesh::create(geometry, material);
-        mesh->position.x = 5;
-        group->add(mesh);
-    }
+    //BulletWrapper bullet(Vector3::Y * -9.81f); Save for bullet setup
 
     renderer.enableTextRendering();
     auto& textHandle = renderer.textHandle("Hello World");
@@ -61,15 +29,7 @@ int main() {
     textHandle.scale = 2;
 
 
-    std::array<float, 3> posBuf{};
-    imgui_functional_context ui(canvas.window_ptr(), [&] {
-        ImGui::SetNextWindowPos({0, 0}, 0, {0, 0});
-        ImGui::SetNextWindowSize({230, 0}, 0);
-        ImGui::Begin("Demo");
-        ImGui::SliderFloat3("position", posBuf.data(), -1.f, 1.f);
-        controls.enabled = !ImGui::IsWindowHovered();
-        ImGui::End();
-    });
+
 
     canvas.onWindowResize([&](WindowSize size) {
         camera->aspect = size.getAspect();
@@ -78,10 +38,13 @@ int main() {
         textHandle.setPosition(0, size.height - 30);
     });
 
-    canvas.animate([&] {
-        renderer.render(scene, camera);
+    float t = 0;
 
-        ui.render();
-        group->position.fromArray(posBuf);
+    canvas.animate([&](float dt) {
+        renderer.render(scene, camera);
+        t+=dt;
+
+
+
     });
 }
