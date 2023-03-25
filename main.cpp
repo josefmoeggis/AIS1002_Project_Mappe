@@ -37,12 +37,13 @@ int main() {
     material1->flatShading = true;
     material1->color = Color::beige;
     auto Boeing = AirObject::create(aircraft1, material1);
+    Boeing->scale *= 0.01;
     Boeing->position.x  = 50;
     scene->add(Boeing);
 
 
 //    Add light
-    auto light = HemisphereLight::create(Color::aliceblue, Color::grey);
+    auto light = HemisphereLight::create(0xffffbb, 0x080820);
     scene->add(light);
 
 
