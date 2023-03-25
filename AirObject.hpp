@@ -4,9 +4,12 @@
 
 #ifndef AIS2001_AEROFOILTESTING_AIROBJECT_HPP
 #define AIS2001_AEROFOILTESTING_AIROBJECT_HPP
-#include "threepp/core/Object3D.hpp"
+#include "threepp/extras/imgui/imgui_context.hpp"
+#include "threepp/threepp.hpp"
 #include "iostream"
 #include "vector"
+
+using namespace threepp;
 
 
 class AirObject: public Mesh {
@@ -14,15 +17,17 @@ public:
     void setAS(double as);
 
 
-    double calculateLift();
+    float calculateLift();
 
 
 
 
 
 private:
-    double airspeed;
-    double drag;
+    double airspeed_;
+    float liftCoefficient_;
+    float dragCoefficient_;
+    float airDensity_;
     std::vector<double> previousAS;
 
 };
