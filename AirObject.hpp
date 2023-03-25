@@ -14,10 +14,16 @@ using namespace threepp;
 
 class AirObject: public Mesh {
 public:
-    void setAS(double as);
+    void setAS(double airspeed);
 
+    void setLiftCoefficient(float liftcoefficient);
+
+    void setWingArea(float wingArea);
 
     float calculateLift();
+
+
+    float calculateDrag();
 
 
 
@@ -27,7 +33,13 @@ private:
     double airspeed_;
     float liftCoefficient_;
     float dragCoefficient_;
+    float wingArea_;
+
     float airDensity_;
+//    Not needed in the start - using standard density without using temp, pressure & gas constant
+    float temp_;
+    float press_;
+    float gasConst_;
     std::vector<double> previousAS;
 
 };
