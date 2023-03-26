@@ -4,6 +4,11 @@
 
 #include "AirObject.hpp"
 
+// Setting length of stl file to know bounds and scale
+void AirObject::setLength(int length) {
+    fileLength_ = length;
+}
+
 // Setting airspeed
 void AirObject::setAS(double airspeed) {
     airspeed_ = airspeed;
@@ -17,6 +22,10 @@ void AirObject::setLiftCoefficient(float liftcoefficient) {
 // Setting wing area
 void AirObject::setWingArea(float wingArea) {
     wingArea_ = wingArea;
+}
+
+void AirObject::setAngleOfAttack(float AoA) {
+    angleOfAttack_ = AoA;
 }
 
 // Calculat lift from different standards
