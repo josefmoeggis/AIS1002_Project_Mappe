@@ -60,12 +60,13 @@ int main() {
 
 //    Testing AirObject
     STLLoader loader;
+
     auto aircraft1 = loader.load("C:/Users/joelo/GitHub_projects/AIS2001_AerofoilTesting/resources/B737_800.stl"); // Make relative and figure out bug
     auto material1 = MeshPhongMaterial::create();
     material1->flatShading = true;
     material1->color = Color::beige;
-    auto Boeing = AirObject::create(aircraft1, material1);
-    Boeing->AirObject::setLength(40000);
+    AirObject Aircraft1(aircraft1, material1, 40000.0, 0.77, 0.33, 470, 0);
+    auto Boeing = Aircraft1.createMesh();
     Boeing->scale *= 0.01;
     Boeing->position.x  = 0;
     Boeing->rotateY(math::PI);
