@@ -14,19 +14,22 @@ using namespace threepp;
 
 class AirObject: public Mesh {
 public:
-    void setLength(int length);
+    AirObject() {
+}
 
-    void setAS(double airspeed);
+    void setLength(std::shared_ptr<int> length);
 
-    void setLiftCoefficient(float liftcoefficient);
+    void setAS(std::shared_ptr<double> airspeed);
 
-    void setWingArea(float wingArea);
+    void setLiftCoefficient(std::shared_ptr<float> liftcoefficient);
 
-    void setAngleOfAttack(float AoA);
+    void setWingArea(std::shared_ptr<float> wingArea);
 
-    float calculateLift();
+    void setAngleOfAttack(std::shared_ptr<float> AoA);
 
-    float calculateDrag();
+    std::shared_ptr<float> calculateLift();
+
+    std::shared_ptr<float> calculateDrag();
 
 
 
@@ -35,21 +38,24 @@ public:
 
 
 private:
-    int fileLength_;
-    double airspeed_;
-    float liftCoefficient_;
-    float dragCoefficient_;
-    float wingArea_;
+    std::shared_ptr<int> fileLength_;
+    std::shared_ptr<double> airspeed_;
+    std::shared_ptr<float> liftCoefficient_;
+    std::shared_ptr<float> dragCoefficient_;
+    std::shared_ptr<float> wingArea_;
 
-    float angleOfAttack_;
+    std::shared_ptr<float> angleOfAttack_;
 
 
-    float airDensity_;
+    std::shared_ptr<float> airDensity_;
 //    Not needed in the start - using standard density without using temp, pressure & gas constant
-    float temp_;
-    float press_;
-    float gasConst_;
-    std::vector<double> previousAS;
+    std::shared_ptr<float> temp_;
+    std::shared_ptr<float> press_;
+    std::shared_ptr<float> gasConst_;
+    std::shared_ptr<std::vector<double>> previousAS;
+
+protected:
+    AirObject(std::shared_ptr<BufferGeometry> geometry, std::shared_ptr<Material> material, std::shared_ptr<int> length, std::shared_ptr<float> liftCoeff, std::shared_ptr<float> dragCoeff, std::shared_ptr<float> wingArea);
 
 };
 

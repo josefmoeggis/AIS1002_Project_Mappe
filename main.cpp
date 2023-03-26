@@ -65,10 +65,11 @@ int main() {
     material1->flatShading = true;
     material1->color = Color::beige;
     auto Boeing = AirObject::create(aircraft1, material1);
+    Boeing->AirObject::setLength(40000);
     Boeing->scale *= 0.01;
     Boeing->position.x  = 0;
     Boeing->rotateY(math::PI);
-    Boeing->set
+
     scene->add(Boeing);
 
 
