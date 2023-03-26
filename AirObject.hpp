@@ -12,12 +12,14 @@
 using namespace threepp;
 
 
-class AirObject: public Mesh {
+class AirObject {
 public:
-    AirObject() {
-}
+    AirObject(std::shared_ptr<BufferGeometry> geometry, std::shared_ptr<Material> material, std::shared_ptr<double> length, std::shared_ptr<float> liftCoeff,
+              std::shared_ptr<float> dragCoeff, std::shared_ptr<float> wingArea, std::shared_ptr<float> angleOfAttack)
+              : geometry_(geometry), material_(material), fileLength_(length), liftCoefficient_(liftCoeff), dragCoefficient_(dragCoeff),
+              wingArea_(wingArea), angleOfAttack_(angleOfAttack) {}
 
-    void setLength(std::shared_ptr<int> length);
+    void setLength(std::shared_ptr<double> length);
 
     void setAS(std::shared_ptr<double> airspeed);
 
@@ -27,9 +29,11 @@ public:
 
     void setAngleOfAttack(std::shared_ptr<float> AoA);
 
-    std::shared_ptr<float> calculateLift();
+    std::shared_ptr<double> calculateLift();
 
     std::shared_ptr<float> calculateDrag();
+
+    std::shared_ptr<Mesh> createMesh();
 
 
 
@@ -38,7 +42,7 @@ public:
 
 
 private:
-    std::shared_ptr<int> fileLength_;
+    std::shared_ptr<double> fileLength_;
     std::shared_ptr<double> airspeed_;
     std::shared_ptr<float> liftCoefficient_;
     std::shared_ptr<float> dragCoefficient_;
@@ -54,9 +58,10 @@ private:
     std::shared_ptr<float> gasConst_;
     std::shared_ptr<std::vector<double>> previousAS;
 
-protected:
-    AirObject(std::shared_ptr<BufferGeometry> geometry, std::shared_ptr<Material> material, std::shared_ptr<int> length, std::shared_ptr<float> liftCoeff, std::shared_ptr<float> dragCoeff, std::shared_ptr<float> wingArea);
-
+//    Mesh of the aircraft
+    std::shared_ptr<BufferGeometry> geometry_;
+    std::shared_ptr<Material> material_;
+    std::shared_ptr<Mesh> aircraftFuselage_;
 };
 
 
