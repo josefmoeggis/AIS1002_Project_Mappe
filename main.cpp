@@ -16,8 +16,8 @@ int main() {
 // Setting up grid
     auto grid = GridHelper::create(1000, 20, Color::blue, Color::blue);
     grid->position.x = 1000;
-    grid->rotateX(math::PI/2);
-    grid->rotateZ(math::PI/2);
+    grid->rotateX(math::PI / 2);
+    grid->rotateZ(math::PI / 2);
 
 
 //    Setting up visual axes
@@ -36,7 +36,7 @@ int main() {
 
     //    Add light
     auto light = DirectionalLight::create(0xffffff);
-    light->position.set( 100, 10, 100);
+    light->position.set(100, 10, 100);
     scene->add(light);
 
 
@@ -61,20 +61,34 @@ int main() {
 //    Testing AirObject
     STLLoader loader;
 
-    auto aircraft1 = loader.load("C:/Users/joelo/CLionProjects/AIS1002_Project_Mappe/resources/B737_800.stl"); // Make relative and figure out bug
+    auto aircraft1 = loader.load(
+            "resources/B737_800.stl");
     auto material1 = MeshPhongMaterial::create();
     material1->flatShading = true;
     material1->color = Color::beige;
-    AirObject Aircraft1(aircraft1, material1, 40000.0, 0.77, 0.33, 470, 0);
+    AirObject Aircraft1(aircraft1, material1, 10000.0, 0.77, 0.33, 470, 0);
     auto Boeing = Aircraft1.createMesh();
-    Boeing->scale *= 0.01;
-    Boeing->position.x  = 0;
+    Aircraft1.scaleToFit(10);
+    Boeing->position.z = -20;
     Boeing->rotateY(math::PI);
 
     scene->add(Boeing);
 
 
+////// Testing line segments
+   // create a geometry object with two vertices
+   Vector3
+    auto vertices = std::make_shared<std::pair<Vector3, Vector3>>({-10, 0, 0}, {-3, 3, 0});
 
+    auto geometry = CylinderGeometry::create();
+////// create a material object with a color
+    auto material = LineBasicMaterial::create();
+////
+////// create a line segment object using the geometry and material
+    auto line = Line(geometry, material);
+
+////// add the line segment to the scene
+    scene->add(line);
 
 
     canvas.onWindowResize([&](WindowSize size) {
@@ -89,8 +103,7 @@ int main() {
     canvas.animate([&](float dt) {
         renderer.render(scene, camera);
 
-        t+=dt;
-
+        t += dt;
 
 
     });

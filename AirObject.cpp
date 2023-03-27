@@ -30,7 +30,8 @@ void AirObject::setAngleOfAttack(float AoA) {
 
 // Calculat lift from different standards
 std::shared_ptr<double> AirObject::calculateLift() {
-    std::shared_ptr<double> lift = std::make_shared<double>(0.5f * *airDensity_ * std::pow(*airspeed_, 2) * *wingArea_ * *liftCoefficient_);
+    std::shared_ptr<double> lift = std::make_shared<double>(
+            0.5f * *airDensity_ * std::pow(*airspeed_, 2) * *wingArea_ * *liftCoefficient_);
     return lift;
 }
 
@@ -38,5 +39,11 @@ std::shared_ptr<double> AirObject::calculateLift() {
 std::shared_ptr<Mesh> AirObject::createMesh() {
     aircraftFuselage_ = Mesh::create(geometry_, material_);
     return aircraftFuselage_;
+}
+
+// Scale to make aircraft fit in the size of grid area
+void AirObject::scaleToFit(int gridSize) {
+    float scaleNr = gridSize / *fileLength_;
+    aircraftFuselage_->scale *= scaleNr;
 }
 
