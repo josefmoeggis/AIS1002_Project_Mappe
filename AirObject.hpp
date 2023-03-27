@@ -4,6 +4,7 @@
 
 #ifndef AIS2001_AEROFOILTESTING_AIROBJECT_HPP
 #define AIS2001_AEROFOILTESTING_AIROBJECT_HPP
+
 #include "threepp/extras/imgui/imgui_context.hpp"
 #include "threepp/threepp.hpp"
 #include "iostream"
@@ -14,9 +15,12 @@ using namespace threepp;
 
 class AirObject {
 public:
-    AirObject(std::shared_ptr<BufferGeometry> geometry, std::shared_ptr<Material> material, float length, float liftCoeff,
+    AirObject(std::shared_ptr<BufferGeometry> geometry, std::shared_ptr<Material> material, float length,
+              float liftCoeff,
               float dragCoeff, float wingArea, float angleOfAttack)
-              : geometry_(geometry), material_(material), fileLength_(std::make_shared<float>(length)), liftCoefficient_(std::make_shared<float>(liftCoeff)), dragCoefficient_(std::make_shared<float>(dragCoeff)),
+            : geometry_(geometry), material_(material), fileLength_(std::make_shared<float>(length)),
+              liftCoefficient_(std::make_shared<float>(liftCoeff)),
+              dragCoefficient_(std::make_shared<float>(dragCoeff)),
               wingArea_(std::make_shared<float>(wingArea)), angleOfAttack_(std::make_shared<float>(angleOfAttack)) {}
 
     void setLength(float length);
@@ -35,10 +39,7 @@ public:
 
     std::shared_ptr<Mesh> createMesh();
 
-
-
-
-
+    void scaleToFit(int gridSize);
 
 
 private:
