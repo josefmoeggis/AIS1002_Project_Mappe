@@ -42,8 +42,9 @@ std::shared_ptr<Mesh> AirObject::createMesh() {
 }
 
 // Scale to make aircraft fit in the size of grid area
-void AirObject::scaleToFit(int gridSize) {
+void AirObject::scaleAndCenter(int gridSize) {
     float scaleNr = gridSize / *fileLength_;
     aircraftFuselage_->scale *= scaleNr;
+    aircraftFuselage_->position.z = ((1/2) * *fileLength_ * scaleNr);
 }
 

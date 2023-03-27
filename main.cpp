@@ -5,6 +5,8 @@
 #include "AirObject.hpp"
 #include "threepp/materials/ShaderMaterial.hpp"
 #include "threepp/objects/Sky.hpp"
+#include "threepp/objects/Line.hpp"
+#include "vector"
 
 using namespace threepp;
 
@@ -15,7 +17,7 @@ int main() {
 //    renderer.setClearColor(Color::aliceblue);
 // Setting up grid
     auto grid = GridHelper::create(1000, 20, Color::blue, Color::blue);
-    grid->position.x = 1000;
+    grid->position.x = -1000;
     grid->rotateX(math::PI / 2);
     grid->rotateZ(math::PI / 2);
 
@@ -25,7 +27,8 @@ int main() {
 
     // Setting up camera
     auto camera = PerspectiveCamera::create(60, canvas.getAspect(), 0.1f, 2000);
-    camera->position.z = -150;
+    camera->position.z = 150;
+    camera->rotateY(-math::PI/2);
 
     OrbitControls controls{camera, canvas};
 
@@ -52,10 +55,10 @@ int main() {
 
     //BulletWrapper bullet(Vector3::Y * -9.81f); Save for bullet setup
 
-//    renderer.enableTextRendering();
-//    auto& textHandle = renderer.textHandle("Hello World");
-//    textHandle.setPosition(0, canvas.getSize().height - 30);
-//    textHandle.scale = 1;
+    renderer.enableTextRendering();
+    auto& textHandle = renderer.textHandle("Hello World");
+    textHandle.setPosition(0, canvas.getSize().height - 30);
+    textHandle.scale = 1;
 
 
 //    Testing AirObject
@@ -68,35 +71,30 @@ int main() {
     material1->color = Color::beige;
     AirObject Aircraft1(aircraft1, material1, 10000.0, 0.77, 0.33, 470, 0);
     auto Boeing = Aircraft1.createMesh();
-    Aircraft1.scaleToFit(10);
-    Boeing->position.z = -20;
+    Aircraft1.scaleAndCenter(100);
     Boeing->rotateY(math::PI);
 
     scene->add(Boeing);
 
 
-////// Testing line segments
-   // create a geometry object with two vertices
-   Vector3
-    auto vertices = std::make_shared<std::pair<Vector3, Vector3>>({-10, 0, 0}, {-3, 3, 0});
-
-    auto geometry = CylinderGeometry::create();
-////// create a material object with a color
+// Testing line segments
+    std::vector<Vector3> points;
+    points.emplace_back(threepp::Vector3 {3, 5, 6});
+    points.emplace_back(threepp::Vector3 {23, 5, 6});
+    points.emplace_back(threepp::Vector3 {100, 100, 100});
     auto material = LineBasicMaterial::create();
-////
-////// create a line segment object using the geometry and material
-    auto line = Line(geometry, material);
-
-////// add the line segment to the scene
+    material->color = threepp::Color(0xB22222);
+    auto geometry = BufferGeometry::create();
+    geometry->setFromPoints(points);
+    auto line = Line::create(geometry, material);
     scene->add(line);
 
-
-    canvas.onWindowResize([&](WindowSize size) {
-        camera->aspect = size.getAspect();
-        camera->updateProjectionMatrix();
-        renderer.setSize(size);
+//    canvas.onWindowResize([&](WindowSize size) {
+//        camera->aspect = size.getAspect();
+//        camera->updateProjectionMatrix();
+//        renderer.setSize(size);
 //        textHandle.setPosition(0, size.height - 30);
-    });
+//    });
 
     float t = 0;
 
