@@ -39,7 +39,7 @@ public:
 
     std::shared_ptr<Mesh> createMesh();
 
-    void scaleToFit(int gridSize);
+    void scaleAndCenter(int gridSize);
 
 
 private:
