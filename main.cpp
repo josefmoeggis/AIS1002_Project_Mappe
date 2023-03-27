@@ -61,7 +61,7 @@ int main() {
 //    Testing AirObject
     STLLoader loader;
 
-    auto aircraft1 = loader.load("C:/Users/joelo/GitHub_projects/AIS2001_AerofoilTesting/resources/B737_800.stl"); // Make relative and figure out bug
+    auto aircraft1 = loader.load("C:/Users/joelo/CLionProjects/AIS1002_Project_Mappe/resources/B737_800.stl"); // Make relative and figure out bug
     auto material1 = MeshPhongMaterial::create();
     material1->flatShading = true;
     material1->color = Color::beige;
