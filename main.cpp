@@ -22,15 +22,12 @@ int main() {
 
 //    renderer.setClearColor(Color::aliceblue);
 // Setting up grid
-    auto grid = GridHelper::create(1000, 20, Color::blue, Color::blue);
+    auto grid = GridHelper::create(1000, 20, Color::white, Color::white);
     grid->position.x = -1000 / 2;
     grid->rotateX(math::PI / 2);
     grid->rotateZ(math::PI / 2);
 
-//    Setting up imgui
-//    ImGui_ImplGlfw_NewFrame();
-//    auto imguiContext = ImGuiContext;
-//    auto imgui = ImGui_ImplOpenGL3_CreateDeviceObjects();
+
 
 
 //    Setting up visual axes
@@ -63,13 +60,6 @@ int main() {
     mySky->material()->as<ShaderMaterial>()->uniforms->at("sunPosition").value<Vector3>().copy(light->position);
     scene->add(mySky);
 
-    //BulletWrapper bullet(Vector3::Y * -9.81f); Save for bullet setup
-
-    renderer.enableTextRendering();
-    auto& textHandle = renderer.textHandle("Hello World");
-    textHandle.setPosition(0, canvas.getSize().height - 30);
-    textHandle.scale = 1;
-
 
 //    Testing AirObject
     STLLoader loader;
@@ -88,6 +78,20 @@ int main() {
     scene->add(Boeing);
 
 
+
+
+
+//    Controls from GUI
+    float airspeed; // Use pointers
+    float AoA; // Use pointers
+    int chosenFile; // Use pointers
+    ControllableParameters control(airspeed, AoA, chosenFile, "resources/B737_image_min.jpeg", "resources/SAS-A321LR_min.jpeg");
+
+//    Setting up imgui
+    GUI myUI(canvas, control);
+
+
+
 // Testing line segments
     std::vector<Vector3> points;
     points.emplace_back(threepp::Vector3 {3, 5, 6});
@@ -100,17 +104,15 @@ int main() {
     auto line = Line::create(geometry, material);
     scene->add(line);
 
-//    canvas.onWindowResize([&](WindowSize size) {
-//        camera->aspect = size.getAspect();
-//        camera->updateProjectionMatrix();
-//        renderer.setSize(size);
-//        textHandle.setPosition(0, size.height - 30);
-//    });
+
+
 
     float t = 0;
 
     canvas.animate([&](float dt) {
         renderer.render(scene, camera);
+        myUI.render();
+
 
         t += dt;
 
