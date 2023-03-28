@@ -45,6 +45,8 @@ public:
 
     float knotsToMtrPrSec(float knots);
 
+    void setAirDensity(float air);
+
 
 private:
     std::shared_ptr<float> fileLength_;
