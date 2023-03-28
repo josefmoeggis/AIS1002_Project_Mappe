@@ -25,7 +25,7 @@ public:
 
     void setLength(float length);
 
-    void setAS(double airspeed);
+    void setAS(float airspeed);
 
     void setLiftCoefficient(float liftcoefficient);
 
@@ -33,7 +33,7 @@ public:
 
     void setAngleOfAttack(float AoA);
 
-    std::shared_ptr<double> calculateLift();
+    std::shared_ptr<float> calculateLift();
 
     std::shared_ptr<float> calculateDrag();
 
@@ -43,10 +43,12 @@ public:
 
     void centerModel(int gridSize);
 
+    float knotsToMtrPrSec(float knots);
+
 
 private:
     std::shared_ptr<float> fileLength_;
-    std::shared_ptr<double> airspeed_;
+    std::shared_ptr<float> airspeed_;
     std::shared_ptr<float> liftCoefficient_;
     std::shared_ptr<float> dragCoefficient_;
     std::shared_ptr<float> wingArea_;

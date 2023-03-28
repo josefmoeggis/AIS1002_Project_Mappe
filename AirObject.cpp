@@ -10,8 +10,8 @@ void AirObject::setLength(float length) {
 }
 
 // Setting airspeed
-void AirObject::setAS(double airspeed) {
-    airspeed_ = std::make_shared<double>(airspeed);
+void AirObject::setAS(float airspeed) {
+    airspeed_ = std::make_shared<float>(airspeed);
 }
 
 // Setting lift coefficient
@@ -29,8 +29,8 @@ void AirObject::setAngleOfAttack(float AoA) {
 }
 
 // Calculat lift from different standards
-std::shared_ptr<double> AirObject::calculateLift() {
-    std::shared_ptr<double> lift = std::make_shared<double>(
+std::shared_ptr<float> AirObject::calculateLift() {
+    std::shared_ptr<float> lift = std::make_shared<float>(
             0.5f * *airDensity_ * std::pow(*airspeed_, 2) * *wingArea_ * *liftCoefficient_);
     return lift;
 }
@@ -50,5 +50,11 @@ void AirObject::scaleModel(int gridSize) {
 // Set aircraft model to middle position compared to grid
 void AirObject::centerModel(int gridSize) {
     aircraftFuselage_->position.z = -(gridSize / 2);
+}
+
+// Calculate m/s from knots
+float AirObject::knotsToMtrPrSec(float knots) {
+    float metersPerSecond = knots * 0.514444444;
+    return metersPerSecond;
 }
 
