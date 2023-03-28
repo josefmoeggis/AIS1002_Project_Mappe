@@ -29,7 +29,6 @@ int main() {
 
 
 
-
 //    Setting up visual axes
     auto axes = AxesHelper::create(100);
 
@@ -64,8 +63,7 @@ int main() {
 //    Testing AirObject
     STLLoader loader;
 
-    auto aircraft1 = loader.load(
-            "resources/B737_800.stl");
+    auto aircraft1 = loader.load("resources/B737_800.stl");
     auto material1 = MeshPhongMaterial::create();
     material1->flatShading = true;
     material1->color = Color::beige;
@@ -91,18 +89,13 @@ int main() {
     GUI myUI(canvas, control);
 
 
-
+//    Testing grid
+    Graph3D Graph;
 // Testing line segments
-    std::vector<Vector3> points;
-    points.emplace_back(threepp::Vector3 {3, 5, 6});
-    points.emplace_back(threepp::Vector3 {23, 5, 6});
-    points.emplace_back(threepp::Vector3 {100, 100, 100});
-    auto material = LineBasicMaterial::create();
-    material->color = threepp::Color(0xB22222);
-    auto geometry = BufferGeometry::create();
-    geometry->setFromPoints(points);
-    auto line = Line::create(geometry, material);
-    scene->add(line);
+    Graph.updateLine(Aircraft1.calculateLift(), 100);
+    scene->add(Graph.createGrid(1000, 20, Color::white));
+
+
 
 
 
@@ -115,7 +108,7 @@ int main() {
 
 
         t += dt;
-
+        std::cout << t << std::endl;
 
     });
 }
