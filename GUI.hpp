@@ -42,8 +42,8 @@ struct GUI : imgui_context {
         ImGui::Text("Control Angle of Attack");
         ImGui::SliderAngle("degrees", &controlOptions_.targetAngleOfAttack, -180, 180);
 
-        ImTextureID image1 = ImGui::GetIO().Fonts->AddFontFromFileTTF(controlOptions_.path1.c_str(), 400);
-        ImTextureID image2 = ImGui::GetIO().Fonts->AddFontFromFileTTF(controlOptions_.path2.c_str(), 400);
+        ImTextureID image1 = ImGui::GetIO().Fonts->AddFontFromFileTTF(controlOptions_.path1.c_str(), 4000);
+        ImTextureID image2 = ImGui::GetIO().Fonts->AddFontFromFileTTF(controlOptions_.path2.c_str(), 4000);
         ImGui::Text("Choose Aircraft type");
         if(ImGui::ImageButton(image1, ImVec2(200, 100))) {
             controlOptions_.fileChoice = 1;
