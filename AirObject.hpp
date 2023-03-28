@@ -39,7 +39,9 @@ public:
 
     std::shared_ptr<Mesh> createMesh();
 
-    void scaleAndCenter(int gridSize);
+    void scaleModel(int gridSize);
+
+    void centerModel(int gridSize);
 
 
 private:
