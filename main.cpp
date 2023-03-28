@@ -68,6 +68,7 @@ int main() {
     material1->flatShading = true;
     material1->color = Color::beige;
     AirObject Aircraft1(aircraft1, material1, 40000.0, 0.77, 0.33, 470, 0);
+    Aircraft1.setAirDensity(1.225);
     auto Boeing = Aircraft1.createMesh();
     Aircraft1.scaleModel(1000);
     Aircraft1.centerModel(1000);

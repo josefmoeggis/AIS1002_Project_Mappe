@@ -30,8 +30,7 @@ void AirObject::setAngleOfAttack(float AoA) {
 
 // Calculat lift from different standards
 std::shared_ptr<float> AirObject::calculateLift() {
-    std::shared_ptr<float> lift = std::make_shared<float>(
-            0.5f * *airDensity_ * std::pow(*airspeed_, 2) * *wingArea_ * *liftCoefficient_);
+    std::shared_ptr<float> lift = std::make_shared<float>(0.5f * *airDensity_ * std::pow(*airspeed_, 2) * *wingArea_ * *liftCoefficient_);
     return lift;
 }
 
@@ -56,5 +55,9 @@ void AirObject::centerModel(int gridSize) {
 float AirObject::knotsToMtrPrSec(float knots) {
     float metersPerSecond = knots * 0.514444444;
     return metersPerSecond;
+}
+
+void AirObject::setAirDensity(float air) {
+    airDensity_ = std::make_shared<float>(air);
 }
 
