@@ -1,8 +1,10 @@
-
+// Remember continuous integration kopier fra threepp config file
 #include "threepp/extras/imgui/imgui_context.hpp"
 #include "threepp/threepp.hpp"
 #include "iostream"
 #include "AirObject.hpp"
+#include "Graph3D.hpp"
+#include "GUI.hpp"
 #include "threepp/materials/ShaderMaterial.hpp"
 #include "threepp/objects/Sky.hpp"
 #include "threepp/objects/Line.hpp"
@@ -12,25 +14,33 @@ using namespace threepp;
 
 int main() {
     // Canvas creation
-    Canvas canvas;
+    Canvas canvas{Canvas::Parameters().size({1280, 720}).antialiasing(1)};
     GLRenderer renderer(canvas);
+    renderer.setClearColor(Color::aliceblue);
+
+
+
 //    renderer.setClearColor(Color::aliceblue);
 // Setting up grid
     auto grid = GridHelper::create(1000, 20, Color::blue, Color::blue);
-    grid->position.x = -1000;
+    grid->position.x = -1000 / 2;
     grid->rotateX(math::PI / 2);
     grid->rotateZ(math::PI / 2);
+
+//    Setting up imgui
+//    ImGui_ImplGlfw_NewFrame();
+//    auto imguiContext = ImGuiContext;
+//    auto imgui = ImGui_ImplOpenGL3_CreateDeviceObjects();
 
 
 //    Setting up visual axes
     auto axes = AxesHelper::create(100);
 
     // Setting up camera
-    auto camera = PerspectiveCamera::create(60, canvas.getAspect(), 0.1f, 2000);
-    camera->position.z = 150;
-    camera->rotateY(-math::PI/2);
-
+    auto camera = PerspectiveCamera::create(60, canvas.getAspect(), 0.1f, 3000);
+    camera->position.x = 600;
     OrbitControls controls{camera, canvas};
+
 
     // Scene creation
     auto scene = Scene::create();
@@ -69,9 +79,10 @@ int main() {
     auto material1 = MeshPhongMaterial::create();
     material1->flatShading = true;
     material1->color = Color::beige;
-    AirObject Aircraft1(aircraft1, material1, 10000.0, 0.77, 0.33, 470, 0);
+    AirObject Aircraft1(aircraft1, material1, 40000.0, 0.77, 0.33, 470, 0);
     auto Boeing = Aircraft1.createMesh();
-    Aircraft1.scaleAndCenter(100);
+    Aircraft1.scaleModel(1000);
+    Aircraft1.centerModel(1000);
     Boeing->rotateY(math::PI);
 
     scene->add(Boeing);

@@ -8,7 +8,7 @@ find_package(imgui CONFIG REQUIRED)
 find_package(Bullet CONFIG)
 
 if (BULLET_FOUND AND NOT TARGET Bullet::Bullet)
-    add_library(Bullet::Bullet INTERFACE IMPORTED)
+    add_library(Bullet::Bullet INTERFACE IMPORTED Graph3D.hpp Graph3D.hpp GUI.hpp GUI.hpp)
     if("${BULLET_INCLUDE_DIRS}" MATCHES ".*/bullet$")
         target_include_directories(Bullet::Bullet INTERFACE "${BULLET_INCLUDE_DIRS}/..")
     endif()
