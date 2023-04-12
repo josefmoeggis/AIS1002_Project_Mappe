@@ -13,20 +13,12 @@ using namespace threepp;
 class Graph3D : Object3D {
 //    Create constructor
 public:
-    Graph3D(int gridSize, int divisions, Color gridColor, Color graphColor)
+    Graph3D(int gridSize, int divisions, Color gridColor = 0x0000FF, Color graphColor = 0xADFF2F)
     {
         this->gridSize_ = std::make_shared<int>(gridSize);
         this->divisions_ = std::make_shared<int>(divisions);
         this->gridColor_ = std::make_shared<Color>(gridColor);
         this->graphColor_ = std::make_shared<Color>(graphColor);
-    }
-
-    Graph3D(int gridSize, int divisions)
-    {
-        this->gridSize_ = std::make_shared<int>(gridSize);
-        this->divisions_ = std::make_shared<int>(divisions);
-        this->gridColor_ = std::make_shared<Color>(0x0000FF); // Default blue grid
-        this->graphColor_ = std::make_shared<Color>(0xADFF2F); // Default green graph
     }
 
 
