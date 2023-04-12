@@ -13,25 +13,45 @@ using namespace threepp;
 class Graph3D : Object3D {
 //    Create constructor
 public:
-    Graph3D() {}
+    Graph3D(int gridSize, int divisions, Color gridColor, Color graphColor)
+    {
+        this->gridSize_ = std::make_shared<int>(gridSize);
+        this->divisions_ = std::make_shared<int>(divisions);
+        this->gridColor_ = std::make_shared<Color>(gridColor);
+        this->graphColor_ = std::make_shared<Color>(graphColor);
+    }
 
-    std::shared_ptr<GridHelper> createGrid(int size, int divisions, Color color);
+    Graph3D(int gridSize, int divisions)
+    {
+        this->gridSize_ = std::make_shared<int>(gridSize);
+        this->divisions_ = std::make_shared<int>(divisions);
+        this->gridColor_ = std::make_shared<Color>(0x0000FF); // Default blue grid
+        this->graphColor_ = std::make_shared<Color>(0xADFF2F); // Default green graph
+    }
 
-    std::shared_ptr<int> getGridSize();
 
-    std::shared_ptr<int> getDivisions();
 
-    void updateLine(std::shared_ptr<float> lift, float resolution);
+    void createGrid(int size, int divisions, Color color);
+
+    GridHelper getGrid();
+
+    int getGridSize();
+
+    int getDivisions();
+
+    void updateLine(float lift, float resolution);
 
     std::shared_ptr<Line> showLine();
 
-
+    static std::shared_ptr<Graph3D> create();
 
 private:
 
     std::shared_ptr<int> gridSize_;
     std::shared_ptr<int> divisions_;
     std::shared_ptr<GridHelper> grid_;
+    std::shared_ptr<Color> gridColor_;
+    std::shared_ptr<Color> graphColor_;
     std::shared_ptr<std::vector<Vector3>> graphLine_;
 };
 

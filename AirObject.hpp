@@ -17,11 +17,12 @@ class AirObject {
 public:
     AirObject(std::shared_ptr<BufferGeometry> geometry, std::shared_ptr<Material> material, float length,
               float liftCoeff,
-              float dragCoeff, float wingArea, float angleOfAttack)
+              float dragCoeff, float wingArea, float angleOfAttack, float airDensity = 1.293)
             : geometry_(geometry), material_(material), fileLength_(std::make_shared<float>(length)),
               liftCoefficient_(std::make_shared<float>(liftCoeff)),
               dragCoefficient_(std::make_shared<float>(dragCoeff)),
-              wingArea_(std::make_shared<float>(wingArea)), angleOfAttack_(std::make_shared<float>(angleOfAttack)) {}
+              wingArea_(std::make_shared<float>(wingArea)), angleOfAttack_(std::make_shared<float>(angleOfAttack)),
+              airDensity_(std::make_shared<float>(airDensity)) {}
 
     void setLength(float length);
 
@@ -33,9 +34,9 @@ public:
 
     void setAngleOfAttack(float AoA);
 
-    std::shared_ptr<float> calculateLift();
+    float calculateLift();
 
-    std::shared_ptr<float> calculateDrag();
+    float calculateDrag();
 
     std::shared_ptr<Mesh> createMesh();
 
