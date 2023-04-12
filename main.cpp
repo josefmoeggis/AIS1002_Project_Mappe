@@ -89,17 +89,11 @@ int main() {
 //    Setting up imgui
     GUI myUI(canvas, control);
 
-
 //    Testing grid
     Graph3D Graph;
 // Testing line segments
     Graph.updateLine(Aircraft1.calculateLift(), 100);
     scene->add(Graph.createGrid(1000, 20, Color::white));
-
-
-
-
-
 
     float t = 0;
 

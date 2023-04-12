@@ -29,8 +29,8 @@ void AirObject::setAngleOfAttack(float AoA) {
 }
 
 // Calculat lift from different standards
-std::shared_ptr<float> AirObject::calculateLift() {
-    std::shared_ptr<float> lift = std::make_shared<float>(0.5f * *airDensity_ * std::pow(*airspeed_, 2) * *wingArea_ * *liftCoefficient_);
+float AirObject::calculateLift() {
+    float lift = 0.5f * *airDensity_ * std::pow(*airspeed_, 2) * *wingArea_ * *liftCoefficient_;
     return lift;
 }
 
