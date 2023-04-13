@@ -9,11 +9,6 @@ void AirObject::setLength(float length) {
     fileLength_ = std::make_shared<float>(length);
 }
 
-// Setting airspeed
-void AirObject::setAS(float airspeed) {
-    airspeed_ = std::make_shared<float>(airspeed);
-}
-
 // Setting lift coefficient
 void AirObject::setLiftCoefficient(float liftCoefficient) {
     liftCoefficient_ = std::make_shared<float>(liftCoefficient);
@@ -29,8 +24,8 @@ void AirObject::setAngleOfAttack(float AoA) {
 }
 
 // Calculat lift from different standards
-float AirObject::calculateLift() {
-    float lift = 0.5f * *airDensity_ * std::pow(*airspeed_, 2) * *wingArea_ * *liftCoefficient_;
+float AirObject::calculateLift(float airspeed) {
+    float lift = 0.5f * *airDensity_ * std::pow(airspeed, 2) * *wingArea_ * *liftCoefficient_;
     return lift;
 }
 
