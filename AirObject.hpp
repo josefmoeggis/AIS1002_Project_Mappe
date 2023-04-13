@@ -26,15 +26,13 @@ public:
 
     void setLength(float length);
 
-    void setAS(float airspeed);
-
     void setLiftCoefficient(float liftCoefficient);
 
     void setWingArea(float wingArea);
 
     void setAngleOfAttack(float AoA);
 
-    float calculateLift();
+    float calculateLift(float airspeed);
 
     float calculateDrag();
 
@@ -51,7 +49,6 @@ public:
 
 private:
     std::shared_ptr<float> fileLength_;
-    std::shared_ptr<float> airspeed_;
     std::shared_ptr<float> liftCoefficient_;
     std::shared_ptr<float> dragCoefficient_;
     std::shared_ptr<float> wingArea_;

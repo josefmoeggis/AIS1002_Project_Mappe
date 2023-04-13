@@ -21,9 +21,10 @@ struct ControllableParameters {
 //    std::string path3;
 
 
-    explicit ControllableParameters(float targetAirspeed = 0, float targetAngleOfAttack = 0, int fileChoice = 1,
-                                    std::string path1 = nullptr, std::string path2 = nullptr)
-                                    : targetAirspeed(targetAirspeed), targetAngleOfAttack(targetAngleOfAttack), fileChoice(fileChoice), path1(path1), path2(path2) {}
+    explicit ControllableParameters(std::string path1 = nullptr, std::string path2 = nullptr, float targetAirspeed = 0,
+                                    float targetAngleOfAttack = 0, int fileChoice = 1)
+                                    : targetAirspeed(targetAirspeed), targetAngleOfAttack(targetAngleOfAttack),
+                                    path1(path1), path2(path2), fileChoice(fileChoice) {}
 };
 
 struct GUI : imgui_context {

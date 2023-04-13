@@ -10,8 +10,8 @@ void  Graph3D::createGrid(int size, int divisions, Color color) {
     grid_ = GridHelper::create(size, divisions, color, color);
 }
 
-GridHelper Graph3D::getGrid() {
-    return *grid_;
+std::shared_ptr<GridHelper> Graph3D::getGrid() {
+    return grid_;
 }
 
 int Graph3D::getGridSize() {

@@ -26,7 +26,7 @@ public:
 
     void createGrid(int size, int divisions, Color color);
 
-    GridHelper getGrid();
+    std::shared_ptr<GridHelper> getGrid();
 
     int getGridSize();
 
@@ -43,7 +43,7 @@ private:
 
     std::shared_ptr<int> gridSize_;
     std::shared_ptr<int> divisions_;
-    const std::shared_ptr<GridHelper> grid_;
+    std::shared_ptr<GridHelper> grid_;
     std::shared_ptr<Color> gridColor_;
     std::shared_ptr<Color> graphColor_;
     std::shared_ptr<std::vector<Vector3>> graphLine_;

@@ -22,12 +22,10 @@ int main() {
 
 //    renderer.setClearColor(Color::aliceblue);
 // Setting up grid
-    auto grid = GridHelper::create(1000, 20, Color::white, Color::white);
-    grid->position.x = -1000 / 2;
-    grid->rotateX(math::PI / 2);
-    grid->rotateZ(math::PI / 2);
-
-
+//    auto grid = GridHelper::create(1000, 20, Color::white, Color::white);
+//    grid->position.x = -1000 / 2;
+//    grid->rotateX(math::PI / 2);
+//    grid->rotateZ(math::PI / 2);
 
 //    Setting up visual axes
     auto axes = AxesHelper::create(100);
@@ -40,7 +38,7 @@ int main() {
 
     // Scene creation
     auto scene = Scene::create();
-    scene->add(grid);
+//    scene->add(grid);
     scene->add(axes);
 
     //    Add light
@@ -59,11 +57,20 @@ int main() {
     mySky->material()->as<ShaderMaterial>()->uniforms->at("sunPosition").value<Vector3>().copy(light->position);
     scene->add(mySky);
 
+//    Controls from GUI
+    ControllableParameters control("resources/B737_image_min.jpeg", "resources/SAS-A321LR_min.jpeg");
+
+//    Setting up imgui
+    GUI myUI(canvas, control);
 
 //    Testing AirObject
     STLLoader loader;
-
-    auto aircraft1 = loader.load("resources/B737_800.stl");
+    std::shared_ptr<BufferGeometry> aircraft1;
+    if(control.fileChoice == 1) {
+        aircraft1 = loader.load("resources/B737_800.stl");
+    } else if (control.fileChoice == 2) {
+        aircraft1 = loader.load("resources/A320neo.stl");
+    }
     auto material1 = MeshPhongMaterial::create();
     material1->flatShading = true;
     material1->color = Color::beige;
@@ -76,31 +83,18 @@ int main() {
 
     scene->add(Boeing);
 
-
-
-
-
-//    Controls from GUI
-    float airspeed; // Use pointers
-    float AoA; // Use pointers
-    int chosenFile; // Use pointers
-    ControllableParameters control(airspeed, AoA, chosenFile, "resources/B737_image_min.jpeg", "resources/SAS-A321LR_min.jpeg");
-
-//    Setting up imgui
-    GUI myUI(canvas, control);
-
 //    Testing grid
     Graph3D Graph(1000, 20);
-// Testing line segments
-    Graph.updateLine(Aircraft1.calculateLift(), 100);
+
+//     Testing line segments
+//    Graph.updateLine(Aircraft1.calculateLift(control.targetAirspeed), 100);
     scene->add(Graph.getGrid());
 
     float t = 0;
 
     canvas.animate([&](float dt) {
         renderer.render(scene, camera);
-        myUI.render();
-
+//        myUI.render();
 
         t += dt;
         std::cout << t << std::endl;
