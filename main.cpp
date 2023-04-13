@@ -90,10 +90,10 @@ int main() {
     GUI myUI(canvas, control);
 
 //    Testing grid
-    Graph3D Graph;
+    Graph3D Graph(1000, 20);
 // Testing line segments
     Graph.updateLine(Aircraft1.calculateLift(), 100);
-    scene->add(Graph.createGrid(1000, 20, Color::white));
+    scene->add(Graph.getGrid());
 
     float t = 0;
 

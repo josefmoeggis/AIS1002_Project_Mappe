@@ -15,8 +15,8 @@ void AirObject::setAS(float airspeed) {
 }
 
 // Setting lift coefficient
-void AirObject::setLiftCoefficient(float liftcoefficient) {
-    liftCoefficient_ = std::make_shared<float>(liftcoefficient);
+void AirObject::setLiftCoefficient(float liftCoefficient) {
+    liftCoefficient_ = std::make_shared<float>(liftCoefficient);
 }
 
 // Setting wing area
@@ -60,4 +60,3 @@ float AirObject::knotsToMtrPrSec(float knots) {
 void AirObject::setAirDensity(float air) {
     airDensity_ = std::make_shared<float>(air);
 }
-

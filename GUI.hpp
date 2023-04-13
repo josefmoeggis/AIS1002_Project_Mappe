@@ -45,10 +45,10 @@ struct GUI : imgui_context {
         ImTextureID image1 = ImGui::GetIO().Fonts->AddFontFromFileTTF(controlOptions_.path1.c_str(), 4000);
         ImTextureID image2 = ImGui::GetIO().Fonts->AddFontFromFileTTF(controlOptions_.path2.c_str(), 4000);
         ImGui::Text("Choose Aircraft type");
-        if(ImGui::ImageButton(image1, ImVec2(200, 100))) {
+        if(ImGui::ImageButton(image1, ImVec2())) {
             controlOptions_.fileChoice = 1;
         }
-        if(ImGui::ImageButton(image2, ImVec2(200, 100))) {
+        if(ImGui::ImageButton(image2, ImVec2())) {
             controlOptions_.fileChoice = 2;
         }
         ImGui::End();
