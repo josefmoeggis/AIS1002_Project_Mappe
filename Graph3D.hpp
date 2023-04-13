@@ -19,8 +19,9 @@ public:
         this->divisions_ = std::make_shared<int>(divisions);
         this->gridColor_ = std::make_shared<Color>(gridColor);
         this->graphColor_ = std::make_shared<Color>(graphColor);
-    }
 
+        createGrid(gridSize, divisions, gridColor);
+    }
 
 
     void createGrid(int size, int divisions, Color color);
@@ -31,17 +32,18 @@ public:
 
     int getDivisions();
 
-    void updateLine(float lift, float resolution);
+    void updateLine(float lift, float resolution); // Also starts line
 
-    std::shared_ptr<Line> showLine();
+    std::shared_ptr<Line> getLine();
 
-    static std::shared_ptr<Graph3D> create();
+    void setPosition(float x, float y, float z);
+
 
 private:
 
     std::shared_ptr<int> gridSize_;
     std::shared_ptr<int> divisions_;
-    std::shared_ptr<GridHelper> grid_;
+    const std::shared_ptr<GridHelper> grid_;
     std::shared_ptr<Color> gridColor_;
     std::shared_ptr<Color> graphColor_;
     std::shared_ptr<std::vector<Vector3>> graphLine_;

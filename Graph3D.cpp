@@ -33,17 +33,11 @@ void Graph3D::updateLine(float lift, float resolution) {
     graphLine_->emplace_back(Vector3 {grid_->position.x, lift, graphLine_->back().z + stepSize});
 }
 
-std::shared_ptr<Line> Graph3D::showLine() {
+std::shared_ptr<Line> Graph3D::getLine() {
     auto material = LineBasicMaterial::create();
     material->color = threepp::Color(0xB22222);
     auto geometry = BufferGeometry::create();
     geometry->setFromPoints(*graphLine_);
     auto graphLine = Line::create(geometry, material);
     return graphLine;
-}
-
-std::shared_ptr<Graph3D> Graph3D::create() {
-
-    std::shared_ptr<std::vector<Vector3>> graphLine_;
-    return new std::shared_ptr<Graph3D>
 }

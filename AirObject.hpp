@@ -28,7 +28,7 @@ public:
 
     void setAS(float airspeed);
 
-    void setLiftCoefficient(float liftcoefficient);
+    void setLiftCoefficient(float liftCoefficient);
 
     void setWingArea(float wingArea);
 
