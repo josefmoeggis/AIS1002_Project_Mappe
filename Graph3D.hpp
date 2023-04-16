@@ -36,7 +36,7 @@ public:
 
     std::shared_ptr<Line> getLine();
 
-    void setPosition(float x, float y, float z);
+    void setPosition();
 
 
 private:
