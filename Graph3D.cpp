@@ -41,3 +41,9 @@ std::shared_ptr<Line> Graph3D::getLine() {
     auto graphLine = Line::create(geometry, material);
     return graphLine;
 }
+
+void Graph3D::setPosition() {
+    grid_->position.set(-*gridSize_ / 2, 0, 0);
+    grid_->rotateX(math::PI / 2);
+    grid_->rotateZ(math::PI / 2);
+}

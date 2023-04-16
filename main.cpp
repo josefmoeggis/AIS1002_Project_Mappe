@@ -85,18 +85,35 @@ int main() {
 
 //    Testing grid
     Graph3D Graph(1000, 20);
+    Graph.setPosition(),
 
 //     Testing line segments
-//    Graph.updateLine(Aircraft1.calculateLift(control.targetAirspeed), 100);
+//    if () {
+//        Graph.updateLine(Aircraft1.calculateLift(control.targetAirspeed), 100);
+//    }
+
+
+
+
     scene->add(Graph.getGrid());
 
     float t = 0;
+    int prevSec = 0;
 
     canvas.animate([&](float dt) {
+        t += dt;
+        if (static_cast<int>(t) > prevSec) {
+            Boeing->rotation.x += (math::PI / 2);
+        }
+
+
         renderer.render(scene, camera);
 //        myUI.render();
 
+
         t += dt;
+        prevSec = static_cast<int>(t);
+
         std::cout << t << std::endl;
 
     });

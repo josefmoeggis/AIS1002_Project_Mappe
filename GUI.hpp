@@ -29,7 +29,7 @@ struct ControllableParameters {
 
 struct GUI : imgui_context {
 
-    explicit GUI(const Canvas& canvas, ControllableParameters& controlOptions) // Research more if it can use shared_ptr
+    GUI(const Canvas& canvas, ControllableParameters& controlOptions) // Research more if it can use shared_ptr
     : imgui_context(canvas.window_ptr()), controlOptions_(controlOptions) {}
 
     void onRender() override {
