@@ -90,7 +90,7 @@ int main() {
     Graph.setPosition();
     Graph.updateLineVectors(10, 100);
     scene->add(Graph.getGrid());
-    Graph.makeLine();
+    Graph.makeLine(scene);
     scene->add(Graph.getLine());
 
     float t = 0;
@@ -99,9 +99,9 @@ int main() {
     canvas.animate([&](float dt) {
 
 //     Testing line segments
-        if (sec >= 1) {
+        if (sec >= 0.1) {
             Graph.updateLineVectors(Aircraft1.calculateLift(control.targetAirspeed), 100);
-            Graph.makeLine();
+            Graph.makeLine(scene);
             scene->add(Graph.getLine());
             sec = 0;
         }
@@ -110,20 +110,21 @@ int main() {
 //        myUI.render();
 
 
-
-
-        if (Graph.getVectors().empty()) {
-            std::cout << "Empty vector" << std::endl;
-        } else {
-            for (Vector3 vector : Graph.getVectors()){
-                std::cout << vector;
-                std::cout << "-";
-            }
-        }
+//
+//
+//        if (Graph.getVectors().empty()) {
+//            std::cout << "Empty vector" << std::endl;
+//        } else {
+//            for (Vector3 vector : Graph.getVectors()){
+//                std::cout << vector;
+//                std::cout << "-";
+//            }
+//        }
 
         std::cout << "" << std::endl;
         std::cout << t << std::endl;
 
-        t, sec += dt;
+        t += dt;
+        sec += dt;
     });
 }
