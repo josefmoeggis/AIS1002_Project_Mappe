@@ -38,7 +38,7 @@ public:
 
     std::vector<Vector3> getVectors();
 
-    void makeLine();
+    void makeLine(std::shared_ptr<Scene> scene);
 
     std::shared_ptr<Line> getLine();
 

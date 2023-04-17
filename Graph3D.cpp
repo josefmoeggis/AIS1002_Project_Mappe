@@ -24,15 +24,15 @@ int Graph3D::getDivisions() {
 
 void Graph3D::updateLineVectors(float lift, float resolution) {
     float stepSize = (float)*gridSize_ / resolution;
-
     if(graphVectors_->empty()) {
-        graphVectors_->push_back(Vector3 {grid_->position.x, -((float)*gridSize_ / 2), -((float)*gridSize_ / 2)});
+        graphVectors_->push_back(Vector3 {grid_->position.x, -((float)*gridSize_ / 2), ((float)*gridSize_ / 2)});
     }
-
-    graphVectors_->emplace_back(Vector3 {grid_->position.x, lift, graphVectors_->back().z + stepSize});
-
-    if(graphVectors_->back().x >= (*gridSize_ / 2)) {
+    graphVectors_->emplace_back(Vector3 {grid_->position.x, lift - ((float)*gridSize_ / 2), graphVectors_->back().z - stepSize});
+    if(graphVectors_->back().z <= -(*gridSize_ / 2)) {
         graphVectors_->erase(graphVectors_->begin());
+        for (int i = 0; i >= graphVectors_->size(); i++) {   // Shift the vector coordinates to the left on the graph to be within the grid
+            graphVectors_->at(i) += stepSize;
+        }
     }
 }
 
@@ -40,7 +40,10 @@ std::vector<Vector3> Graph3D::getVectors() {
     return *graphVectors_;
 }
 
-void Graph3D::makeLine() {
+void Graph3D::makeLine(std::shared_ptr<Scene> scene) {
+    if (scene->getObjectByName("graphLine_")) {
+        scene->remove(graphLine_);
+    }
     auto material = LineBasicMaterial::create();
     material->color = threepp::Color(0xB22222);
     auto geometry = BufferGeometry::create();
