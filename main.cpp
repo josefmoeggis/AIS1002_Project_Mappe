@@ -1,14 +1,16 @@
 // Remember continuous integration kopier fra threepp config file
 #include "threepp/extras/imgui/imgui_context.hpp"
 #include "threepp/threepp.hpp"
-#include "iostream"
+#include <iostream>
 #include "AirObject.hpp"
 #include "Graph3D.hpp"
 #include "GUI.hpp"
 #include "threepp/materials/ShaderMaterial.hpp"
 #include "threepp/objects/Sky.hpp"
 #include "threepp/objects/Line.hpp"
-#include "vector"
+#include <vector>
+#include <ostream>
+
 
 using namespace threepp;
 
@@ -85,35 +87,41 @@ int main() {
 
 //    Testing grid
     Graph3D Graph(1000, 20);
-    Graph.setPosition(),
-
-//     Testing line segments
-//    if () {
-//        Graph.updateLine(Aircraft1.calculateLift(control.targetAirspeed), 100);
-//    }
-
-
-
-
+    Graph.setPosition();
+//    Graph.updateLineVectors(10, 100);
     scene->add(Graph.getGrid());
+//    Graph.makeLine();
+//    scene->add(Graph.getLine());
 
     float t = 0;
-    int prevSec = 0;
+    int sec = 0;
 
     canvas.animate([&](float dt) {
         t += dt;
-        if (static_cast<int>(t) > prevSec) {
-            Boeing->rotation.x += (math::PI / 2);
+//     Testing line segments
+        if (sec >= 1) {
+            Graph.updateLineVectors(Aircraft1.calculateLift(control.targetAirspeed), 100);
+//            Graph.makeLine();
+//            scene->add(Graph.getLine());
+            sec = 0;
         }
-
 
         renderer.render(scene, camera);
 //        myUI.render();
 
 
         t += dt;
-        prevSec = static_cast<int>(t);
 
+        if (Graph.getVectors().empty()) {
+            std::cout << "Empty vector" << std::endl;
+        } else {
+            for (Vector3 vector : Graph.getVectors()){
+                std::cout << vector;
+                std::cout << "-";
+            }
+        }
+
+        std::cout << "" << std::endl;
         std::cout << t << std::endl;
 
     });

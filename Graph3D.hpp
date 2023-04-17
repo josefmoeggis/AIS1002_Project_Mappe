@@ -13,7 +13,7 @@ using namespace threepp;
 class Graph3D : Object3D {
 //    Create constructor
 public:
-    Graph3D(int gridSize, int divisions, Color gridColor = 0x0000FF, Color graphColor = 0xADFF2F)
+    Graph3D(int gridSize, int divisions, Color gridColor = 0x0000FF, Color graphColor = 0x00000)
     {
         this->gridSize_ = std::make_shared<int>(gridSize);
         this->divisions_ = std::make_shared<int>(divisions);
@@ -32,7 +32,11 @@ public:
 
     int getDivisions();
 
-    void updateLine(float lift, float resolution); // Also starts line
+    void updateLineVectors(float lift, float resolution); // Also starts line
+
+    std::vector<Vector3> getVectors();
+
+    void makeLine();
 
     std::shared_ptr<Line> getLine();
 
@@ -46,7 +50,8 @@ private:
     std::shared_ptr<GridHelper> grid_;
     std::shared_ptr<Color> gridColor_;
     std::shared_ptr<Color> graphColor_;
-    std::shared_ptr<std::vector<Vector3>> graphLine_;
+    std::shared_ptr<std::vector<Vector3>> graphVectors_;
+    std::shared_ptr<Line> graphLine_;
 };
 
 
