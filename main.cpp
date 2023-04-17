@@ -88,21 +88,21 @@ int main() {
 //    Testing grid
     Graph3D Graph(1000, 20);
     Graph.setPosition();
-//    Graph.updateLineVectors(10, 100);
+    Graph.updateLineVectors(10, 100);
     scene->add(Graph.getGrid());
-//    Graph.makeLine();
-//    scene->add(Graph.getLine());
+    Graph.makeLine();
+    scene->add(Graph.getLine());
 
     float t = 0;
-    int sec = 0;
+    float sec = 0;
 
     canvas.animate([&](float dt) {
-        t += dt;
+
 //     Testing line segments
         if (sec >= 1) {
             Graph.updateLineVectors(Aircraft1.calculateLift(control.targetAirspeed), 100);
-//            Graph.makeLine();
-//            scene->add(Graph.getLine());
+            Graph.makeLine();
+            scene->add(Graph.getLine());
             sec = 0;
         }
 
@@ -110,7 +110,7 @@ int main() {
 //        myUI.render();
 
 
-        t += dt;
+
 
         if (Graph.getVectors().empty()) {
             std::cout << "Empty vector" << std::endl;
@@ -124,5 +124,6 @@ int main() {
         std::cout << "" << std::endl;
         std::cout << t << std::endl;
 
+        t, sec += dt;
     });
 }

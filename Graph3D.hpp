@@ -21,6 +21,8 @@ public:
         this->graphColor_ = std::make_shared<Color>(graphColor);
 
         createGrid(gridSize, divisions, gridColor);
+
+        graphVectors_ = std::make_shared<std::vector<Vector3>>();
     }
 
 
