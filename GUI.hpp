@@ -21,7 +21,7 @@ struct ControllableParameters {
 //    std::string path3;
 
 
-    explicit ControllableParameters(std::string path1 = nullptr, std::string path2 = nullptr, float targetAirspeed = 0,
+    explicit ControllableParameters(std::string path1, std::string path2, float targetAirspeed = 0,
                                     float targetAngleOfAttack = 0, int fileChoice = 1)
                                     : targetAirspeed(targetAirspeed), targetAngleOfAttack(targetAngleOfAttack),
                                     path1(path1), path2(path2), fileChoice(fileChoice) {}

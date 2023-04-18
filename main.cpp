@@ -110,16 +110,16 @@ int main() {
 //        myUI.render();
 
 
-//
-//
-//        if (Graph.getVectors().empty()) {
-//            std::cout << "Empty vector" << std::endl;
-//        } else {
-//            for (Vector3 vector : Graph.getVectors()){
-//                std::cout << vector;
-//                std::cout << "-";
-//            }
-//        }
+
+
+        if (Graph.getVectors().empty()) {
+            std::cout << "Empty vector" << std::endl;
+        } else {
+            for (Vector3 vector : Graph.getVectors()){
+                std::cout << vector;
+                std::cout << "-";
+            }
+        }
 
         std::cout << "" << std::endl;
         std::cout << t << std::endl;
