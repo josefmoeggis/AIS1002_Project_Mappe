@@ -25,13 +25,20 @@ int Graph3D::getDivisions() {
 void Graph3D::updateLineVectors(float lift, float resolution) {
     float stepSize = (float)*gridSize_ / resolution;
     if(graphVectors_->empty()) {
-        graphVectors_->push_back(Vector3 {grid_->position.x, -((float)*gridSize_ / 2), ((float)*gridSize_ / 2)});
+        graphVectors_->push_back(Vector3 {
+            grid_->position.x - 1,
+            -((float)*gridSize_ / 2),
+            ((float)*gridSize_ / 2)});
     }
-    graphVectors_->emplace_back(Vector3 {grid_->position.x, lift - ((float)*gridSize_ / 2), graphVectors_->back().z - stepSize});
+    graphVectors_->emplace_back(Vector3 {
+        grid_->position.x -1,
+        lift - ((float)*gridSize_ / 2),
+        graphVectors_->back().z - stepSize});
+
     if(graphVectors_->back().z <= -(*gridSize_ / 2)) {
         graphVectors_->erase(graphVectors_->begin());
         for (int i = 0; i >= graphVectors_->size(); i++) {   // Shift the vector coordinates to the left on the graph to be within the grid
-            graphVectors_->at(i) += stepSize;
+            graphVectors_->at(i).z += stepSize;
         }
     }
 }
