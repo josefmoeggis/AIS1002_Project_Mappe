@@ -35,7 +35,7 @@ void Graph3D::updateLineVectors(float lift, float resolution) {
         lift - ((float)*gridSize_ / 2),
         graphVectors_->back().z - stepSize});
 
-    if(graphVectors_->back().z <= -(*gridSize_ / 2)) {
+    if(graphVectors_->back().z < -(*gridSize_ / 2)) {
         std::cout << "Shifting back" << std::endl;
         graphVectors_->erase(graphVectors_->begin());
         for (int i = 0; i < graphVectors_->size(); i++) {   // Shift the vector coordinates to the left on the graph to be within the grid
