@@ -49,7 +49,7 @@ std::vector<Vector3> Graph3D::getVectors() {
 }
 
 void Graph3D::makeLine(std::shared_ptr<Scene> scene) {
-    if (scene->getObjectByName("graphLine_")) {
+    if (scene->getObjectByName("LastVector")) {
         scene->remove(graphLine_);
     }
     auto material = LineBasicMaterial::create();
@@ -57,6 +57,7 @@ void Graph3D::makeLine(std::shared_ptr<Scene> scene) {
     auto geometry = BufferGeometry::create();
     geometry->setFromPoints(*graphVectors_);
     graphLine_ = Line::create(geometry, material);
+    graphLine_->name = "LastVector";
 }
 
 std::shared_ptr<Line> Graph3D::getLine() {

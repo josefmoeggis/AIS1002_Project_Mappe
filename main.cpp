@@ -82,7 +82,6 @@ int main() {
     Aircraft1.scaleModel(1000);
     Aircraft1.centerModel(1000);
     Boeing->rotateY(math::PI);
-
     scene->add(Boeing);
 
 //    Testing grid
@@ -116,15 +115,17 @@ int main() {
 
             std::cout << "" << std::endl;
             std::cout << t << std::endl;
+
+            if(t > 14) {
+                for (auto line : (*scene).children) {
+                    std::cout << line << std::endl;
+                }
+            }
         }
+
 
         renderer.render(scene, camera);
 //        myUI.render();
-
-
-
-
-
 
         t += dt;
         sec += dt;
