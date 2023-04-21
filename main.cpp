@@ -20,15 +20,6 @@ int main() {
     GLRenderer renderer(canvas);
     renderer.setClearColor(Color::aliceblue);
 
-
-
-//    renderer.setClearColor(Color::aliceblue);
-// Setting up grid
-//    auto grid = GridHelper::create(1000, 20, Color::white, Color::white);
-//    grid->position.x = -1000 / 2;
-//    grid->rotateX(math::PI / 2);
-//    grid->rotateZ(math::PI / 2);
-
 //    Setting up visual axes
     auto axes = AxesHelper::create(100);
 
@@ -36,7 +27,6 @@ int main() {
     auto camera = PerspectiveCamera::create(60, canvas.getAspect(), 0.1f, 3000);
     camera->position.x = 600;
     OrbitControls controls{camera, canvas};
-
 
     // Scene creation
     auto scene = Scene::create();
@@ -47,7 +37,6 @@ int main() {
     auto light = DirectionalLight::create(0xffffff);
     light->position.set(100, 10, 100);
     scene->add(light);
-
 
 //    Setting sky
     auto mySky = Sky::create();
@@ -84,48 +73,28 @@ int main() {
     Boeing->rotateY(math::PI);
     scene->add(Boeing);
 
-//    Testing grid
+//    Create grid object
     Graph3D Graph(1000, 20);
     Graph.setPosition();
-    Graph.updateLineVectors(10, 10);
     scene->add(Graph.getGrid());
-    Graph.makeLine(scene);
-    scene->add(Graph.getLine());
 
     float t = 0;
     float sec = 0;
 
     canvas.animate([&](float dt) {
 
+
 //     Testing line segments
         if (sec >= 1) {
-            Graph.updateLineVectors(Aircraft1.calculateLift(control.targetAirspeed), 10);
+            Graph.updateLineVectors(Aircraft1.calculateLift(control.targetAirspeed), 300);
             Graph.makeLine(scene);
             scene->add(Graph.getLine());
             sec = 0;
-
-            if (Graph.getVectors().empty()) {
-                std::cout << "Empty vector" << std::endl;
-            } else {
-                for (Vector3 vector : Graph.getVectors()){
-                    std::cout << vector;
-                    std::cout << "-";
-                }
-            }
-
-            std::cout << "" << std::endl;
-            std::cout << t << std::endl;
-
-            if(t > 14) {
-                for (auto line : (*scene).children) {
-                    std::cout << line << std::endl;
-                }
-            }
         }
 
-
         renderer.render(scene, camera);
-//        myUI.render();
+        myUI.render();
+        controls.enabled = !myUI.getMouseHover();
 
         t += dt;
         sec += dt;
