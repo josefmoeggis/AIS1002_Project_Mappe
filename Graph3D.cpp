@@ -53,7 +53,7 @@ void Graph3D::makeLine(std::shared_ptr<Scene> scene) {
         scene->remove(graphLine_);
     }
     auto material = LineBasicMaterial::create();
-    material->color = threepp::Color(0xB22222);
+    material->color = *graphColor_;
     auto geometry = BufferGeometry::create();
     geometry->setFromPoints(*graphVectors_);
     graphLine_ = Line::create(geometry, material);
