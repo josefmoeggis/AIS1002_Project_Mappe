@@ -49,7 +49,7 @@ int main() {
     scene->add(mySky);
 
 //    Controls from GUI
-    ControllableParameters control("resources/B737_image_min.jpeg", "resources/SAS-A321LR_min.jpeg");
+    ControllableParameters control(missing the pid,"resources/B737_image_min.jpeg", "resources/SAS-A321LR_min.jpeg");
 
 //    Setting up imgui
     GUI myUI(canvas, control);

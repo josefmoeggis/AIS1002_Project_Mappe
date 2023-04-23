@@ -7,6 +7,7 @@
 #include <iostream>
 #include <memory>
 #include "threepp/threepp.hpp"
+#include "PID.hpp"
 #ifndef THREEPP_VCPKG_TEST_GUI_HPP
 #define THREEPP_VCPKG_TEST_GUI_HPP
 using namespace threepp;
@@ -18,13 +19,14 @@ struct ControllableParameters {
     int fileChoice;
     std::string path1;
     std::string path2;
+    PID& pid;
 //    std::string path3;
 
 
-    explicit ControllableParameters(std::string path1, std::string path2, float targetAirspeed = 0,
+    explicit ControllableParameters(PID& pid, std::string path1, std::string path2, float targetAirspeed = 0,
                                     float targetAngleOfAttack = 0, int fileChoice = 1)
                                     : targetAirspeed(targetAirspeed), targetAngleOfAttack(targetAngleOfAttack),
-                                    path1(path1), path2(path2), fileChoice(fileChoice) {}
+                                    path1(path1), path2(path2), fileChoice(fileChoice), pid(pid) {}
 };
 
 struct GUI : imgui_context {
