@@ -32,6 +32,8 @@ public:
 
     void setAngleOfAttack(float AoA);
 
+    float getAngleOfAttack();
+
     float calculateLift(float airspeed);
 
     float calculateDrag();
@@ -54,7 +56,6 @@ private:
     std::shared_ptr<float> wingArea_;
 
     std::shared_ptr<float> angleOfAttack_;
-
 
     std::shared_ptr<float> airDensity_;
 //    Not needed in the start - using standard density without using temp, pressure & gas constant

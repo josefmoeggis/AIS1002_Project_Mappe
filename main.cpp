@@ -48,8 +48,11 @@ int main() {
     mySky->material()->as<ShaderMaterial>()->uniforms->at("sunPosition").value<Vector3>().copy(light->position);
     scene->add(mySky);
 
+    PID myPID(1, 0.001f, 0.1f);
+    myPID.setWindupGuard(0.1f);
+
 //    Controls from GUI
-    ControllableParameters control(missing the pid,"resources/B737_image_min.jpeg", "resources/SAS-A321LR_min.jpeg");
+    ControllableParameters control(myPID,"resources/B737_image_min.jpeg", "resources/SAS-A321LR_min.jpeg");
 
 //    Setting up imgui
     GUI myUI(canvas, control);
@@ -91,7 +94,9 @@ int main() {
             scene->add(Graph.getLine());
             sec = 0;
         }
-
+        Aircraft1.setAngleOfAttack(myPID.regulate(control.targetAngleOfAttack * math::DEG2RAD,
+                                                  Aircraft1.getAngleOfAttack() * math::RAD2DEG, dt));
+        Boeing->rotation.x = Aircraft1.getAngleOfAttack();
         renderer.render(scene, camera);
         myUI.render();
         controls.enabled = !myUI.getMouseHover();

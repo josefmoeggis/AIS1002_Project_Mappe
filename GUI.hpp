@@ -3,13 +3,15 @@
 //
 // Trying to not make my GUI too gooey
 
+
+#ifndef THREEPP_VCPKG_TEST_GUI_HPP
+#define THREEPP_VCPKG_TEST_GUI_HPP
+
 #include "threepp/extras/imgui/imgui_context.hpp"
 #include <iostream>
 #include <memory>
 #include "threepp/threepp.hpp"
 #include "PID.hpp"
-#ifndef THREEPP_VCPKG_TEST_GUI_HPP
-#define THREEPP_VCPKG_TEST_GUI_HPP
 using namespace threepp;
 
 // Inspired from PID regulator code in threepp
