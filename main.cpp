@@ -16,7 +16,8 @@ using namespace threepp;
 
 int main() {
     // Canvas creation
-    Canvas canvas{Canvas::Parameters().size({1280, 720}).antialiasing(1)};
+    Canvas canvas{Canvas::Parameters().size({1280, 720}).antialiasing(1)
+                    .title("Aircraft Lift 3D Graph").favicon("resources/airplane_2_icon.jpeg")};
     GLRenderer renderer(canvas);
     renderer.setClearColor(Color::aliceblue);
 
@@ -48,8 +49,8 @@ int main() {
     mySky->material()->as<ShaderMaterial>()->uniforms->at("sunPosition").value<Vector3>().copy(light->position);
     scene->add(mySky);
 
-    PID myPID(1, 0.001f, 0.1f);
-    myPID.setWindupGuard(0.1f);
+    PID myPID(0.4, 0.01f, 0.0f);
+    myPID.setWindupGuard(0.5f);
 
 //    Controls from GUI
     ControllableParameters control(myPID,"resources/B737_image_min.jpeg", "resources/SAS-A321LR_min.jpeg");
@@ -94,10 +95,12 @@ int main() {
             scene->add(Graph.getLine());
             sec = 0;
         }
-        Aircraft1.setAngleOfAttack(myPID.regulate(control.targetAngleOfAttack * math::DEG2RAD,
-                                                  Aircraft1.getAngleOfAttack() * math::RAD2DEG, dt));
-        Boeing->rotation.x = Aircraft1.getAngleOfAttack();
+        float angleGain = myPID.regulate(control.targetAngleOfAttack,
+                                                  Aircraft1.getAngleOfAttack(), dt);
+        Aircraft1.setControlledAngle(angleGain, 2, dt);
+//        Boeing->rotation.x = Aircraft1.getAngleOfAttack();
         renderer.render(scene, camera);
+        std::cout << Aircraft1.getAngleOfAttack() * math::RAD2DEG << std::endl;
         myUI.render();
         controls.enabled = !myUI.getMouseHover();
 

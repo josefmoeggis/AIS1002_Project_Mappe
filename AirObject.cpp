@@ -4,6 +4,7 @@
 #include <cmath>
 #include "AirObject.hpp"
 
+
 // Setting length of stl file to know bounds and scale
 void AirObject::setLength(float length) {
     fileLength_ = std::make_shared<float>(length);
@@ -25,6 +26,11 @@ void AirObject::setAngleOfAttack(float AoA) {
 
 float AirObject::getAngleOfAttack() {
     return *angleOfAttack_;
+}
+
+void AirObject::setControlledAngle(float gain, float maxRadPrSec, float dt) {
+    float angleDiffPrFrame = gain * maxRadPrSec * dt;
+    setAngleOfAttack(getAngleOfAttack() + angleDiffPrFrame);
 }
 
 // Calculat lift from different standards

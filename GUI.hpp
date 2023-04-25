@@ -27,7 +27,7 @@ struct ControllableParameters {
 
     explicit ControllableParameters(PID& pid, std::string path1, std::string path2, float targetAirspeed = 0,
                                     float targetAngleOfAttack = 0, int fileChoice = 1)
-                                    : targetAirspeed(targetAirspeed), targetAngleOfAttack(targetAngleOfAttack),
+                                    : targetAirspeed(targetAirspeed), targetAngleOfAttack(targetAngleOfAttack * math::DEG2RAD),
                                     path1(path1), path2(path2), fileChoice(fileChoice), pid(pid) {}
 };
 

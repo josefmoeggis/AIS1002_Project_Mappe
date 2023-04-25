@@ -34,6 +34,8 @@ public:
 
     float getAngleOfAttack();
 
+    void setControlledAngle(float gain, float maxRadPrSec, float dt);
+
     float calculateLift(float airspeed);
 
     float calculateDrag();
