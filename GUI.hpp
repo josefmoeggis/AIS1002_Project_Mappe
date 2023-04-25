@@ -45,7 +45,7 @@ struct GUI : imgui_context {
         ImGui::Text("Control Airspeed");
         ImGui::SliderFloat("knots", &controlOptions_.targetAirspeed, 0, 400);
         ImGui::Text("Control Angle of Attack");
-        ImGui::SliderAngle("degrees", &controlOptions_.targetAngleOfAttack, -180, 180);
+        ImGui::SliderAngle("degrees", &controlOptions_.targetAngleOfAttack, -90, 90);
 
 //        ImTextureID image1 = ImGui::GetIO().Fonts->AddFontFromFileTTF(controlOptions_.path1.c_str(), 4000);
 //        ImTextureID image2 = ImGui::GetIO().Fonts->AddFontFromFileTTF(controlOptions_.path2.c_str(), 4000);

@@ -98,7 +98,7 @@ int main() {
         float angleGain = myPID.regulate(control.targetAngleOfAttack,
                                                   Aircraft1.getAngleOfAttack(), dt);
         Aircraft1.setControlledAngle(angleGain, 2, dt);
-//        Boeing->rotation.x = Aircraft1.getAngleOfAttack();
+        Boeing->rotation.x = Aircraft1.getAngleOfAttack() + math::PI;
         renderer.render(scene, camera);
         std::cout << Aircraft1.getAngleOfAttack() * math::RAD2DEG << std::endl;
         myUI.render();
