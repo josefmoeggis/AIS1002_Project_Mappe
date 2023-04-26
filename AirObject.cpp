@@ -35,6 +35,7 @@ void AirObject::setControlledAngle(float gain, float maxRadPrSec, float dt) {
 
 // Calculat lift from different standards
 float AirObject::calculateLift(float airspeed) {
+    liftCoefficient_ = std::make_shared<float>(0.1 * (math::PI / 180) * *angleOfAttack_ + 0.4);
     float lift = 0.5f * *airDensity_ * std::pow(airspeed, 2) * *wingArea_ * *liftCoefficient_;
     return lift;
 }
