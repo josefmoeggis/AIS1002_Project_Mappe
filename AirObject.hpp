@@ -24,11 +24,8 @@ public:
               wingArea_(std::make_shared<float>(wingArea)), angleOfAttack_(std::make_shared<float>(angleOfAttack)),
               airDensity_(std::make_shared<float>(airDensity)) {}
 
-    void setLength(float length);
 
-    void setLiftCoefficient(float liftCoefficient);
-
-    void setWingArea(float wingArea);
+    void setAngleParameters(float CLstall, float aCrit, float aStall, float stallRate);
 
     void setAngleOfAttack(float AoA);
 
@@ -36,11 +33,15 @@ public:
 
     void setControlledAngle(float gain, float maxRadPrSec, float dt);
 
+    float calcLiftCoeffAngle();
+
     float calculateLift(float airspeed);
 
     float calculateDrag();
 
-    std::shared_ptr<Mesh> createMesh();
+    void createMesh();
+
+    std::shared_ptr<Mesh> getMesh();
 
     void scaleModel(int gridSize);
 
@@ -52,10 +53,17 @@ public:
 
 
 private:
-    std::shared_ptr<float> fileLength_;
-    std::shared_ptr<float> liftCoefficient_;
-    std::shared_ptr<float> dragCoefficient_;
-    std::shared_ptr<float> wingArea_;
+//    Physical parameters
+    const std::shared_ptr<float> fileLength_;
+    const std::shared_ptr<float> liftCoefficient_;
+    const std::shared_ptr<float> dragCoefficient_;
+    const std::shared_ptr<float> wingArea_;
+//    Aerodynamic parameters
+    std::shared_ptr<float> CLstall_;
+    std::shared_ptr<float> aCrit_;
+    std::shared_ptr<float> aStall_;
+    std::shared_ptr<float> stallRate_;
+
 
     std::shared_ptr<float> angleOfAttack_;
 
@@ -64,7 +72,6 @@ private:
     std::shared_ptr<float> temp_;
     std::shared_ptr<float> press_;
     std::shared_ptr<float> gasConst_;
-    std::shared_ptr<std::vector<double>> previousAS;
 
 //    Mesh of the aircraft
     std::shared_ptr<BufferGeometry> geometry_;

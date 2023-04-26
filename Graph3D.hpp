@@ -34,6 +34,8 @@ public:
 
     int getDivisions();
 
+    void adjustGraphToFit(float lineSpace);
+
     void updateLineVectors(float lift, float resolution); // Also starts line
 
     std::vector<Vector3> getVectors();

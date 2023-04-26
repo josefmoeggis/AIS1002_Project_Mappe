@@ -22,6 +22,10 @@ int Graph3D::getDivisions() {
     return *divisions_;
 }
 
+void Graph3D::adjustGraphToFit(float lineSpace) {
+//    if (something divisions) make it smaller when exceeding the grid
+}
+
 void Graph3D::updateLineVectors(float lift, float resolution) {
     float stepSize = (float)*gridSize_ / resolution;
     if(graphVectors_->empty()) {

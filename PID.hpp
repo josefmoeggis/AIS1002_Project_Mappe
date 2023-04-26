@@ -1,4 +1,4 @@
-
+// This code is a direct copy of the PID.hpp in threepp
 #ifndef THREEPP_PID_HPP
 #define THREEPP_PID_HPP
 

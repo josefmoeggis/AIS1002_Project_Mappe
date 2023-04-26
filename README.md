@@ -35,3 +35,8 @@ Målet her er å få en 3D-graf som viser løftkraften på flyet
 2. -[ ] Fix issues with images
 3. -[ ] Try controlling the different states and getting a returned output in terminal
 4. -[ ] Add the different states for different selected aircraft
+
+
+### SOURCES
+
+- https://www.grc.nasa.gov/WWW/K-12/FoilSim/Manual/fsim0007.htm

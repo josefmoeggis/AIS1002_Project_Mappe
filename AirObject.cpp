@@ -6,18 +6,11 @@
 
 
 // Setting length of stl file to know bounds and scale
-void AirObject::setLength(float length) {
-    fileLength_ = std::make_shared<float>(length);
-}
-
-// Setting lift coefficient
-void AirObject::setLiftCoefficient(float liftCoefficient) {
-    liftCoefficient_ = std::make_shared<float>(liftCoefficient);
-}
-
-// Setting wing area
-void AirObject::setWingArea(float wingArea) {
-    wingArea_ = std::make_shared<float>(wingArea);
+void AirObject::setAngleParameters(const float CLstall, const float aCrit, const float aStall, const float stallRate) {
+    CLstall_ = std::make_shared<float>(CLstall);
+    aCrit_ = std::make_shared<float>(aCrit * math::DEG2RAD);
+    aStall_ = std::make_shared<float>(aStall * math::DEG2RAD);
+    stallRate_ = std::make_shared<float>(stallRate);
 }
 
 void AirObject::setAngleOfAttack(float AoA) {
@@ -33,16 +26,36 @@ void AirObject::setControlledAngle(float gain, float maxRadPrSec, float dt) {
     setAngleOfAttack(getAngleOfAttack() + angleDiffPrFrame);
 }
 
+float AirObject::calcLiftCoeffAngle() {
+    float CLwAngle {};
+    if(-*aCrit_ <= *angleOfAttack_ <= *aCrit_) {
+        CLwAngle = *liftCoefficient_ + 2*math::PI * *angleOfAttack_;
+    } else if(*aCrit_ < *angleOfAttack_ <= *aStall_) {
+        CLwAngle = *CLstall_ - std::pow(*stallRate_ * (*angleOfAttack_ - *aCrit_), 2);
+    } else if(-*aStall_ <= *angleOfAttack_ < -*aCrit_) {
+        CLwAngle = -*CLstall_ + std::pow(*stallRate_ * (*angleOfAttack_ + *aCrit_), 2);
+    } else {
+        std::cout << "Error in calcLiftCoeffAngle" << std::endl;
+    }
+    return CLwAngle;
+}
+
 // Calculat lift from different standards
 float AirObject::calculateLift(float airspeed) {
-    liftCoefficient_ = std::make_shared<float>(0.1 * (math::PI / 180) * *angleOfAttack_ + 0.4);
-    float lift = 0.5f * *airDensity_ * std::pow(airspeed, 2) * *wingArea_ * *liftCoefficient_;
+    float lift = calcLiftCoeffAngle() * 0.5f * *airDensity_ * std::pow(airspeed, 2) * *wingArea_;
+    if (*liftCoefficient_ == 0) {
+        std::cout << "Not all parameters are set, resulting in discrepencies calculations" << std::endl; // Use optional later
+    }
     return lift;
 }
 
-// Create aircraft mesh fuselage
-std::shared_ptr<Mesh> AirObject::createMesh() {
+void AirObject::createMesh() {
     aircraftFuselage_ = Mesh::create(geometry_, material_);
+    aircraftFuselage_->name = "aircraftFuselage";
+}
+
+// Create aircraft mesh fuselage
+std::shared_ptr<Mesh> AirObject::getMesh() {
     return aircraftFuselage_;
 }
 

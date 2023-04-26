@@ -70,12 +70,13 @@ int main() {
     material1->flatShading = true;
     material1->color = Color::beige;
     AirObject Aircraft1(aircraft1, material1, 40000.0, 0.77, 0.33, 470, 0);
+    Aircraft1.setAngleParameters(1.6, 14, 20, 1.3);
     Aircraft1.setAirDensity(1.225);
-    auto Boeing = Aircraft1.createMesh();
+    Aircraft1.createMesh();
     Aircraft1.scaleModel(1000);
     Aircraft1.centerModel(1000);
-    Boeing->rotateY(math::PI);
-    scene->add(Boeing);
+    Aircraft1.getMesh()->rotateY(math::PI);
+    scene->add(Aircraft1.getMesh());
 
 //    Create grid object
     Graph3D Graph(1000, 20);
@@ -98,7 +99,7 @@ int main() {
         float angleGain = myPID.regulate(control.targetAngleOfAttack,
                                                   Aircraft1.getAngleOfAttack(), dt);
         Aircraft1.setControlledAngle(angleGain, 2, dt);
-        Boeing->rotation.x = Aircraft1.getAngleOfAttack() + math::PI;
+        Aircraft1.getMesh()->rotation.x = Aircraft1.getAngleOfAttack() + math::PI;
         renderer.render(scene, camera);
         std::cout << Aircraft1.getAngleOfAttack() * math::RAD2DEG << std::endl;
         myUI.render();
