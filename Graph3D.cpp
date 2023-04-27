@@ -22,21 +22,39 @@ int Graph3D::getDivisions() {
     return *divisions_;
 }
 
-void Graph3D::adjustGraphToFit(float lineSpace) {
-//    if (something divisions) make it smaller when exceeding the grid
+void Graph3D::adjustGraphToFit() {
+    float peakVal {};
+    for(Vector3 line : *graphVectors_) {
+        if (line.z > peakVal) {
+            peakVal = line.z;
+        }
+    }
+    while(peakVal > *gridSize_) {
+        peakVal -= peakVal / *divisions_;
+        scaleFactor_ = std::make_shared<float>(*scaleFactor_ / *divisions_);
+
+    }
+
+    while(peakVal < *gridSize_ / *divisions_) {
+        peakVal += peakVal / *divisions_;
+        scaleFactor_ = std::make_shared<float>(*scaleFactor_ / *divisions_);
+    }
+    for(int i = 0; i < graphVectors_->size(); i++) {
+        graphVectors_->at(i).y *= *scaleFactor_;
+    }
 }
 
-void Graph3D::updateLineVectors(float lift, float resolution) {
+void Graph3D::updateLineVectors(float graphVal, float resolution) {
     float stepSize = (float)*gridSize_ / resolution;
     if(graphVectors_->empty()) {
         graphVectors_->push_back(Vector3 {
-            grid_->position.x - 1,
+            grid_->position.x - 10,
             -((float)*gridSize_ / 2),
             ((float)*gridSize_ / 2)});
     }
     graphVectors_->emplace_back(Vector3 {
-        grid_->position.x -1,
-        lift - ((float)*gridSize_ / 2),
+        grid_->position.x -10,
+        graphVal - ((float)*gridSize_ / 2),
         graphVectors_->back().z - stepSize});
 
     if(graphVectors_->back().z < -(*gridSize_ / 2)) {
@@ -46,6 +64,7 @@ void Graph3D::updateLineVectors(float lift, float resolution) {
             graphVectors_->at(i).z += stepSize;
         }
     }
+
 }
 
 std::vector<Vector3> Graph3D::getVectors() {
