@@ -25,23 +25,24 @@ int Graph3D::getDivisions() {
 void Graph3D::adjustGraphToFit() {
     float peakVal {};
     for(Vector3 line : *graphVectors_) {
-        if (line.z > peakVal) {
-            peakVal = line.z;
+        if (line.y > peakVal) {
+            peakVal = line.y;
         }
     }
     while(peakVal > *gridSize_) {
-        peakVal -= peakVal / *divisions_;
-        scaleFactor_ = std::make_shared<float>(*scaleFactor_ / *divisions_);
-
+        peakVal -= peakVal / (float)*divisions_;
+        scaleFactor_ = std::make_shared<float>(*scaleFactor_ - (*scaleFactor_ / (float)*divisions_));
+        std::cout << peakVal << std::endl;
     }
 
-    while(peakVal < *gridSize_ / *divisions_) {
-        peakVal += peakVal / *divisions_;
-        scaleFactor_ = std::make_shared<float>(*scaleFactor_ / *divisions_);
+    while((peakVal < *gridSize_ / *divisions_) && (peakVal != 0)) {
+        peakVal += peakVal / (float)*divisions_;
+        scaleFactor_ = std::make_shared<float>(*scaleFactor_ + (*scaleFactor_ / (float)*divisions_));
     }
     for(int i = 0; i < graphVectors_->size(); i++) {
         graphVectors_->at(i).y *= *scaleFactor_;
     }
+    std::cout << *scaleFactor_ << std::endl;
 }
 
 void Graph3D::updateLineVectors(float graphVal, float resolution) {

@@ -102,7 +102,7 @@ int main() {
         Aircraft1.setControlledAngle(angleGain, 2, dt);
         Aircraft1.getMesh()->rotation.x = Aircraft1.getAngleOfAttack() + math::PI;
         renderer.render(scene, camera);
-        std::cout << Aircraft1.getAngleOfAttack() * math::RAD2DEG << std::endl;
+//        std::cout << Aircraft1.getAngleOfAttack() * math::RAD2DEG << std::endl;
         myUI.render();
         controls.enabled = !myUI.getMouseHover();
 
