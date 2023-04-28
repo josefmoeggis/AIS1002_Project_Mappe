@@ -24,23 +24,35 @@ int Graph3D::getDivisions() {
 
 void Graph3D::adjustGraphToFit() {
     float peakVal {};
+    float minVal {};
     for(Vector3 line : *graphVectors_) {
         if (line.y > peakVal) {
             peakVal = line.y;
         }
+        if (line.y < minVal) {
+            minVal = line.y;
+        }
+    }
+    if(peakVal > 2 * *gridSize_) { // Adjust for large difference in
+        int timesGrid = (int)peakVal * *gridSize_;
+        scaleFactor_ = std::make_shared<float>(*scaleFactor_ / (float)timesGrid);
+    }
+    if(minVal < -*gridSize_) {
+        int timesGrid = -((int)minVal * *gridSize_);
+        scaleFactor_ = std::make_shared<float>(*scaleFactor_ / (float)timesGrid);
     }
     while(peakVal > *gridSize_) {
         peakVal -= peakVal / (float)*divisions_;
         scaleFactor_ = std::make_shared<float>(*scaleFactor_ - (*scaleFactor_ / (float)*divisions_));
         std::cout << peakVal << std::endl;
     }
-
     while((peakVal < *gridSize_ / *divisions_) && (peakVal != 0)) {
         peakVal += peakVal / (float)*divisions_;
         scaleFactor_ = std::make_shared<float>(*scaleFactor_ + (*scaleFactor_ / (float)*divisions_));
     }
+    scaledVectors_ = graphVectors_;
     for(int i = 0; i < graphVectors_->size(); i++) {
-        graphVectors_->at(i).y *= *scaleFactor_;
+        scaledVectors_->at(i).y = ((*scaledVectors_)[i].y * *scaleFactor_) - *gridSize_ / 2;
     }
     std::cout << *scaleFactor_ << std::endl;
 }
@@ -49,13 +61,13 @@ void Graph3D::updateLineVectors(float graphVal, float resolution) {
     float stepSize = (float)*gridSize_ / resolution;
     if(graphVectors_->empty()) {
         graphVectors_->push_back(Vector3 {
-            grid_->position.x - 10,
-            -((float)*gridSize_ / 2),
+            grid_->position.x + 10,
+            0,
             ((float)*gridSize_ / 2)});
     }
     graphVectors_->emplace_back(Vector3 {
-        grid_->position.x -10,
-        graphVal - ((float)*gridSize_ / 2),
+        grid_->position.x + 10,
+        graphVal,
         graphVectors_->back().z - stepSize});
 
     if(graphVectors_->back().z < -(*gridSize_ / 2)) {
@@ -73,15 +85,15 @@ std::vector<Vector3> Graph3D::getVectors() {
 }
 
 void Graph3D::makeLine(std::shared_ptr<Scene> scene) {
-    if (scene->getObjectByName("LastVector")) {
+    if (scene->getObjectByName("LastLine")) {
         scene->remove(graphLine_);
     }
     auto material = LineBasicMaterial::create();
     material->color = *graphColor_;
     auto geometry = BufferGeometry::create();
-    geometry->setFromPoints(*graphVectors_);
+    geometry->setFromPoints(*scaledVectors_);
     graphLine_ = Line::create(geometry, material);
-    graphLine_->name = "LastVector";
+    graphLine_->name = "LastLine";
 }
 
 std::shared_ptr<Line> Graph3D::getLine() {

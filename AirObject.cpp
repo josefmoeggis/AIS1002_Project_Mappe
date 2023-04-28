@@ -35,7 +35,8 @@ float AirObject::calcLiftCoeffAngle() {
     } else if(-*aStall_ <= *angleOfAttack_ < -*aCrit_) {
         CLwAngle = -*CLstall_ + std::pow(*stallRate_ * (*angleOfAttack_ + *aCrit_), 2);
     } else {
-        std::cout << "Error in calcLiftCoeffAngle" << std::endl;
+        CLwAngle = 0;
+        std::cout << "No lift! Aircraft is stalling" << std::endl;
     }
     return CLwAngle;
 }
@@ -44,7 +45,7 @@ float AirObject::calcLiftCoeffAngle() {
 float AirObject::calculateLift(float airspeed) {
     float lift = calcLiftCoeffAngle() * 0.5f * *airDensity_ * std::pow(airspeed, 2) * *wingArea_;
     if (*liftCoefficient_ == 0) {
-        std::cout << "Not all parameters are set, resulting in discrepencies calculations" << std::endl; // Use optional later
+        std::cout << "Not all parameters are set, resulting in discrepancies calculations" << std::endl; // Use optional later
     }
     return lift;
 }

@@ -23,7 +23,9 @@ public:
         createGrid(gridSize, divisions, gridColor);
 
         graphVectors_ = std::make_shared<std::vector<Vector3>>();
+        scaledVectors_ = std::make_shared<std::vector<Vector3>>();
         scaleFactor_ = std::make_shared<float>(1);
+
     }
 
 
@@ -57,6 +59,7 @@ private:
     std::shared_ptr<Color> gridColor_;
     std::shared_ptr<Color> graphColor_;
     std::shared_ptr<std::vector<Vector3>> graphVectors_;
+    std::shared_ptr<std::vector<Vector3>> scaledVectors_;
     std::shared_ptr<Line> graphLine_;
 };
 
