@@ -1,8 +1,6 @@
 //
 // Created by joelo on 28.03.2023.
 //
-#include "threepp/objects/Line.hpp"
-//#include "threepp/threepp.hpp"
 #include "../include/Graph3D.hpp"
 
 //FIX THIS

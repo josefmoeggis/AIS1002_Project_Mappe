@@ -6,9 +6,12 @@
 #define AIS2001_AEROFOILTESTING_AIROBJECT_HPP
 
 #include "threepp/extras/imgui/imgui_context.hpp"
-#include "threepp/threepp.hpp"
 #include "iostream"
 #include "vector"
+#include "threepp/core/BufferGeometry.hpp"
+#include "threepp/materials/Material.hpp"
+#include "threepp/objects/Mesh.hpp"
+#include "threepp/math/MathUtils.hpp"
 
 using namespace threepp;
 

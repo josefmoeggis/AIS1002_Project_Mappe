@@ -5,9 +5,12 @@
 #ifndef THREEPP_VCPKG_TEST_GRAPH3D_HPP
 #define THREEPP_VCPKG_TEST_GRAPH3D_HPP
 #include "threepp/extras/imgui/imgui_context.hpp"
-#include "threepp/threepp.hpp"
-#include "iostream"
-#include "vector"
+#include "threepp/helpers/GridHelper.hpp"
+#include "threepp/materials/LineBasicMaterial.hpp"
+#include "threepp/math/MathUtils.hpp"
+#include "threepp/scenes/Scene.hpp"
+#include <iostream>
+#include <vector>
 using namespace threepp;
 
 class Graph3D : Object3D {

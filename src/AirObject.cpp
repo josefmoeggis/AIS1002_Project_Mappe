@@ -1,7 +1,6 @@
 //
 // Created by joelo on 23.03.2023.
 //
-#include <cmath>
 #include "../include/AirObject.hpp"
 
 

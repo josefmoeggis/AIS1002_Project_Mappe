@@ -1,15 +1,16 @@
 // Remember continuous integration kopier fra threepp config file
-#include "threepp/extras/imgui/imgui_context.hpp"
-#include "threepp/threepp.hpp"
-#include <iostream>
 #include "include/AirObject.hpp"
 #include "include/Graph3D.hpp"
 #include "include/GUI.hpp"
 #include "threepp/materials/ShaderMaterial.hpp"
 #include "threepp/objects/Sky.hpp"
-#include "threepp/objects/Line.hpp"
-#include <vector>
-#include <ostream>
+#include "threepp/renderers/GLRenderer.hpp"
+#include "threepp/helpers/AxesHelper.hpp"
+#include "threepp/cameras/PerspectiveCamera.hpp"
+#include "threepp/controls/OrbitControls.hpp"
+#include "threepp/lights/DirectionalLight.hpp"
+#include "threepp/loaders/STLLoader.hpp"
+#include "threepp/materials/MeshPhongMaterial.hpp"
 
 
 using namespace threepp;
