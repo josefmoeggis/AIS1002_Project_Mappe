@@ -23,3 +23,20 @@ Målet her er å få en 3D-graf som viser løftkraften på flyet
 3. Kommunikasjonen mellom UI - control - objektene
 4. Øke angrepsvinkel på flyet som også skal gi utslag på grafen
 5. Kanskje få inn litt bevegelse av flyet med kraføkning
+
+### List of points to finish
+- [ ] Create angular movement
+1. -[ ] Make new method for updating angle and returning value depending on elapsed time
+2. -[ ] Inhibit set of new angle until reached previous angle
+
+
+- [ ] Troubleshoot GUI
+1. -[ ] Figure out why nothing shows on screen or it crashes
+2. -[ ] Fix issues with images
+3. -[ ] Try controlling the different states and getting a returned output in terminal
+4. -[ ] Add the different states for different selected aircraft
+
+
+### SOURCES
+
+- https://www.grc.nasa.gov/WWW/K-12/FoilSim/Manual/fsim0007.htm
