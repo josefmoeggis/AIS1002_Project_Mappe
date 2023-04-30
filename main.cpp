@@ -2,9 +2,9 @@
 #include "threepp/extras/imgui/imgui_context.hpp"
 #include "threepp/threepp.hpp"
 #include <iostream>
-#include "AirObject.hpp"
-#include "Graph3D.hpp"
-#include "GUI.hpp"
+#include "include/AirObject.hpp"
+#include "include/Graph3D.hpp"
+#include "include/GUI.hpp"
 #include "threepp/materials/ShaderMaterial.hpp"
 #include "threepp/objects/Sky.hpp"
 #include "threepp/objects/Line.hpp"

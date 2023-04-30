@@ -2,8 +2,8 @@
 // Created by joelo on 28.03.2023.
 //
 #include "threepp/objects/Line.hpp"
-#include "threepp/threepp.hpp"
-#include "Graph3D.hpp"
+//#include "threepp/threepp.hpp"
+#include "../include/Graph3D.hpp"
 
 //FIX THIS
 void  Graph3D::createGrid(int size, int divisions, Color color) {

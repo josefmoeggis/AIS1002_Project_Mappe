@@ -2,7 +2,7 @@
 // Created by joelo on 23.03.2023.
 //
 #include <cmath>
-#include "AirObject.hpp"
+#include "../include/AirObject.hpp"
 
 
 // Setting length of stl file to know bounds and scale
