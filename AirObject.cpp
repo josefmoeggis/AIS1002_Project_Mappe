@@ -50,6 +50,11 @@ float AirObject::calculateLift(float airspeed) {
     return lift;
 }
 
+float AirObject::calculateMaxLift(float maxAirspeed) {
+    float maxLift = (*liftCoefficient_ + 2*math::PI * *aCrit_) * 0.5f * *airDensity_ * std::pow(maxAirspeed, 2) * *wingArea_;
+    return maxLift;
+}
+
 void AirObject::createMesh() {
     aircraftFuselage_ = Mesh::create(geometry_, material_);
     aircraftFuselage_->name = "aircraftFuselage";

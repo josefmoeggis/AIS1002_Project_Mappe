@@ -37,7 +37,7 @@ public:
 
     int getDivisions();
 
-    void adjustGraphToFit();
+    void adjustGraphToFit(float maxVal);
 
     void updateLineVectors(float graphVal, float resolution); // Also starts line
 

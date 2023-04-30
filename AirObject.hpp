@@ -37,6 +37,8 @@ public:
 
     float calculateLift(float airspeed);
 
+    float calculateMaxLift(float airspeed);
+
     float calculateDrag();
 
     void createMesh();

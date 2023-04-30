@@ -90,9 +90,9 @@ int main() {
 
 
 //     Testing line segments
-        if (sec >= 0.25) {
-            Graph.updateLineVectors(Aircraft1.calculateLift(control.targetAirspeed), 300);
-            Graph.adjustGraphToFit();
+        if (sec >= 1) {
+            Graph.updateLineVectors(Aircraft1.calculateLift(control.targetAirspeed), 20);
+            Graph.adjustGraphToFit(Aircraft1.calculateMaxLift(300));
             Graph.makeLine(scene);
             scene->add(Graph.getLine());
             sec = 0;
