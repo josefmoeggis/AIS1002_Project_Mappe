@@ -2,13 +2,13 @@
 #include "include/AirObject.hpp"
 #include "include/Graph3D.hpp"
 #include "include/GUI.hpp"
+#include "include/SceneSetup.hpp"
 #include "threepp/materials/ShaderMaterial.hpp"
 #include "threepp/objects/Sky.hpp"
 #include "threepp/renderers/GLRenderer.hpp"
 #include "threepp/helpers/AxesHelper.hpp"
 #include "threepp/cameras/PerspectiveCamera.hpp"
 #include "threepp/controls/OrbitControls.hpp"
-#include "threepp/lights/DirectionalLight.hpp"
 #include "threepp/loaders/STLLoader.hpp"
 #include "threepp/materials/MeshPhongMaterial.hpp"
 
@@ -17,7 +17,7 @@ using namespace threepp;
 
 int main() {
     // Canvas creation
-    Canvas canvas{Canvas::Parameters().size({1280, 720}).antialiasing(1)
+    Canvas canvas{Canvas::Parameters().size({1280, 720})
                     .title("Aircraft Lift 3D Graph").favicon("resources/airplane_2_icon.jpeg")};
     GLRenderer renderer(canvas);
     renderer.setClearColor(Color::aliceblue);
@@ -36,8 +36,7 @@ int main() {
     scene->add(axes);
 
     //    Add light
-    auto light = DirectionalLight::create(0xffffff);
-    light->position.set(100, 10, 100);
+    auto light = setMySky();
     scene->add(light);
 
 //    Setting sky
@@ -54,7 +53,8 @@ int main() {
     myPID.setWindupGuard(0.5f);
 
 //    Controls from GUI
-    ControllableParameters control(myPID,"resources/B737_image_min.jpeg", "resources/SAS-A321LR_min.jpeg");
+    ControllableParameters control(myPID);
+    control.setOptrions();
 
 //    Setting up imgui
     GUI myUI(canvas, control);

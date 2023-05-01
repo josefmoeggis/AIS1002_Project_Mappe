@@ -4,10 +4,12 @@ set(publicHeaders
         "Graph3D.cpp"
         "GUI.hpp"
         "PID.hpp"
+        "SceneSetup.cpp"
         )
 set(sources
         "AirObject.cpp"
         "Graph3D.cpp"
+        "SceneSetup.cpp"
         )
 
 add_library(threepp::threepp ALIAS threepp)

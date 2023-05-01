@@ -7,7 +7,7 @@ find_package(imgui CONFIG REQUIRED)
 find_package(Bullet CONFIG)
 
 if (BULLET_FOUND AND NOT TARGET Bullet::Bullet)
-    add_library(Bullet::Bullet INTERFACE IMPORTED)
+    add_library(Bullet::Bullet INTERFACE IMPORTED src/SceneSetup.cpp include/SceneSetup.hpp)
     if("${BULLET_INCLUDE_DIRS}" MATCHES ".*/bullet$")
         target_include_directories(Bullet::Bullet INTERFACE "${BULLET_INCLUDE_DIRS}/..")
     endif()
@@ -21,11 +21,11 @@ set(SOURCES
         src/Graph3D.cpp
         tests/test_object.cpp
         tests/test_object.cpp
-        )
+        src/SceneSetup.cpp)
 set(HEADERS
         include/PID.hpp
         include/GUI.hpp
-        )
+        include/SceneSetup.hpp)
 
 add_executable(test main.cpp ${SOURCES} ${HEADERS})
 target_link_libraries(test PRIVATE threepp::threepp imgui::imgui Bullet::Bullet)
