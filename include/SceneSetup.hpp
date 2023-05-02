@@ -5,12 +5,22 @@
 #ifndef THREEPP_VCPKG_TEST_SCENESETUP_HPP
 #define THREEPP_VCPKG_TEST_SCENESETUP_HPP
 #include "threepp/lights/DirectionalLight.hpp"
+#include "threepp/objects/Sky.hpp"
 
 using namespace threepp;
 
-std::shared_ptr<DirectionalLight> setMySky();
+std::shared_ptr<DirectionalLight> setLight();
 
-cflass SceneSetup {
+std::shared_ptr<Sky> setSky(std::shared_ptr<DirectionalLight> light);
+
+class SceneSetup {
+    SceneSetup(std::shared_ptr<Scene> inputScene) : scene_(inputScene) {}
+    
+
+
+
+private:
+    std::shared_ptr<Scene> scene_;
 
 };
 

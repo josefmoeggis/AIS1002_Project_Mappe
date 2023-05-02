@@ -3,8 +3,6 @@
 #include "include/Graph3D.hpp"
 #include "include/GUI.hpp"
 #include "include/SceneSetup.hpp"
-#include "threepp/materials/ShaderMaterial.hpp"
-#include "threepp/objects/Sky.hpp"
 #include "threepp/renderers/GLRenderer.hpp"
 #include "threepp/helpers/AxesHelper.hpp"
 #include "threepp/cameras/PerspectiveCamera.hpp"
@@ -36,17 +34,11 @@ int main() {
     scene->add(axes);
 
     //    Add light
-    auto light = setMySky();
+    auto light = setLight();
     scene->add(light);
 
 //    Setting sky
-    auto mySky = Sky::create();
-    mySky->scale.setScalar(10000);
-    mySky->material()->as<ShaderMaterial>()->uniforms->at("turbidity").value<float>() = 10;
-    mySky->material()->as<ShaderMaterial>()->uniforms->at("rayleigh").value<float>() = 1;
-    mySky->material()->as<ShaderMaterial>()->uniforms->at("mieCoefficient").value<float>() = 0.005;
-    mySky->material()->as<ShaderMaterial>()->uniforms->at("mieDirectionalG").value<float>() = 0.8;
-    mySky->material()->as<ShaderMaterial>()->uniforms->at("sunPosition").value<Vector3>().copy(light->position);
+    auto mySky = setSky(light);
     scene->add(mySky);
 
     PID myPID(0.4, 0.01f, 0.0f);
@@ -55,8 +47,6 @@ int main() {
 //    Controls from GUI
     ControllableParameters control(myPID);
     control.setOptrions();
-
-//    Setting up imgui
     GUI myUI(canvas, control);
 
 //    Testing AirObject
