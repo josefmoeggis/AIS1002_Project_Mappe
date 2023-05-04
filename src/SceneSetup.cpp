@@ -61,7 +61,7 @@ std::shared_ptr<AirObject> setupAircraft3(STLLoader loader) {
     auto material = MeshPhongMaterial::create();
     material->flatShading = true;
     material->color = Color::beige;
-    auto cessna = AirObject::create(fuselage, material, 40000.0,
+    auto cessna = AirObject::create(fuselage, material, 50,
                                     0.77,0.33, 470, 0);
     cessna->setAngleParameters(1.6, 14, 20, 1.3);
     cessna->setAirDensity(1.225);

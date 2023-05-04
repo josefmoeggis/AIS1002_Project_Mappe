@@ -32,27 +32,27 @@ struct ControllableParameters {
     float targetAirspeed;
     float targetAngleOfAttack;
     int fileChoice;
-    std::vector<Triple<std::optional<std::string>, std::optional<std::string>, std::optional<int>>> imagePaths {}; // storing path string and pixels
+    std::vector<Triple<std::optional<std::string>, std::optional<std::string>, std::optional<float>>> imagePaths {}; // storing path string and pixels
 
     PID& pid;
 
 
     explicit ControllableParameters(PID& pid, float targetAirspeed = 0, float targetAngleOfAttack = 0, int fileChoice = 0)
                                     : targetAirspeed(targetAirspeed), targetAngleOfAttack(targetAngleOfAttack * math::DEG2RAD), fileChoice(fileChoice), pid(pid) {}
-    void setOptions(std::optional<std::string> path1 = std::nullopt, std::optional<std::string> name1 = std::nullopt, std::optional<int> size1 = std::nullopt,
-                     std::optional<std::string> path2 = std::nullopt, std::optional<std::string> name2 = std::nullopt, std::optional<int> size2 = std::nullopt,
-                     std::optional<std::string> path3 = std::nullopt, std::optional<std::string> name3 = std::nullopt, std::optional<int> size3 = std::nullopt) {
+    void setOptions(std::optional<std::string> path1 = std::nullopt, std::optional<std::string> name1 = std::nullopt, std::optional<float> size1 = std::nullopt,
+                     std::optional<std::string> path2 = std::nullopt, std::optional<std::string> name2 = std::nullopt, std::optional<float> size2 = std::nullopt,
+                     std::optional<std::string> path3 = std::nullopt, std::optional<std::string> name3 = std::nullopt, std::optional<float> size3 = std::nullopt) {
         if(path1.has_value() && name1.has_value()) {
             imagePaths.emplace_back(Triple<std::optional<std::string>, std::optional<std::string>,
-                    std::optional<int>>(path1, name1, size1));
+                    std::optional<float>>(path1, name1, size1));
         }
         if(path2.has_value() && name2.has_value()) {
             imagePaths.emplace_back(Triple<std::optional<std::string>, std::optional<std::string>,
-                    std::optional<int>>(path2, name2, size2));
+                    std::optional<float>>(path2, name2, size2));
         }
         if(path3.has_value() && name3.has_value()) {
             imagePaths.emplace_back(Triple<std::optional<std::string>, std::optional<std::string>,
-                    std::optional<int>>(path3, name3, size3));
+                    std::optional<float>>(path3, name3, size3));
         }
     }
 };
@@ -82,6 +82,15 @@ struct GUI : imgui_context {
         ImGui::Text("Control Angle of Attack");
         ImGui::SliderAngle("degrees", &controlOptions_.targetAngleOfAttack, -40, 40);
 
+        if(ImGui::Button("CHANGE AIRCRAFT")) {
+            ImGui::SetNextWindowPos(ImVec2(50, 50), 0, {});
+            ImGui::SetNextWindowSize(ImVec2(100, 400));
+            ImGui::Begin("Select Aircraft", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+            ImTextureID image1 = ImGui::GetIO().Fonts->AddFontFromFileTTF(controlOptions_.imagePaths.at(0).x.value().c_str(), controlOptions_.imagePaths.at(0).z.value());
+            ImGui::ImageButton(controlOptions_.imagePaths.at(0).y.value().c_str(),image1, Vector2(90, 50));
+ImGui::Button(controlOptions_.imagePaths.at(0).y, Vector2(90, 125));
+        }
+
 
 
 //        ImTextureID image1 = ImGui::GetIO().Fonts->AddFontFromFileTTF(controlOptions_.path1.c_str(), {});
@@ -105,7 +114,6 @@ struct GUI : imgui_context {
 
 private:
     ControllableParameters& controlOptions_;
-
     bool mouseHover_;
 };
 

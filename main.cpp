@@ -56,10 +56,10 @@ int main() {
 
     STLLoader loader;
     auto boeing = setupAircraft1(loader);
-    auto airbus = setupAircraft1(loader);
+    auto airbus = setupAircraft2(loader);
     auto cessna = setupAircraft3(loader);
 
-    std::shared_ptr<AirObject> aircraft {};
+    std::shared_ptr<AirObject> aircraft = boeing;
 
     float t = 0;
     float sec = 0;
@@ -68,10 +68,13 @@ int main() {
 switch (control.fileChoice) {
     case 0:
         loopAircraft(scene, aircraft, boeing, airbus, cessna);
+        break;
     case 1:
         loopAircraft(scene, aircraft, airbus, cessna, boeing);
+        break;
     case 2:
         loopAircraft(scene, aircraft, cessna, boeing, airbus);
+        break;
 }
 
 //     Testing line segments
