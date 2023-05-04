@@ -18,31 +18,26 @@ std::shared_ptr<DirectionalLight> setLight();
 
 std::shared_ptr<Sky> setSky(std::shared_ptr<DirectionalLight> light);
 
-class SceneSetup {
-public:
-    SceneSetup (std::shared_ptr<Scene> inputScene, ControllableParameters control) : scene_(inputScene), control_(control) {}
-
 //    Configurations set in these functions
-    void setupAircraft1();
+std::shared_ptr<AirObject> setupAircraft1(STLLoader loader);
 
-    void setupAircraft2();
+std::shared_ptr<AirObject> setupAircraft2(STLLoader loader);
 
-    void setupAircraft3();
+std::shared_ptr<AirObject> setupAircraft3(STLLoader loader);
 
 //    Setup for the loop
-    void loopAircraft1();
+void loopAircraft(std::shared_ptr<Scene> scene, std::shared_ptr<AirObject> aircraft,
+                   std::shared_ptr<AirObject> aircraftModel1, std::shared_ptr<AirObject> aircraftModel2,
+                   std::shared_ptr<AirObject> aircraftModel3);
 
-    void loopAircraft2();
 
-    void loopAircraft3();
+
+
+
 
     std::shared_ptr<Scene> getScene();
 
-private:
-    ControllableParameters control_;
-    std::shared_ptr<Scene> scene_;
 
-};
 
 
 #endif //THREEPP_VCPKG_TEST_SCENESETUP_HPP

@@ -19,13 +19,12 @@ using namespace threepp;
 class AirObject {
 public:
     AirObject(std::shared_ptr<BufferGeometry> geometry, std::shared_ptr<Material> material, float length,
-              float liftCoeff,
-              float dragCoeff, float wingArea, float angleOfAttack, float airDensity = 1.293)
-            : geometry_(geometry), material_(material), fileLength_(std::make_shared<float>(length)),
-              liftCoefficient_(std::make_shared<float>(liftCoeff)),
-              dragCoefficient_(std::make_shared<float>(dragCoeff)),
-              wingArea_(std::make_shared<float>(wingArea)), angleOfAttack_(std::make_shared<float>(angleOfAttack)),
-              airDensity_(std::make_shared<float>(airDensity)) {}
+              float wingArea, float liftCoeff,
+              float dragCoeff, float angleOfAttack, float airDensity)
+            : geometry_(geometry), material_(material), fileLength_(length),
+              liftCoefficient_(liftCoeff), dragCoefficient_(dragCoeff),
+              wingArea_(wingArea), angleOfAttack_(angleOfAttack),
+              airDensity_(airDensity) {}
 
 
     void setAngleParameters(float CLstall, float aCrit, float aStall, float stallRate);
@@ -56,27 +55,35 @@ public:
 
     void setAirDensity(float air);
 
+    ~AirObject();
+
+    static std::shared_ptr<AirObject> create(std::shared_ptr<BufferGeometry> geometry,
+                                       std::shared_ptr<Material> material,
+                                       float length, float wingArea,
+                                       float liftCoeff = 0.77, float dragCoeff = 0.33,
+                                       float angleOfAttack = 0, float airDensity = 1.293);
+
 
 private:
 //    Physical parameters
-    const std::shared_ptr<float> fileLength_;
-    const std::shared_ptr<float> liftCoefficient_;
-    const std::shared_ptr<float> dragCoefficient_;
-    const std::shared_ptr<float> wingArea_;
+    const float fileLength_;
+    const float liftCoefficient_;
+    const float dragCoefficient_;
+    const float wingArea_;
 //    Aerodynamic parameters
-    std::shared_ptr<float> CLstall_;
-    std::shared_ptr<float> aCrit_;
-    std::shared_ptr<float> aStall_;
-    std::shared_ptr<float> stallRate_;
+    float CLstall_;
+    float aCrit_;
+    float aStall_;
+    float stallRate_;
 
 
-    std::shared_ptr<float> angleOfAttack_;
+    float angleOfAttack_;
 
-    std::shared_ptr<float> airDensity_;
+    float airDensity_;
 //    Not needed in the start - using standard density without using temp, pressure & gas constant
-    std::shared_ptr<float> temp_;
-    std::shared_ptr<float> press_;
-    std::shared_ptr<float> gasConst_;
+    float temp_;
+    float press_;
+    float gasConst_;
 
 //    Mesh of the aircraft
     std::shared_ptr<BufferGeometry> geometry_;

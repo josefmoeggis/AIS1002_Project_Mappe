@@ -13,30 +13,46 @@
 
 using namespace threepp;
 
+// Create new class to store two strings and an int in the ControllableOptions struct
+template<class Ty1, class Ty2, class Ty3>
+
+struct Triple {
+public:
+    Ty1 x;
+    Ty2 y;
+    Ty3 z;
+
+    Triple() : x{}, y{}, z{} {}
+    Triple(Ty1 x_in, Ty2 y_in, Ty3 z_in) : x(x_in), y(y_in), z(z_in) {}
+
+};
+
 // Inspired from PID regulator code in threepp
 struct ControllableParameters {
     float targetAirspeed;
     float targetAngleOfAttack;
     int fileChoice;
-    std::vector<std::pair<std::string, std::string>> imagePaths {}; // storing path string and pixels
-    std::string path2;
+    std::vector<Triple<std::optional<std::string>, std::optional<std::string>, std::optional<int>>> imagePaths {}; // storing path string and pixels
+
     PID& pid;
-//    std::string path3;
 
 
     explicit ControllableParameters(PID& pid, float targetAirspeed = 0, float targetAngleOfAttack = 0, int fileChoice = 0)
                                     : targetAirspeed(targetAirspeed), targetAngleOfAttack(targetAngleOfAttack * math::DEG2RAD), fileChoice(fileChoice), pid(pid) {}
-    void setOptrions(std::optional<std::string> path1 = std::nullopt, std::optional<std::string> name1 = std::nullopt,
-                     std::optional<std::string> path2 = std::nullopt, std::optional<std::string> name2 = std::nullopt,
-                     std::optional<std::string> path3 = std::nullopt, std::optional<std::string> name3 = std::nullopt) {
+    void setOptions(std::optional<std::string> path1 = std::nullopt, std::optional<std::string> name1 = std::nullopt, std::optional<int> size1 = std::nullopt,
+                     std::optional<std::string> path2 = std::nullopt, std::optional<std::string> name2 = std::nullopt, std::optional<int> size2 = std::nullopt,
+                     std::optional<std::string> path3 = std::nullopt, std::optional<std::string> name3 = std::nullopt, std::optional<int> size3 = std::nullopt) {
         if(path1.has_value() && name1.has_value()) {
-            imagePaths.emplace_back(std::make_pair(path1, name1));
+            imagePaths.emplace_back(Triple<std::optional<std::string>, std::optional<std::string>,
+                    std::optional<int>>(path1, name1, size1));
         }
         if(path2.has_value() && name2.has_value()) {
-            imagePaths.emplace_back(std::make_pair(path2, name2));
+            imagePaths.emplace_back(Triple<std::optional<std::string>, std::optional<std::string>,
+                    std::optional<int>>(path2, name2, size2));
         }
         if(path3.has_value() && name3.has_value()) {
-            imagePaths.emplace_back(std::make_pair(path3, name3));
+            imagePaths.emplace_back(Triple<std::optional<std::string>, std::optional<std::string>,
+                    std::optional<int>>(path3, name3, size3));
         }
     }
 };

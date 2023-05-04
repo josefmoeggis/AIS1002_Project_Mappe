@@ -44,7 +44,9 @@ int main() {
 
 //    Controls from GUI
     ControllableParameters control(myPID);
-    control.setOptrions();
+    control.setOptions("resources/B737_image_min.jpeg", "Boeing 737-800", 746 * 420,
+                       "resources/SAS-A321LR_min.jpeg", "Airbus A320", 1200 * 869,
+                       "resources/Cessna_172S_Skyhawk.jpg", "Cessna 172", 220 * 164);
     GUI myUI(canvas, control);
 
 //    Create grid object
@@ -52,7 +54,12 @@ int main() {
     graph.setPosition();
     scene->add(graph.getGrid());
 
-    SceneSetup setup(scene, control);
+    STLLoader loader;
+    auto boeing = setupAircraft1(loader);
+    auto airbus = setupAircraft1(loader);
+    auto cessna = setupAircraft3(loader);
+
+    std::shared_ptr<AirObject> aircraft {};
 
     float t = 0;
     float sec = 0;
@@ -60,31 +67,27 @@ int main() {
     canvas.animate([&](float dt) {
 switch (control.fileChoice) {
     case 0:
-        setup.loopAircraft1();
-        scene = setup.getScene();
+        loopAircraft(scene, aircraft, boeing, airbus, cessna);
     case 1:
-        setup.loopAircraft2();
-        scene = setup.getScene();
+        loopAircraft(scene, aircraft, airbus, cessna, boeing);
     case 2:
-        setup.loopAircraft3();
-        scene = setup.getScene();
+        loopAircraft(scene, aircraft, cessna, boeing, airbus);
 }
-
 
 //     Testing line segments
         if (sec >= 1) {
-            graph.updateLineVectors(Aircraft1.calculateLift(control.targetAirspeed), 20);
-            graph.adjustGraphToFit(Aircraft1.calculateMaxLift(300));
+            graph.updateLineVectors(aircraft->calculateLift(control.targetAirspeed), 20);
+            graph.adjustGraphToFit(aircraft->calculateMaxLift(300));
             graph.makeLine(scene);
             scene->add(graph.getLine());
             sec = 0;
         }
         float angleGain = myPID.regulate(control.targetAngleOfAttack,
-                                                  Aircraft1.getAngleOfAttack(), dt);
-        Aircraft1.setControlledAngle(angleGain, 2, dt);
-        Aircraft1.getMesh()->rotation.x = Aircraft1.getAngleOfAttack() + math::PI;
+                                                  aircraft->getAngleOfAttack(), dt);
+        aircraft->setControlledAngle(angleGain, 2, dt);
+        aircraft->getMesh()->rotation.x = aircraft->getAngleOfAttack() + math::PI;
         renderer.render(scene, camera);
-//        std::cout << Aircraft1.getAngleOfAttack() * math::RAD2DEG << std::endl;
+
         myUI.render();
         controls.enabled = !myUI.getMouseHover();
 

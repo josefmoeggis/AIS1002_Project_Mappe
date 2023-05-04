@@ -24,8 +24,7 @@ set(SOURCES
         src/SceneSetup.cpp)
 set(HEADERS
         include/PID.hpp
-        include/GUI.hpp
-        include/SceneSetup.hpp)
+        include/GUI.hpp)
 
 add_executable(test main.cpp ${SOURCES} ${HEADERS})
 target_link_libraries(test PRIVATE threepp::threepp imgui::imgui Bullet::Bullet)
