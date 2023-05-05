@@ -86,9 +86,19 @@ struct GUI : imgui_context {
             ImGui::SetNextWindowPos(ImVec2(50, 50), 0, {});
             ImGui::SetNextWindowSize(ImVec2(100, 400));
             ImGui::Begin("Select Aircraft", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
-            ImTextureID image1 = ImGui::GetIO().Fonts->AddFontFromFileTTF(controlOptions_.imagePaths.at(0).x.value().c_str(), controlOptions_.imagePaths.at(0).z.value());
-            ImGui::ImageButton(controlOptions_.imagePaths.at(0).y.value().c_str(),image1, Vector2(90, 50));
-ImGui::Button(controlOptions_.imagePaths.at(0).y, Vector2(90, 125));
+//            ImTextureID image1 = ImGui::GetIO().Fonts->AddFontFromFileTTF(controlOptions_.imagePaths.at(0).x.value().c_str(), controlOptions_.imagePaths.at(0).z.value());
+//            ImGui::ImageButton(controlOptions_.imagePaths.at(0).y.value().c_str(),image1, Vector2(90, 50));
+//            ImGui::Button(controlOptions_.imagePaths.at(0).y, Vector2(90, 125));
+            if(ImGui::Button(controlOptions_.imagePaths.at(0).y->c_str(), ImVec2(90, 125))){
+                controlOptions_.fileChoice = 0;
+                ImGui::End();
+            } else if(ImGui::Button(controlOptions_.imagePaths.at(1).y->c_str(), ImVec2(90, 125))){
+                controlOptions_.fileChoice = 1;
+                ImGui::End();
+            } else if(ImGui::Button(controlOptions_.imagePaths.at(2).y->c_str(), ImVec2(90, 125))) {
+                controlOptions_.fileChoice = 2;
+                ImGui::End();
+            }
         }
 
 
