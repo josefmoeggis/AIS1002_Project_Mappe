@@ -51,6 +51,10 @@ public:
 
     void centerModel(int gridSize);
 
+    void addToRotationObj();
+
+    std::shared_ptr<Object3D> getRotationObj();
+
     float knotsToMtrPrSec(float knots);
 
     void setAirDensity(float air);
@@ -86,6 +90,7 @@ private:
     float gasConst_;
 
 //    Mesh of the aircraft
+    std::shared_ptr<Object3D> rotationalObject_ {};
     std::shared_ptr<BufferGeometry> geometry_;
     std::shared_ptr<Material> material_;
     std::shared_ptr<Mesh> aircraftFuselage_;

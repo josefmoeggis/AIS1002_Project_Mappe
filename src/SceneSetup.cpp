@@ -36,7 +36,8 @@ std::shared_ptr<AirObject> setupAircraft1(STLLoader loader) {
     boeing->scaleModel(1000);
     boeing->centerModel(1000);
     boeing->getMesh()->rotateY(math::PI);
-    boeing->getMesh()->name = "Boeing";
+    boeing->addToRotationObj();
+    boeing->getRotationObj()->name = "Boeing";
     return boeing;
 }
 
@@ -51,7 +52,8 @@ std::shared_ptr<AirObject> setupAircraft2(STLLoader loader) {
     airbus->createMesh();
     airbus->scaleModel(1000);
     airbus->centerModel(1000);
-    airbus->getMesh()->name = "Airbus";
+    airbus->addToRotationObj();
+    airbus->getRotationObj()->name = "Airbus";
     return airbus;
 }
 
@@ -71,20 +73,22 @@ std::shared_ptr<AirObject> setupAircraft3(STLLoader loader) {
     cessna->getMesh()->position.z += 1400;
     cessna->getMesh()->position.y += (-500);
     cessna->getMesh()->rotateY(math::PI);
-    cessna->getMesh()->name = "Cessna";
+    cessna->addToRotationObj();
+    cessna->getRotationObj()->name = "Cessna";
     return cessna;
 }
 
 void loopAircraft(std::shared_ptr<Scene> scene, std::shared_ptr<AirObject> aircraftModel1,
                   std::shared_ptr<AirObject> aircraftModel2, std::shared_ptr<AirObject> aircraftModel3) {
-    if(!scene->getObjectByName(aircraftModel1->getMesh()->name)) {
-        if(scene->getObjectByName(aircraftModel2->getMesh()->name)) {
-            scene->remove(scene->getObjectByName(aircraftModel2->getMesh()->name));
+    if(!scene->getObjectByName(aircraftModel1->getRotationObj()->name)) {
+        if(scene->getObjectByName(aircraftModel2->getRotationObj()->name)) {
+            scene->remove(scene->getObjectByName(aircraftModel2->getRotationObj()->name));
         }
-        if(scene->getObjectByName(aircraftModel3->getMesh()->name)) {
-            scene->remove(scene->getObjectByName(aircraftModel3->getMesh()->name));
+        if(scene->getObjectByName(aircraftModel3->getRotationObj()->name)) {
+            scene->remove(scene->getObjectByName(aircraftModel3->getRotationObj()->name));
         }
-        scene->add(aircraftModel1->getMesh());
+
+        scene->add(aircraftModel1->getRotationObj());
     }
 }
 

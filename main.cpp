@@ -60,7 +60,6 @@ int main() {
     auto cessna = setupAircraft3(loader);
 
     std::shared_ptr<AirObject> aircraft = cessna;
-    std::shared_ptr<Object3D> aircraftRotationParent {};
 
     float t = 0;
     float sec = 0;
@@ -92,8 +91,8 @@ switch (control.fileChoice) {
         float angleGain = myPID.regulate(control.targetAngleOfAttack,
                                                   aircraft->getAngleOfAttack(), dt);
         aircraft->setControlledAngle(angleGain, 2, dt);
-        aircraft->getMesh()->rotateOnWorldAxis(Vector3(1, 0, 0), aircraft->getAngleOfAttack());
-//        aircraft->getMesh()->rotation.x = aircraft->getAngleOfAttack() + math::PI;
+//        aircraft->getMesh()->rotateOnWorldAxis(Vector3(1, 0, 0), aircraft->getAngleOfAttack());
+        aircraft->getRotationObj()->rotation.x = aircraft->getAngleOfAttack();
         renderer.render(scene, camera);
         myUI.render();
         controls.enabled = !myUI.getMouseHover();

@@ -86,6 +86,14 @@ void AirObject::centerModel(int gridSize) {
     aircraftFuselage_->position.z = -(gridSize / 2);
 }
 
+void AirObject::addToRotationObj() {
+    rotationalObject_->add(aircraftFuselage_);
+}
+
+std::shared_ptr<Object3D> AirObject::getRotationObj() {
+    return rotationalObject_;
+}
+
 // Calculate m/s from knots
 float AirObject::knotsToMtrPrSec(float knots) {
     float metersPerSecond = knots * 0.514444444;
