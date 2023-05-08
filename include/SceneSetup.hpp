@@ -26,16 +26,8 @@ std::shared_ptr<AirObject> setupAircraft2(STLLoader loader);
 std::shared_ptr<AirObject> setupAircraft3(STLLoader loader);
 
 //    Setup for the loop
-void loopAircraft(std::shared_ptr<Scene> scene, std::shared_ptr<AirObject> aircraft,
-                   std::shared_ptr<AirObject> aircraftModel1, std::shared_ptr<AirObject> aircraftModel2,
-                   std::shared_ptr<AirObject> aircraftModel3);
-
-
-
-
-
-
-    std::shared_ptr<Scene> getScene();
+void loopAircraft(std::shared_ptr<Scene> scene, std::shared_ptr<AirObject> aircraftModel1,
+                  std::shared_ptr<AirObject> aircraftModel2, std::shared_ptr<AirObject> aircraftModel3);
 
 
 

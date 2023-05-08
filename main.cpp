@@ -59,7 +59,8 @@ int main() {
     auto airbus = setupAircraft2(loader);
     auto cessna = setupAircraft3(loader);
 
-    std::shared_ptr<AirObject> aircraft = boeing;
+    std::shared_ptr<AirObject> aircraft = cessna;
+    std::shared_ptr<Object3D> aircraftRotationParent {};
 
     float t = 0;
     float sec = 0;
@@ -67,19 +68,22 @@ int main() {
     canvas.animate([&](float dt) {
 switch (control.fileChoice) {
     case 0:
-        loopAircraft(scene, aircraft, boeing, airbus, cessna);
+        aircraft = boeing;
+        loopAircraft(scene, boeing, airbus, cessna);
         break;
     case 1:
-        loopAircraft(scene, aircraft, airbus, cessna, boeing);
+        aircraft = airbus;
+        loopAircraft(scene, airbus, cessna, boeing);
         break;
     case 2:
-        loopAircraft(scene, aircraft, cessna, boeing, airbus);
+        aircraft = cessna;
+        loopAircraft(scene, cessna, boeing, airbus);
         break;
 }
 
 //     Testing line segments
-        if (sec >= 1) {
-            graph.updateLineVectors(aircraft->calculateLift(control.targetAirspeed), 20);
+        if (sec >= 0.1) {
+            graph.updateLineVectors(aircraft->calculateLift(control.targetAirspeed), 200);
             graph.adjustGraphToFit(aircraft->calculateMaxLift(300));
             graph.makeLine(scene);
             scene->add(graph.getLine());
@@ -88,9 +92,9 @@ switch (control.fileChoice) {
         float angleGain = myPID.regulate(control.targetAngleOfAttack,
                                                   aircraft->getAngleOfAttack(), dt);
         aircraft->setControlledAngle(angleGain, 2, dt);
-        aircraft->getMesh()->rotation.x = aircraft->getAngleOfAttack() + math::PI;
+        aircraft->getMesh()->rotateOnWorldAxis(Vector3(1, 0, 0), aircraft->getAngleOfAttack());
+//        aircraft->getMesh()->rotation.x = aircraft->getAngleOfAttack() + math::PI;
         renderer.render(scene, camera);
-
         myUI.render();
         controls.enabled = !myUI.getMouseHover();
 

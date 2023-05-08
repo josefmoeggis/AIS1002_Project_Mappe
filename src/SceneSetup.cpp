@@ -45,13 +45,12 @@ std::shared_ptr<AirObject> setupAircraft2(STLLoader loader) {
     auto material = MeshPhongMaterial::create();
     material->flatShading = true;
     material->color = Color::beige;
-    auto airbus = AirObject::create(fuselage, material, 40000, 470);
+    auto airbus = AirObject::create(fuselage, material, 4000, 470);
     airbus->setAngleParameters(1.6, 14, 20, 1.3);
     airbus->setAirDensity(1.225);
     airbus->createMesh();
     airbus->scaleModel(1000);
     airbus->centerModel(1000);
-    airbus->getMesh()->rotateY(math::PI);
     airbus->getMesh()->name = "Airbus";
     return airbus;
 }
@@ -61,21 +60,23 @@ std::shared_ptr<AirObject> setupAircraft3(STLLoader loader) {
     auto material = MeshPhongMaterial::create();
     material->flatShading = true;
     material->color = Color::beige;
-    auto cessna = AirObject::create(fuselage, material, 50,
-                                    0.77,0.33, 470, 0);
-    cessna->setAngleParameters(1.6, 14, 20, 1.3);
+    auto cessna = AirObject::create(fuselage, material, 800,
+                                    16.17,0.33, 0.029, 0);
+    cessna->setAngleParameters(1.5, 12, 18, 1.3);
     cessna->setAirDensity(1.225);
     cessna->createMesh();
     cessna->scaleModel(1000);
     cessna->centerModel(1000);
+    cessna->getMesh()->position.x += 200;
+    cessna->getMesh()->position.z += 1400;
+    cessna->getMesh()->position.y += (-500);
     cessna->getMesh()->rotateY(math::PI);
     cessna->getMesh()->name = "Cessna";
     return cessna;
 }
 
-void loopAircraft(std::shared_ptr<Scene> scene, std::shared_ptr<AirObject> aircraft,
-                   std::shared_ptr<AirObject> aircraftModel1, std::shared_ptr<AirObject> aircraftModel2,
-                   std::shared_ptr<AirObject> aircraftModel3) {
+void loopAircraft(std::shared_ptr<Scene> scene, std::shared_ptr<AirObject> aircraftModel1,
+                  std::shared_ptr<AirObject> aircraftModel2, std::shared_ptr<AirObject> aircraftModel3) {
     if(!scene->getObjectByName(aircraftModel1->getMesh()->name)) {
         if(scene->getObjectByName(aircraftModel2->getMesh()->name)) {
             scene->remove(scene->getObjectByName(aircraftModel2->getMesh()->name));
@@ -84,7 +85,6 @@ void loopAircraft(std::shared_ptr<Scene> scene, std::shared_ptr<AirObject> aircr
             scene->remove(scene->getObjectByName(aircraftModel3->getMesh()->name));
         }
         scene->add(aircraftModel1->getMesh());
-        aircraft = aircraftModel1;
     }
 }
 

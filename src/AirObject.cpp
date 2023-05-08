@@ -32,6 +32,7 @@ float AirObject::getAngleOfAttack() {
 
 void AirObject::setControlledAngle(float gain, float maxRadPrSec, float dt) {
     float angleDiffPrFrame = gain * maxRadPrSec * dt;
+//    getMesh()->setRotationFromAxisAngle(Vector3(1, 0, 0), angleDiffPrFrame);
     setAngleOfAttack(getAngleOfAttack() + angleDiffPrFrame);
 }
 

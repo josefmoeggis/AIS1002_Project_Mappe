@@ -67,51 +67,34 @@ struct GUI : imgui_context {
         style.WindowRounding = 6;
         style.FrameRounding = 4;
         style.GrabRounding = 4;
+        style.Alpha = 1;
     }
 
     void onRender() override {
-        ImGuiStyle& style = ImGui::GetStyle();
+        ImGuiStyle &style = ImGui::GetStyle();
         setStyle(style);
-
         ImGui::SetNextWindowPos({}, 0, {});
-        ImGui::SetWindowSize((ImVec2(400, 150)));
+        ImGui::SetNextWindowSize((ImVec2(350, 250)));
         ImGui::Begin("Control Parameters", NULL);
 
         ImGui::Text("Control Airspeed");
         ImGui::SliderFloat("knots", &controlOptions_.targetAirspeed, 0, 400);
         ImGui::Text("Control Angle of Attack");
         ImGui::SliderAngle("degrees", &controlOptions_.targetAngleOfAttack, -40, 40);
-
-        if(ImGui::Button("CHANGE AIRCRAFT")) {
-            ImGui::SetNextWindowPos(ImVec2(50, 50), 0, {});
-            ImGui::SetNextWindowSize(ImVec2(100, 400));
-            ImGui::Begin("Select Aircraft", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
-//            ImTextureID image1 = ImGui::GetIO().Fonts->AddFontFromFileTTF(controlOptions_.imagePaths.at(0).x.value().c_str(), controlOptions_.imagePaths.at(0).z.value());
-//            ImGui::ImageButton(controlOptions_.imagePaths.at(0).y.value().c_str(),image1, Vector2(90, 50));
-//            ImGui::Button(controlOptions_.imagePaths.at(0).y, Vector2(90, 125));
-            if(ImGui::Button(controlOptions_.imagePaths.at(0).y->c_str(), ImVec2(90, 125))){
-                controlOptions_.fileChoice = 0;
-                ImGui::End();
-            } else if(ImGui::Button(controlOptions_.imagePaths.at(1).y->c_str(), ImVec2(90, 125))){
-                controlOptions_.fileChoice = 1;
-                ImGui::End();
-            } else if(ImGui::Button(controlOptions_.imagePaths.at(2).y->c_str(), ImVec2(90, 125))) {
-                controlOptions_.fileChoice = 2;
-                ImGui::End();
-            }
+        ImGui::SetCursorPos(ImVec2(70, 150));
+        ImGui::Text("Change Aircraft");
+        ImGui::SetCursorPos(ImVec2(40, 200));
+        if (ImGui::Button(controlOptions_.imagePaths.at(0).y->c_str(), ImVec2(60, 30))) {
+            controlOptions_.fileChoice = 0;
         }
-
-
-
-//        ImTextureID image1 = ImGui::GetIO().Fonts->AddFontFromFileTTF(controlOptions_.path1.c_str(), {});
-//        ImTextureID image2 = ImGui::GetIO().Fonts->AddFontFromFileTTF(controlOptions_.path2.c_str(), {});
-//        ImGui::Text("Choose Aircraft type");
-//        if(ImGui::ImageButton(image1, ImVec2())) {
-//            controlOptions_.fileChoice = 1;
-//        }
-//        if(ImGui::ImageButton(image2, ImVec2())) {
-//            controlOptions_.fileChoice = 2;
-//        }
+        ImGui::SetCursorPos(ImVec2(110, 200));
+        if (ImGui::Button(controlOptions_.imagePaths.at(1).y->c_str(), ImVec2(60, 30))) {
+            controlOptions_.fileChoice = 1;
+        }
+        ImGui::SetCursorPos(ImVec2(180, 200));
+        if (ImGui::Button(controlOptions_.imagePaths.at(2).y->c_str(), ImVec2(60, 30))) {
+            controlOptions_.fileChoice = 2;
+        }
 
         mouseHover_ = ImGui::IsWindowHovered();
         ImGui::End();
