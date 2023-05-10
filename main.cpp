@@ -14,7 +14,7 @@ using namespace threepp;
 
 int main() {
     // Canvas creation
-    Canvas canvas{Canvas::Parameters().size({1280, 720})
+    Canvas canvas{Canvas::Parameters().size({1280, 720}).antialiasing(4)
                     .title("Aircraft Lift 3D graphLift").favicon("resources/airplane_2_icon.jpeg")};
     GLRenderer renderer(canvas);
     renderer.setClearColor(Color::aliceblue);
