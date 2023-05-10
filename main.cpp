@@ -1,4 +1,4 @@
-// Remember continuous integration kopier fra threepp config file
+
 #include "include/AirObject.hpp"
 #include "include/Graph3D.hpp"
 #include "include/GUI.hpp"
@@ -7,6 +7,7 @@
 #include "threepp/helpers/AxesHelper.hpp"
 #include "threepp/cameras/PerspectiveCamera.hpp"
 #include "threepp/controls/OrbitControls.hpp"
+#include "threepp/objects/Group.hpp"
 
 
 using namespace threepp;
@@ -14,7 +15,7 @@ using namespace threepp;
 int main() {
     // Canvas creation
     Canvas canvas{Canvas::Parameters().size({1280, 720})
-                    .title("Aircraft Lift 3D graph").favicon("resources/airplane_2_icon.jpeg")};
+                    .title("Aircraft Lift 3D graphLift").favicon("resources/airplane_2_icon.jpeg")};
     GLRenderer renderer(canvas);
     renderer.setClearColor(Color::aliceblue);
 
@@ -50,9 +51,11 @@ int main() {
     GUI myUI(canvas, control);
 
 //    Create grid object
-    Graph3D graph(1000, 20);
-    graph.setPosition();
-    scene->add(graph.getGrid());
+    Graph3D graphLift(1000, 20);
+    graphLift.setPosition();
+    Graph3D graphDrag(1000, 20, 0x000000, 0xFF0000); // Not adding grid to scene only graph line
+    graphDrag.setPosition();
+    scene->add(graphLift.getGrid());
 
     STLLoader loader;
     auto boeing = setupAircraft1(loader);
@@ -61,6 +64,8 @@ int main() {
 
     std::shared_ptr<AirObject> aircraft = cessna;
 
+    auto movementShell = Group::create();
+
     float t = 0;
     float sec = 0;
 
@@ -68,31 +73,33 @@ int main() {
 switch (control.fileChoice) {
     case 0:
         aircraft = boeing;
-        loopAircraft(scene, boeing, airbus, cessna);
+        loopAircraft(scene, movementShell, boeing, airbus, cessna);
         break;
     case 1:
         aircraft = airbus;
-        loopAircraft(scene, airbus, cessna, boeing);
+        loopAircraft(scene, movementShell, airbus, cessna, boeing);
         break;
     case 2:
         aircraft = cessna;
-        loopAircraft(scene, cessna, boeing, airbus);
+        loopAircraft(scene, movementShell, cessna, boeing, airbus);
         break;
 }
 
 //     Testing line segments
         if (sec >= 0.1) {
-            graph.updateLineVectors(aircraft->calculateLift(control.targetAirspeed), 200);
-            graph.adjustGraphToFit(aircraft->calculateMaxLift(300));
-            graph.makeLine(scene);
-            scene->add(graph.getLine());
+            graphLift.updateLineVectors(aircraft->calculateLift(control.targetAirspeed), 200);
+            graphLift.adjustGraphToFit(aircraft->calculateMaxLift(300));
+            graphLift.makeLine(scene);
+            scene->add(graphLift.getLine());
+            graphDrag.updateLineVectors(aircraft->calculateDrag(control.targetAirspeed), 200);
+            graphDrag.adjustGraphToFit(aircraft->calculateMaxLift(300));
+            graphDrag.makeLine(scene);
             sec = 0;
         }
         float angleGain = myPID.regulate(control.targetAngleOfAttack,
                                                   aircraft->getAngleOfAttack(), dt);
         aircraft->setControlledAngle(angleGain, 2, dt);
-//        aircraft->getMesh()->rotateOnWorldAxis(Vector3(1, 0, 0), aircraft->getAngleOfAttack());
-        aircraft->getRotationObj()->rotation.x = aircraft->getAngleOfAttack();
+        movementShell->rotation.x = aircraft->getAngleOfAttack();
         renderer.render(scene, camera);
         myUI.render();
         controls.enabled = !myUI.getMouseHover();

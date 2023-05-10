@@ -57,7 +57,7 @@ void Graph3D::adjustGraphToFit(float maxVal) {
     for(int i = 0; i < graphVectors_->size(); i++) {
         scaledVectors_->at(i).y = ((*scaledVectors_)[i].y * *scaleFactor_) - *gridSize_ / 2;
     }
-    std::cout << "scaleFactor: " << *scaleFactor_ << std::endl;
+//    std::cout << "scaleFactor: " << *scaleFactor_ << std::endl;
 }
 
 void Graph3D::updateLineVectors(float graphVal, float resolution) {
@@ -74,13 +74,12 @@ void Graph3D::updateLineVectors(float graphVal, float resolution) {
         graphVectors_->back().z - stepSize});
 
     if(graphVectors_->back().z < -(*gridSize_ / 2)) {
-        std::cout << "Shifting back" << std::endl;
+//        std::cout << "Shifting back" << std::endl;
         graphVectors_->erase(graphVectors_->begin());
         for (int i = 0; i < graphVectors_->size(); i++) {   // Shift the vector coordinates to the left on the graph to be within the grid
             graphVectors_->at(i).z = graphVectors_->at(i).z + stepSize;
         }
     }
-
 }
 
 std::vector<Vector3> Graph3D::getVectors() {
@@ -97,9 +96,9 @@ void Graph3D::makeLine(std::shared_ptr<Scene> scene) {
     geometry->setFromPoints(*scaledVectors_);
     graphLine_ = Line::create(geometry, material);
     graphLine_->name = "LastLine";
-    for (int i = 0; i < (*scaledVectors_).size(); i++) {
-        std::cout << (*scaledVectors_)[i] << std::endl;
-    }
+//    for (int i = 0; i < (*scaledVectors_).size(); i++) {
+//        std::cout << (*scaledVectors_)[i] << std::endl;
+//    }
 }
 
 std::shared_ptr<Line> Graph3D::getLine() {

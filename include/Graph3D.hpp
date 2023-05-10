@@ -28,7 +28,6 @@ public:
         graphVectors_ = std::make_shared<std::vector<Vector3>>();
         scaledVectors_ = std::make_shared<std::vector<Vector3>>();
         scaleFactor_ = std::make_shared<float>(1);
-
     }
 
 

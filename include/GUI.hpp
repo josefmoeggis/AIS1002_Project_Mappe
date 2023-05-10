@@ -63,7 +63,7 @@ struct GUI : imgui_context {
     : imgui_context(canvas.window_ptr()), controlOptions_(controlOptions) {}
 
     void setStyle(ImGuiStyle& style) {
-        style.Colors[ImGuiCol_WindowBg] = ImVec4(255, 0, 255, 250);
+        style.Colors[ImGuiCol_WindowBg] = ImVec4(0, 1, 2, 250);
         style.WindowRounding = 6;
         style.FrameRounding = 4;
         style.GrabRounding = 4;
@@ -74,25 +74,29 @@ struct GUI : imgui_context {
         ImGuiStyle &style = ImGui::GetStyle();
         setStyle(style);
         ImGui::SetNextWindowPos({}, 0, {});
-        ImGui::SetNextWindowSize((ImVec2(350, 250)));
+        ImGui::SetNextWindowSize((ImVec2(350, 300)));
         ImGui::Begin("Control Parameters", NULL);
 
+        ImGui::SetCursorPos(ImVec2(90, 30));
         ImGui::Text("Control Airspeed");
+        ImGui::SetCursorPos(ImVec2(30, 50));
         ImGui::SliderFloat("knots", &controlOptions_.targetAirspeed, 0, 400);
+        ImGui::SetCursorPos(ImVec2(65, 80));
         ImGui::Text("Control Angle of Attack");
+        ImGui::SetCursorPos(ImVec2(30, 100));
         ImGui::SliderAngle("degrees", &controlOptions_.targetAngleOfAttack, -40, 40);
-        ImGui::SetCursorPos(ImVec2(70, 150));
+        ImGui::SetCursorPos(ImVec2(45, 140));
         ImGui::Text("Change Aircraft");
-        ImGui::SetCursorPos(ImVec2(40, 200));
-        if (ImGui::Button(controlOptions_.imagePaths.at(0).y->c_str(), ImVec2(60, 30))) {
+        ImGui::SetCursorPos(ImVec2(40, 160));
+        if (ImGui::Button(controlOptions_.imagePaths.at(0).y->c_str(), ImVec2(120, 30))) {
             controlOptions_.fileChoice = 0;
         }
-        ImGui::SetCursorPos(ImVec2(110, 200));
-        if (ImGui::Button(controlOptions_.imagePaths.at(1).y->c_str(), ImVec2(60, 30))) {
+        ImGui::SetCursorPos(ImVec2(40, 200));
+        if (ImGui::Button(controlOptions_.imagePaths.at(1).y->c_str(), ImVec2(120, 30))) {
             controlOptions_.fileChoice = 1;
         }
-        ImGui::SetCursorPos(ImVec2(180, 200));
-        if (ImGui::Button(controlOptions_.imagePaths.at(2).y->c_str(), ImVec2(60, 30))) {
+        ImGui::SetCursorPos(ImVec2(40, 240));
+        if (ImGui::Button(controlOptions_.imagePaths.at(2).y->c_str(), ImVec2(120, 30))) {
             controlOptions_.fileChoice = 2;
         }
 

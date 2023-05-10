@@ -41,7 +41,11 @@ public:
 
     float calculateMaxLift(float airspeed);
 
-    float calculateDrag();
+    void setDragCoeff(float dragCoeff);
+
+    float calculateDragCoeffAngle();
+
+    float calculateDrag(float airspeed);
 
     void createMesh();
 
@@ -50,10 +54,6 @@ public:
     void scaleModel(int gridSize);
 
     void centerModel(int gridSize);
-
-    void addToRotationObj();
-
-    std::shared_ptr<Object3D> getRotationObj();
 
     float knotsToMtrPrSec(float knots);
 
@@ -64,7 +64,7 @@ public:
     static std::shared_ptr<AirObject> create(std::shared_ptr<BufferGeometry> geometry,
                                        std::shared_ptr<Material> material,
                                        float length, float wingArea,
-                                       float liftCoeff = 0.77, float dragCoeff = 0.33,
+                                       float liftCoeff = 0.77, float dragCoeff = 0.3,
                                        float angleOfAttack = 0, float airDensity = 1.293);
 
 
@@ -72,7 +72,7 @@ private:
 //    Physical parameters
     const float fileLength_;
     const float liftCoefficient_;
-    const float dragCoefficient_;
+    float dragCoefficient_;
     const float wingArea_;
 //    Aerodynamic parameters
     float CLstall_;
@@ -90,7 +90,6 @@ private:
     float gasConst_;
 
 //    Mesh of the aircraft
-    std::shared_ptr<Object3D> rotationalObject_ {};
     std::shared_ptr<BufferGeometry> geometry_;
     std::shared_ptr<Material> material_;
     std::shared_ptr<Mesh> aircraftFuselage_;

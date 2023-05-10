@@ -1,11 +1,8 @@
 //
 // Created by joelo on 01.05.2023.
-//
+
 
 #include "../include/SceneSetup.hpp"
-#include "threepp/materials/ShaderMaterial.hpp"
-
-
 
 std::shared_ptr<DirectionalLight> setLight() {
     auto light = DirectionalLight::create(0xffffff);
@@ -36,8 +33,8 @@ std::shared_ptr<AirObject> setupAircraft1(STLLoader loader) {
     boeing->scaleModel(1000);
     boeing->centerModel(1000);
     boeing->getMesh()->rotateY(math::PI);
-    boeing->addToRotationObj();
-    boeing->getRotationObj()->name = "Boeing";
+    boeing->getMesh()->position.y += -100;
+    boeing->getMesh()->name = "Boeing";
     return boeing;
 }
 
@@ -46,14 +43,13 @@ std::shared_ptr<AirObject> setupAircraft2(STLLoader loader) {
     auto material = MeshPhongMaterial::create();
     material->flatShading = true;
     material->color = Color::beige;
-    auto airbus = AirObject::create(fuselage, material, 4000, 470);
+    auto airbus = AirObject::create(fuselage, material, 4000, 470, 0.76, 0.26);
     airbus->setAngleParameters(1.6, 14, 20, 1.3);
     airbus->setAirDensity(1.225);
     airbus->createMesh();
     airbus->scaleModel(1000);
     airbus->centerModel(1000);
-    airbus->addToRotationObj();
-    airbus->getRotationObj()->name = "Airbus";
+    airbus->getMesh()->name = "Airbus";
     return airbus;
 }
 
@@ -63,32 +59,29 @@ std::shared_ptr<AirObject> setupAircraft3(STLLoader loader) {
     material->flatShading = true;
     material->color = Color::beige;
     auto cessna = AirObject::create(fuselage, material, 800,
-                                    16.17,0.33, 0.029, 0);
+                                    16.17,0.33, 0.035, 0);
     cessna->setAngleParameters(1.5, 12, 18, 1.3);
     cessna->setAirDensity(1.225);
     cessna->createMesh();
     cessna->scaleModel(1000);
     cessna->centerModel(1000);
-    cessna->getMesh()->position.x += 200;
-    cessna->getMesh()->position.z += 1400;
-    cessna->getMesh()->position.y += (-500);
+    cessna->getMesh()->position.z += 450;
     cessna->getMesh()->rotateY(math::PI);
-    cessna->addToRotationObj();
-    cessna->getRotationObj()->name = "Cessna";
+    cessna->getMesh()->name = "Cessna";
     return cessna;
 }
 
-void loopAircraft(std::shared_ptr<Scene> scene, std::shared_ptr<AirObject> aircraftModel1,
+void loopAircraft(std::shared_ptr<Scene> scene, std::shared_ptr<Group> movementShell,std::shared_ptr<AirObject> aircraftModel1,
                   std::shared_ptr<AirObject> aircraftModel2, std::shared_ptr<AirObject> aircraftModel3) {
-    if(!scene->getObjectByName(aircraftModel1->getRotationObj()->name)) {
-        if(scene->getObjectByName(aircraftModel2->getRotationObj()->name)) {
-            scene->remove(scene->getObjectByName(aircraftModel2->getRotationObj()->name));
+    if(!movementShell->getObjectByName(aircraftModel1->getMesh()->name)) {
+        if(movementShell->getObjectByName(aircraftModel2->getMesh()->name)) {
+            movementShell->remove(movementShell->getObjectByName(aircraftModel2->getMesh()->name));
         }
-        if(scene->getObjectByName(aircraftModel3->getRotationObj()->name)) {
-            scene->remove(scene->getObjectByName(aircraftModel3->getRotationObj()->name));
+        if(movementShell->getObjectByName(aircraftModel3->getMesh()->name)) {
+            movementShell->remove(movementShell->getObjectByName(aircraftModel3->getMesh()->name));
         }
-
-        scene->add(aircraftModel1->getRotationObj());
+        movementShell->add(aircraftModel1->getMesh());
+        scene->add(movementShell);
     }
 }
 

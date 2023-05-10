@@ -65,6 +65,18 @@ float AirObject::calculateMaxLift(float maxAirspeed) {
     return maxLift;
 }
 
+void AirObject::setDragCoeff(float dragCoeff) {
+    dragCoefficient_ = dragCoeff;
+}
+
+float AirObject::calculateDragCoeffAngle() {
+    return dragCoefficient_ + 0.08 * angleOfAttack_ + 0.005 * pow(angleOfAttack_, 2);
+}
+
+float AirObject::calculateDrag(float airspeed) {
+    return 0.5 * airDensity_ * airspeed * calculateDragCoeffAngle() * wingArea_;
+}
+
 void AirObject::createMesh() {
     aircraftFuselage_ = Mesh::create(geometry_, material_);
     aircraftFuselage_->name = "aircraftFuselage";
@@ -84,14 +96,6 @@ void AirObject::scaleModel(int gridSize) {
 // Set aircraft model to middle position compared to grid
 void AirObject::centerModel(int gridSize) {
     aircraftFuselage_->position.z = -(gridSize / 2);
-}
-
-void AirObject::addToRotationObj() {
-    rotationalObject_->add(aircraftFuselage_);
-}
-
-std::shared_ptr<Object3D> AirObject::getRotationObj() {
-    return rotationalObject_;
 }
 
 // Calculate m/s from knots
