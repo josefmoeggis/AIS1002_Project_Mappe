@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(threepp_vcpkg_test)
+project(AIS1002_project)
 
 set(CMAKE_CXX_STANDARD 17)
 find_package(threepp CONFIG REQUIRED)
@@ -14,6 +14,24 @@ if (BULLET_FOUND AND NOT TARGET Bullet::Bullet)
     target_link_libraries(Bullet::Bullet INTERFACE ${BULLET_LIBRARIES})
 endif ()
 
+if (NOT TARGET "matplotlib::matplotlib")
+
+    find_package(Python3 COMPONENTS Interpreter Development)
+    if (Python3_FOUND)
+        find_path(MATPLOTLIB_CPP_INCLUDE_DIRS "matplotlibcpp.h")
+        if (MATPLOTLIB_CPP_INCLUDE_DIRS)
+            add_library(matplotlib::matplotlib INTERFACE IMPORTED)
+            target_compile_definitions(matplotlib::matplotlib INTERFACE WITHOUT_NUMPY HAS_MATPLOTLIB)
+            target_link_libraries(matplotlib::matplotlib INTERFACE Python3::Python)
+            target_include_directories(matplotlib::matplotlib INTERFACE "${MATPLOTLIB_CPP_INCLUDE_DIRS}")
+            set(matplotlib_FOUND TRUE)
+        else()
+            set(matplotlib_FOUND FALSE)
+        endif()
+    endif()
+
+endif()
+
 file(COPY "${CMAKE_SOURCE_DIR}/resources" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 set(SOURCES
@@ -24,8 +42,9 @@ set(SOURCES
         src/SceneSetup.cpp)
 set(HEADERS
         include/PID.hpp
-        include/GUI.hpp)
+        include/GUI.hpp
+        include/Utils.hpp)
 
-add_executable(test main.cpp ${SOURCES} ${HEADERS})
-target_link_libraries(test PRIVATE threepp::threepp imgui::imgui Bullet::Bullet)
+add_executable(driveSimulation main.cpp ${SOURCES} ${HEADERS})
+target_link_libraries(driveSimulation PRIVATE threepp::threepp imgui::imgui Bullet::Bullet)
 

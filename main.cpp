@@ -8,6 +8,7 @@
 #include "threepp/cameras/PerspectiveCamera.hpp"
 #include "threepp/controls/OrbitControls.hpp"
 #include "threepp/objects/Group.hpp"
+#include "threepp/threepp.hpp"
 
 
 using namespace threepp;
@@ -94,6 +95,7 @@ switch (control.fileChoice) {
             graphDrag.updateLineVectors(aircraft->calculateDrag(control.targetAirspeed), 200);
             graphDrag.adjustGraphToFit(aircraft->calculateMaxLift(300));
             graphDrag.makeLine(scene);
+            scene->add(graphDrag.getLine());
             sec = 0;
         }
         float angleGain = myPID.regulate(control.targetAngleOfAttack,

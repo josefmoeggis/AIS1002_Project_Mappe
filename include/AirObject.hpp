@@ -55,8 +55,6 @@ public:
 
     void centerModel(int gridSize);
 
-    float knotsToMtrPrSec(float knots);
-
     void setAirDensity(float air);
 
     ~AirObject();

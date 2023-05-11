@@ -98,12 +98,6 @@ void AirObject::centerModel(int gridSize) {
     aircraftFuselage_->position.z = -(gridSize / 2);
 }
 
-// Calculate m/s from knots
-float AirObject::knotsToMtrPrSec(float knots) {
-    float metersPerSecond = knots * 0.514444444;
-    return metersPerSecond;
-}
-
 void AirObject::setAirDensity(float air) {
     airDensity_ = air;
 }
