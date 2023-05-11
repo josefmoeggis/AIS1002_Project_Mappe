@@ -4,6 +4,7 @@ set(publicHeaders
         "Graph3D.cpp"
         "GUI.hpp"
         "PID.hpp"
+        "Utils.hpp"
         "SceneSetup.cpp"
         )
 set(sources

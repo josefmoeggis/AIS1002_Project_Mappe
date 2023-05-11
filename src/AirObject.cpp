@@ -32,7 +32,6 @@ float AirObject::getAngleOfAttack() {
 
 void AirObject::setControlledAngle(float gain, float maxRadPrSec, float dt) {
     float angleDiffPrFrame = gain * maxRadPrSec * dt;
-//    getMesh()->setRotationFromAxisAngle(Vector3(1, 0, 0), angleDiffPrFrame);
     setAngleOfAttack(getAngleOfAttack() + angleDiffPrFrame);
 }
 
@@ -53,7 +52,7 @@ float AirObject::calcLiftCoeffAngle() {
 
 // Calculat lift from different standards
 float AirObject::calculateLift(float airspeed) {
-    float lift = calcLiftCoeffAngle() * 0.5f * airDensity_ * std::pow(airspeed, 2) * wingArea_;
+    float lift = calcLiftCoeffAngle() * 0.5f * airDensity_ * std::pow(knotsToMtrPrSec(airspeed), 2) * wingArea_;
     if (liftCoefficient_ == 0) {
         std::cout << "Not all parameters are set, resulting in discrepancies calculations" << std::endl; // Use optional later
     }
@@ -61,7 +60,7 @@ float AirObject::calculateLift(float airspeed) {
 }
 
 float AirObject::calculateMaxLift(float maxAirspeed) {
-    float maxLift = (liftCoefficient_ + 2*math::PI * aCrit_) * 0.5f * airDensity_ * std::pow(maxAirspeed, 2) * wingArea_;
+    float maxLift = (liftCoefficient_ + 2*math::PI * aCrit_) * 0.5f * airDensity_ * std::pow(knotsToMtrPrSec(maxAirspeed), 2) * wingArea_;
     return maxLift;
 }
 

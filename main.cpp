@@ -8,14 +8,15 @@
 #include "threepp/cameras/PerspectiveCamera.hpp"
 #include "threepp/controls/OrbitControls.hpp"
 #include "threepp/objects/Group.hpp"
-#include "threepp/threepp.hpp"
 
+#include "threepp/extras/core/Font.hpp"
+#include "threepp/loaders/FontLoader.hpp"
 
 using namespace threepp;
 
 int main() {
     // Canvas creation
-    Canvas canvas{Canvas::Parameters().size({1280, 720}).antialiasing(4)
+    Canvas canvas{Canvas::Parameters().size({1920, 1080}).antialiasing(4)
                     .title("Aircraft Lift 3D graphLift").favicon("resources/airplane_2_icon.jpeg")};
     GLRenderer renderer(canvas);
     renderer.setClearColor(Color::aliceblue);
@@ -57,6 +58,12 @@ int main() {
     Graph3D graphDrag(1000, 20, 0x000000, 0xFF0000); // Not adding grid to scene only graph line
     graphDrag.setPosition();
     scene->add(graphLift.getGrid());
+
+//    matplotlibcpp::plot
+FontLoader fontLoader;
+auto font = fontLoader.load("resources/Roboto_Bold.json");
+
+
 
     STLLoader loader;
     auto boeing = setupAircraft1(loader);

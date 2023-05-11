@@ -6,6 +6,7 @@
 #define AIS2001_AEROFOILTESTING_AIROBJECT_HPP
 
 #include "threepp/extras/imgui/imgui_context.hpp"
+#include "Utils.hpp"
 #include "iostream"
 #include "vector"
 #include "threepp/core/BufferGeometry.hpp"
