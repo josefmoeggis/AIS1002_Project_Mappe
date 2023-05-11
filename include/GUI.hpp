@@ -63,16 +63,17 @@ struct GUI : imgui_context {
     : imgui_context(canvas.window_ptr()), controlOptions_(controlOptions) {}
 
     void setStyle(ImGuiStyle& style) {
-        style.Colors[ImGuiCol_WindowBg] = ImVec4(0, 1, 2, 250);
+        style.Colors[ImGuiCol_WindowBg] = ImColor(68, 111, 212, 100);
         style.WindowRounding = 6;
         style.FrameRounding = 4;
         style.GrabRounding = 4;
-        style.Alpha = 1;
+//        style.Alpha = 0.5;
     }
 
     void onRender() override {
         ImGuiStyle &style = ImGui::GetStyle();
         setStyle(style);
+//        ImGui::SetNextWindowBgAlpha(0.5f);
         ImGui::SetNextWindowPos({}, 0, {});
         ImGui::SetNextWindowSize((ImVec2(350, 300)));
         ImGui::Begin("Control Parameters", NULL);
@@ -91,6 +92,7 @@ struct GUI : imgui_context {
         if (ImGui::Button(controlOptions_.imagePaths.at(0).y->c_str(), ImVec2(120, 30))) {
             controlOptions_.fileChoice = 0;
         }
+        ImGui::SetNextWindowBgAlpha(1);
         ImGui::SetCursorPos(ImVec2(40, 200));
         if (ImGui::Button(controlOptions_.imagePaths.at(1).y->c_str(), ImVec2(120, 30))) {
             controlOptions_.fileChoice = 1;

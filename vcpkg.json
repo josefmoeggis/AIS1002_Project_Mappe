@@ -3,7 +3,7 @@
   "dependencies": [
     "threepp",
     "bullet3",
-    "matplotlib",
+    "matplotlib-cpp",
     {
       "name": "imgui",
       "features": ["glfw-binding", "opengl3-binding"]
