@@ -8,6 +8,7 @@
 #include "threepp/cameras/PerspectiveCamera.hpp"
 #include "threepp/controls/OrbitControls.hpp"
 #include "threepp/objects/Group.hpp"
+#include "include/Utils.hpp"
 
 #include "threepp/extras/core/Font.hpp"
 #include "threepp/loaders/FontLoader.hpp"
@@ -95,12 +96,12 @@ switch (control.fileChoice) {
 
 //     Testing line segments
         if (sec >= 0.1) {
-            graphLift.updateLineVectors(aircraft->calculateLift(control.targetAirspeed), 200);
+            graphLift.updateLineVectors(aircraft->calculateLift(knotsToMtrPrSec(control.targetAirspeed)), 200);
             graphLift.adjustGraphToFit(aircraft->calculateMaxLift(300));
             graphLift.makeLine(scene);
             scene->add(graphLift.getLine());
-            graphDrag.updateLineVectors(aircraft->calculateDrag(control.targetAirspeed), 200);
-            graphDrag.adjustGraphToFit(aircraft->calculateMaxLift(300));
+            graphDrag.updateLineVectors(aircraft->calculateDrag(knotsToMtrPrSec(control.targetAirspeed)), 200);
+            graphDrag.adjustGraphToFit(aircraft->calculateMaxLift(knotsToMtrPrSec(300)));
             graphDrag.makeLine(scene);
             scene->add(graphDrag.getLine());
             sec = 0;
