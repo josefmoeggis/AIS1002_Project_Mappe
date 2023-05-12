@@ -40,9 +40,9 @@ float AirObject::calcLiftCoeffAngle() {
     if(-aCrit_ <= angleOfAttack_ <= aCrit_) {
         CLwAngle = liftCoefficient_ + 2*math::PI * angleOfAttack_;
     } else if(aCrit_ < angleOfAttack_ <= aStall_) {
-        CLwAngle = CLstall_ - std::pow(stallRate_ * (angleOfAttack_ - aCrit_), 2);
+        CLwAngle = CLstall_ - pow(stallRate_ * (angleOfAttack_ - aCrit_), 2);
     } else if(-aStall_ <= angleOfAttack_ < -aCrit_) {
-        CLwAngle = -CLstall_ + std::pow(stallRate_ * (angleOfAttack_ + aCrit_), 2);
+        CLwAngle = -CLstall_ + pow(stallRate_ * (angleOfAttack_ + aCrit_), 2);
     } else {
         CLwAngle = 0;
         std::cout << "No lift! Aircraft is stalling" << std::endl;
@@ -60,7 +60,7 @@ float AirObject::calculateLift(float airspeed) {
 }
 
 float AirObject::calculateMaxLift(float maxAirspeed) {
-    float maxLift = (liftCoefficient_ + 2*math::PI * aCrit_) * 0.5f * airDensity_ * std::pow(maxAirspeed, 2) * wingArea_;
+    float maxLift = (liftCoefficient_ + 2*math::PI * aCrit_) * 0.5f * airDensity_ * pow(maxAirspeed, 2) * wingArea_;
     return maxLift;
 }
 
