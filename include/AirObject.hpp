@@ -47,6 +47,8 @@ public:
 
     float calculateDrag(float airspeed);
 
+    float calculateMaxDrag(float airspeed);
+
     void createMesh();
 
     std::shared_ptr<Mesh> getMesh();

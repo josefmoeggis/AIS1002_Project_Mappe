@@ -21,6 +21,21 @@ std::shared_ptr<Sky> setSky(std::shared_ptr<DirectionalLight> light) {
     return mySky;
 }
 
+std::shared_ptr<Mesh> getAirflowArrow(STLLoader loader) {
+    auto geometry = loader.load("resources/AirflowArrow.stl");
+    auto material = MeshPhongMaterial::create();
+    material->flatShading = true;
+    material->color = Color::lightsteelblue;
+    auto arrow = Mesh::create(geometry, material);
+    arrow->position.z = -1000;
+    arrow->position.y = -50;
+    arrow->rotateY(math::PI);
+    arrow->rotateX(math::PI);
+    arrow->rotateZ(math::PI / 2);
+    arrow->scale.setScalar(0.5);
+    return arrow;
+}
+
 std::shared_ptr<AirObject> setupAircraft1(STLLoader loader) {
     auto fuselage = loader.load("resources/B737_800.stl");
     auto material = MeshPhongMaterial::create();
@@ -42,7 +57,7 @@ std::shared_ptr<AirObject> setupAircraft2(STLLoader loader) {
     auto fuselage = loader.load("resources/A320neo.stl");
     auto material = MeshPhongMaterial::create();
     material->flatShading = true;
-    material->color = Color::beige;
+    material->color = Color::silver;
     auto airbus = AirObject::create(fuselage, material, 4000, 470, 0.76, 0.26);
     airbus->setAngleParameters(1.6, 14, 20, 1.3);
     airbus->setAirDensity(1.225);
@@ -57,19 +72,20 @@ std::shared_ptr<AirObject> setupAircraft3(STLLoader loader) {
     auto fuselage = loader.load("resources/Cessna_172.stl");
     auto material = MeshPhongMaterial::create();
     material->flatShading = true;
-    material->color = Color::beige;
+    material->color = Color::lightskyblue;
     auto cessna = AirObject::create(fuselage, material, 800,
                                     16.17,0.33, 0.035, 0);
     cessna->setAngleParameters(1.5, 12, 18, 1.3);
     cessna->setAirDensity(1.225);
     cessna->createMesh();
-    cessna->scaleModel(1000);
+    cessna->scaleModel(700);
     cessna->centerModel(1000);
-    cessna->getMesh()->position.z += 450;
+    cessna->getMesh()->position.z += 500;
     cessna->getMesh()->rotateY(math::PI);
     cessna->getMesh()->name = "Cessna";
     return cessna;
 }
+
 
 void loopAircraft(std::shared_ptr<Scene> scene, std::shared_ptr<Group> movementShell,std::shared_ptr<AirObject> aircraftModel1,
                   std::shared_ptr<AirObject> aircraftModel2, std::shared_ptr<AirObject> aircraftModel3) {

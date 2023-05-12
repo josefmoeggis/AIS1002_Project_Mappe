@@ -76,6 +76,11 @@ float AirObject::calculateDrag(float airspeed) {
     return 0.5 * airDensity_ * airspeed * calculateDragCoeffAngle() * wingArea_;
 }
 
+float AirObject::calculateMaxDrag(float maxAirspeed) {
+    return 0.5 * airDensity_ * maxAirspeed * dragCoefficient_ +
+    0.08 * angleOfAttack_ + 0.005 * pow(40 * math::DEG2RAD, 2) * wingArea_;
+}
+
 void AirObject::createMesh() {
     aircraftFuselage_ = Mesh::create(geometry_, material_);
     aircraftFuselage_->name = "aircraftFuselage";

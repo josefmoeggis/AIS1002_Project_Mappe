@@ -43,6 +43,8 @@ int main() {
     auto mySky = setSky(light);
     scene->add(mySky);
 
+
+
     PID myPID(0.4, 0.01f, 0.0f);
     myPID.setWindupGuard(0.5f);
 
@@ -64,9 +66,10 @@ int main() {
 FontLoader fontLoader;
 auto font = fontLoader.load("resources/Roboto_Bold.json");
 
-
-
     STLLoader loader;
+    auto airflowArrow = getAirflowArrow(loader);
+    scene->add(airflowArrow);
+
     auto boeing = setupAircraft1(loader);
     auto airbus = setupAircraft2(loader);
     auto cessna = setupAircraft3(loader);
@@ -97,11 +100,11 @@ switch (control.fileChoice) {
 //     Testing line segments
         if (sec >= 0.1) {
             graphLift.updateLineVectors(aircraft->calculateLift(knotsToMtrPrSec(control.targetAirspeed)), 200);
-            graphLift.adjustGraphToFit(aircraft->calculateMaxLift(300));
+            graphLift.adjustGraphToFit(aircraft->calculateMaxLift(400));
             graphLift.makeLine(scene);
             scene->add(graphLift.getLine());
             graphDrag.updateLineVectors(aircraft->calculateDrag(knotsToMtrPrSec(control.targetAirspeed)), 200);
-            graphDrag.adjustGraphToFit(aircraft->calculateMaxLift(knotsToMtrPrSec(300)));
+            graphDrag.adjustGraphToFit(aircraft->calculateMaxDrag(knotsToMtrPrSec(400)));
             graphDrag.makeLine(scene);
             scene->add(graphDrag.getLine());
             sec = 0;
