@@ -9,9 +9,6 @@
 #include "threepp/controls/OrbitControls.hpp"
 #include "threepp/objects/Group.hpp"
 
-#include "threepp/extras/core/Font.hpp"
-#include "threepp/loaders/FontLoader.hpp"
-
 using namespace threepp;
 
 int main() {
@@ -44,9 +41,10 @@ int main() {
 
     PID anglePID(0.4, 0.01f, 0.0f);
     anglePID.setWindupGuard(0.5f);
+    PID switchPID(0.4, 0.01f, 0.0f);
 
 //    Controls from GUI
-    ControllableParameters control(anglePID, 100, 0, 10, 500);
+    ControllableParameters control(anglePID, 100, 0, 10, 500, 1);
     control.setOptions("resources/B737_image_min.jpeg", "Boeing 737-800", 746 * 420,
                        "resources/SAS-A321LR_min.jpeg", "Airbus A320", 1200 * 869,
                        "resources/Cessna_172S_Skyhawk.jpg", "Cessna 172", 220 * 164);
@@ -73,6 +71,8 @@ int main() {
     std::shared_ptr<AirObject> aircraft = boeing;
 
     auto movementShell = Group::create();
+    movementShell->add(aircraft->getMesh());
+    scene->add(movementShell);
 
     float t = 0;
     float sec = 0;
@@ -81,15 +81,15 @@ int main() {
 switch (control.fileChoice) {
     case 0:
         aircraft = boeing;
-        loopAircraft(scene, movementShell, boeing, airbus, cessna);
+        loopAircraft(movementShell, boeing, airbus, cessna, switchPID, dt);
         break;
     case 1:
         aircraft = airbus;
-        loopAircraft(scene, movementShell, airbus, cessna, boeing);
+        loopAircraft(movementShell, airbus, cessna, boeing, switchPID, dt);
         break;
     case 2:
         aircraft = cessna;
-        loopAircraft(scene, movementShell, cessna, boeing, airbus);
+        loopAircraft(movementShell, cessna, boeing, airbus, switchPID, dt);
         break;
 }
         if (sec >= 0.1) {

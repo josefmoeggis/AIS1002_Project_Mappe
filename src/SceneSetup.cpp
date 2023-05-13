@@ -84,18 +84,28 @@ std::shared_ptr<AirObject> setupAircraft3(STLLoader loader) {
 }
 
 
-void loopAircraft(std::shared_ptr<Scene> scene, std::shared_ptr<Group> movementShell,std::shared_ptr<AirObject> aircraftModel1,
-                  std::shared_ptr<AirObject> aircraftModel2, std::shared_ptr<AirObject> aircraftModel3) {
+void loopAircraft(std::shared_ptr<Group> movementShell,std::shared_ptr<AirObject> aircraftModel1,
+                  std::shared_ptr<AirObject> aircraftModel2, std::shared_ptr<AirObject> aircraftModel3, PID pid, float dt) {
     if(!movementShell->getObjectByName(aircraftModel1->getMesh()->name)) {
         if(movementShell->getObjectByName(aircraftModel2->getMesh()->name)) {
-            movementShell->remove(movementShell->getObjectByName(aircraftModel2->getMesh()->name));
+//            movementShell->position.z += (10 * pid.regulate(-6000, movementShell->position.z, dt) * dt);
+//            if(movementShell->position.z < -4000) {
+                movementShell->remove(movementShell->getObjectByName(aircraftModel2->getMesh()->name));
+//                movementShell->position.z = 0;
+//                movementShell->add(aircraftModel1->getMesh());
+//            }
         }
-        if(movementShell->getObjectByName(aircraftModel3->getMesh()->name)) {
-            movementShell->remove(movementShell->getObjectByName(aircraftModel3->getMesh()->name));
+        else if(movementShell->getObjectByName(aircraftModel3->getMesh()->name)) {
+//            movementShell->position.z += 10 * pid.regulate(-6000, movementShell->position.z, dt) * dt;
+//            if(movementShell->position.z < -4000) {
+                movementShell->remove(movementShell->getObjectByName(aircraftModel3->getMesh()->name));
+//                movementShell->position.z = 0;
+//                movementShell->add(aircraftModel1->getMesh());
+//            }
         }
-        movementShell->add(aircraftModel1->getMesh());
-        scene->add(movementShell);
     }
+    movementShell->add(aircraftModel1->getMesh());
+
 }
 
 

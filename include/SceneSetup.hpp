@@ -34,8 +34,8 @@ std::shared_ptr<AirObject> setupAircraft3(STLLoader loader);
 
 
 //    Setup for the loop
-void loopAircraft(std::shared_ptr<Scene> scene,std::shared_ptr<Group> movementShell, std::shared_ptr<AirObject> aircraftModel1,
-                  std::shared_ptr<AirObject> aircraftModel2, std::shared_ptr<AirObject> aircraftModel3);
+void loopAircraft(std::shared_ptr<Group> movementShell, std::shared_ptr<AirObject> aircraftModel1,
+                  std::shared_ptr<AirObject> aircraftModel2, std::shared_ptr<AirObject> aircraftModel3, PID pid, float dt);
 
 
 
