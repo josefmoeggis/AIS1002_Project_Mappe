@@ -13,5 +13,5 @@ set(sources
         "SceneSetup.cpp"
         )
 
-add_library(threepp::threepp ALIAS threepp)
 target_compile_features(threepp PUBLIC cxx_std_17)
+add_library(threepp::threepp ALIAS threepp)
