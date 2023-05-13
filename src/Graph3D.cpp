@@ -12,24 +12,6 @@ std::shared_ptr<GridHelper> Graph3D::getGrid() {
     return grid_;
 }
 
-std::shared_ptr<Mesh> Graph3D::createMesh(std::shared_ptr<BufferGeometry> arrowGeometry) {
-    auto material = MeshPhongMaterial::create();
-    material->flatShading = true;
-    material->color = *graphColor_;
-    auto arrow = Mesh::create(arrowGeometry, material);
-    return arrow;
-}
-
-void Graph3D::updateMesh(float distanceFromGrid) {
-    arrow_->position.y = scaledVectors_->end()->y;
-    arrow_->position.x = graphLine_->position.x;
-    arrow_->position.z = scaledVectors_->end()->z + distanceFromGrid;
-}
-
-std::shared_ptr<Mesh> Graph3D::getMesh() {
-    return arrow_;
-}
-
 int Graph3D::getGridSize() {
     return *gridSize_;
 }
@@ -39,8 +21,8 @@ int Graph3D::getDivisions() {
 }
 
 void Graph3D::adjustGraphToFit(float maxVal) {
-    // This code was meant to adjust graph automatically depending on vector values
-    // will be troubleshooted later
+    // This code was meant to adjust the graph automatically depending on vector values
+    // will be added later
 /*    float peakVal {};
     float minVal {};
     for(Vector3 line : *graphVectors_) {
@@ -95,7 +77,6 @@ void Graph3D::updateLineVectors(float graphVal, float resolution) {
         graphVectors_->back().z - stepSize});
 
     if(graphVectors_->back().z < -(*gridSize_ / 2)) {
-//        std::cout << "Shifting back" << std::endl;
         graphVectors_->erase(graphVectors_->begin());
         for (int i = 0; i < graphVectors_->size(); i++) {   // Shift the vector coordinates to the left on the graph to be within the grid
             graphVectors_->at(i).z = graphVectors_->at(i).z + stepSize;
@@ -127,4 +108,27 @@ void Graph3D::setPosition() {
     grid_->position.set(- (*gridSize_ / 2), 0, 0);
     grid_->rotateX(math::PI / 2);
     grid_->rotateZ(math::PI / 2);
+}
+
+float Graph3D::lastGraphVal() {
+    return (*graphVectors_).back().y;
+}
+
+std::shared_ptr<Mesh> Graph3D::createMesh(std::shared_ptr<BufferGeometry> arrowGeometry) {
+    auto material = MeshPhongMaterial::create();
+    material->flatShading = true;
+    material->color = *graphColor_;
+    auto arrow = Mesh::create(arrowGeometry, material);
+    arrow->rotateY(math::PI /2);
+    return arrow;
+}
+
+void Graph3D::updateMesh(float distanceFromGrid) {
+    arrow_->position.y = scaledVectors_->back().y;
+    arrow_->position.x = scaledVectors_->back().x;
+    arrow_->position.z = scaledVectors_->back().z + distanceFromGrid;
+}
+
+std::shared_ptr<Mesh> Graph3D::getMesh() {
+    return arrow_;
 }

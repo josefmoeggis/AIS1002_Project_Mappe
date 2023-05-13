@@ -62,6 +62,8 @@ public:
 
     void setPosition();
 
+    float lastGraphVal();
+
 
 private:
 

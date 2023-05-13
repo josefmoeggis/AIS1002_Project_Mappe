@@ -42,13 +42,11 @@ int main() {
     auto mySky = setSky(light);
     scene->add(mySky);
 
-
-
-    PID myPID(0.4, 0.01f, 0.0f);
-    myPID.setWindupGuard(0.5f);
+    PID anglePID(0.4, 0.01f, 0.0f);
+    anglePID.setWindupGuard(0.5f);
 
 //    Controls from GUI
-    ControllableParameters control(myPID, 100, 0, 10, 500);
+    ControllableParameters control(anglePID, 100, 0, 10, 500);
     control.setOptions("resources/B737_image_min.jpeg", "Boeing 737-800", 746 * 420,
                        "resources/SAS-A321LR_min.jpeg", "Airbus A320", 1200 * 869,
                        "resources/Cessna_172S_Skyhawk.jpg", "Cessna 172", 220 * 164);
@@ -100,17 +98,17 @@ switch (control.fileChoice) {
             graphLift.adjustGraphToFit(aircraft->calculateMaxLift(400));
             graphLift.makeLine(scene);
             scene->add(graphLift.getLine());
-            graphLift.updateMesh(20);
+            graphLift.updateMesh(-10);
             graphDrag.updateLineVectors(aircraft->calculateDrag(knotsToMtrPrSec(control.targetAirspeed),
                                                                 celsiusToKelvin(control.targetTemp), feetToMtr(control.targetAltitude)), 200);
             graphDrag.adjustGraphToFit(aircraft->calculateMaxDrag(knotsToMtrPrSec(400)));
             graphDrag.makeLine(scene);
             scene->add(graphDrag.getLine());
-            graphDrag.updateMesh(100);
+            graphDrag.updateMesh(-60);
             sec = 0;
         }
-        float angleGain = myPID.regulate(control.targetAngleOfAttack,
-                                                  aircraft->getAngleOfAttack(), dt);
+        float angleGain = anglePID.regulate(control.targetAngleOfAttack,
+                                            aircraft->getAngleOfAttack(), dt);
         aircraft->setControlledAngle(angleGain, 2, dt);
         movementShell->rotation.x = aircraft->getAngleOfAttack();
         renderer.render(scene, camera);
