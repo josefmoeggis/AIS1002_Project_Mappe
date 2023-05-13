@@ -31,14 +31,17 @@ public:
 struct ControllableParameters {
     float targetAirspeed;
     float targetAngleOfAttack;
+    float targetTemp;
+    float targetAltitude;
     int fileChoice;
     std::vector<Triple<std::optional<std::string>, std::optional<std::string>, std::optional<float>>> imagePaths {}; // storing path string and pixels
 
     PID& pid;
 
 
-    explicit ControllableParameters(PID& pid, float targetAirspeed = 0, float targetAngleOfAttack = 0, int fileChoice = 0)
-                                    : targetAirspeed(targetAirspeed), targetAngleOfAttack(targetAngleOfAttack * math::DEG2RAD), fileChoice(fileChoice), pid(pid) {}
+    explicit ControllableParameters(PID& pid, float targetAirspeed = 0, float targetAngleOfAttack = 0, float targetTemp = 288.15, float targetAltitude = 5000, int fileChoice = 0)
+                                    : targetAirspeed(targetAirspeed), targetAngleOfAttack(targetAngleOfAttack * math::DEG2RAD), targetTemp(targetTemp),
+                                    targetAltitude(targetAltitude), fileChoice(fileChoice), pid(pid) {}
     void setOptions(std::optional<std::string> path1 = std::nullopt, std::optional<std::string> name1 = std::nullopt, std::optional<float> size1 = std::nullopt,
                      std::optional<std::string> path2 = std::nullopt, std::optional<std::string> name2 = std::nullopt, std::optional<float> size2 = std::nullopt,
                      std::optional<std::string> path3 = std::nullopt, std::optional<std::string> name3 = std::nullopt, std::optional<float> size3 = std::nullopt) {
@@ -86,6 +89,14 @@ struct GUI : imgui_context {
         ImGui::Text("Control Angle of Attack");
         ImGui::SetCursorPos(ImVec2(30, 100));
         ImGui::SliderAngle("degrees", &controlOptions_.targetAngleOfAttack, -40, 40);
+        ImGui::SetCursorPos(ImVec2(185, 140));
+        ImGui::TextColored(ImVec4(39, 158, 138, 255), "Altitude");
+        ImGui::SetCursorPos(ImVec2(190, 160));
+        ImGui::VSliderFloat("ft", ImVec2(50, 120), &controlOptions_.targetAltitude, 0, 60000);
+        ImGui::SetCursorPos(ImVec2(255, 140));
+        ImGui::TextColored(ImVec4(39, 158, 138, 255), "Temp Sea lvl");
+        ImGui::SetCursorPos(ImVec2(270, 160));
+        ImGui::VSliderFloat("C", ImVec2(50, 120), &controlOptions_.targetTemp, -50, 50);
         ImGui::SetCursorPos(ImVec2(45, 140));
         ImGui::Text("Change Aircraft");
         ImGui::SetCursorPos(ImVec2(40, 160));

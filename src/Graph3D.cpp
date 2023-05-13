@@ -12,6 +12,24 @@ std::shared_ptr<GridHelper> Graph3D::getGrid() {
     return grid_;
 }
 
+std::shared_ptr<Mesh> Graph3D::createMesh(std::shared_ptr<BufferGeometry> arrowGeometry) {
+    auto material = MeshPhongMaterial::create();
+    material->flatShading = true;
+    material->color = *graphColor_;
+    auto arrow = Mesh::create(arrowGeometry, material);
+    return arrow;
+}
+
+void Graph3D::updateMesh(float distanceFromGrid) {
+    arrow_->position.y = scaledVectors_->end()->y;
+    arrow_->position.x = graphLine_->position.x;
+    arrow_->position.z = scaledVectors_->end()->z + distanceFromGrid;
+}
+
+std::shared_ptr<Mesh> Graph3D::getMesh() {
+    return arrow_;
+}
+
 int Graph3D::getGridSize() {
     return *gridSize_;
 }
@@ -21,37 +39,40 @@ int Graph3D::getDivisions() {
 }
 
 void Graph3D::adjustGraphToFit(float maxVal) {
-//    float peakVal {};
-//    float minVal {};
-//    for(Vector3 line : *graphVectors_) {
-//        if (line.y > peakVal) {
-//            peakVal = line.y;
-//        }
-//        if (line.y < minVal) {
-//            minVal = line.y;
-//        }
-//    }
-//    if((peakVal > 2 * *gridSize_) && (*scaleFactor_ < 1e8)) { // Adjust for large difference in
-//        int timesGrid = (int)peakVal * *gridSize_;
-//        std::cout << "timesGrid: " << timesGrid << std::endl;
-//        scaleFactor_ = std::make_shared<float>(*scaleFactor_ / (float)timesGrid);
-//    }
-//    if((minVal < -*gridSize_) && (*scaleFactor_ > 1e-8)) {
-//        int timesGrid = -((int)minVal * *gridSize_);
-//        std::cout << "timesGrid: " << timesGrid << std::endl;
-//        scaleFactor_ = std::make_shared<float>(*scaleFactor_ / (float)timesGrid);
-//    }
-//
-//    while((peakVal > *gridSize_) && (*scaleFactor_ < 1e8)) {
-//        peakVal -= peakVal / (float)*divisions_;
-//        scaleFactor_ = std::make_shared<float>(*scaleFactor_ - (*scaleFactor_ / (float)*divisions_));
-//    }
-//    std::cout << peakVal << std::endl;
-//    while((peakVal < *gridSize_ / *divisions_) && (peakVal != 0) && (*scaleFactor_ > 1e-8)) {
-//        peakVal += peakVal / (float)*divisions_;
-//        scaleFactor_ = std::make_shared<float>(*scaleFactor_ + (*scaleFactor_ / (float)*divisions_));
-//    }
-//    std::cout << "peakVal: " << peakVal << std::endl;
+    // This code was meant to adjust graph automatically depending on vector values
+    // will be troubleshooted later
+/*    float peakVal {};
+    float minVal {};
+    for(Vector3 line : *graphVectors_) {
+        if (line.y > peakVal) {
+            peakVal = line.y;
+        }
+        if (line.y < minVal) {
+            minVal = line.y;
+        }
+    }
+    if((peakVal > 2 * *gridSize_) && (*scaleFactor_ < 1e8)) { // Adjust for large difference in
+        int timesGrid = (int)peakVal * *gridSize_;
+        std::cout << "timesGrid: " << timesGrid << std::endl;
+        scaleFactor_ = std::make_shared<float>(*scaleFactor_ / (float)timesGrid);
+    }
+    if((minVal < -*gridSize_) && (*scaleFactor_ > 1e-8)) {
+        int timesGrid = -((int)minVal * *gridSize_);
+        std::cout << "timesGrid: " << timesGrid << std::endl;
+        scaleFactor_ = std::make_shared<float>(*scaleFactor_ / (float)timesGrid);
+    }
+
+    while((peakVal > *gridSize_) && (*scaleFactor_ < 1e8)) {
+        peakVal -= peakVal / (float)*divisions_;
+        scaleFactor_ = std::make_shared<float>(*scaleFactor_ - (*scaleFactor_ / (float)*divisions_));
+    }
+    std::cout << peakVal << std::endl;
+    while((peakVal < *gridSize_ / *divisions_) && (peakVal != 0) && (*scaleFactor_ > 1e-8)) {
+        peakVal += peakVal / (float)*divisions_;
+        scaleFactor_ = std::make_shared<float>(*scaleFactor_ + (*scaleFactor_ / (float)*divisions_));
+    }
+    std::cout << "peakVal: " << peakVal << std::endl; */
+
     scaledVectors_ = std::make_shared<std::vector<Vector3>>(*graphVectors_);
     scaleFactor_ = std::make_shared<float>(*gridSize_ / maxVal);
     for(int i = 0; i < graphVectors_->size(); i++) {
@@ -96,9 +117,6 @@ void Graph3D::makeLine(std::shared_ptr<Scene> scene) {
     geometry->setFromPoints(*scaledVectors_);
     graphLine_ = Line::create(geometry, material);
     graphLine_->name = "LastLine";
-//    for (int i = 0; i < (*scaledVectors_).size(); i++) {
-//        std::cout << (*scaledVectors_)[i] << std::endl;
-//    }
 }
 
 std::shared_ptr<Line> Graph3D::getLine() {

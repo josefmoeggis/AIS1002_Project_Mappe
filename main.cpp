@@ -8,7 +8,6 @@
 #include "threepp/cameras/PerspectiveCamera.hpp"
 #include "threepp/controls/OrbitControls.hpp"
 #include "threepp/objects/Group.hpp"
-#include "include/Utils.hpp"
 
 #include "threepp/extras/core/Font.hpp"
 #include "threepp/loaders/FontLoader.hpp"
@@ -27,7 +26,7 @@ int main() {
 
     // Setting up camera
     auto camera = PerspectiveCamera::create(60, canvas.getAspect(), 0.1f, 3000);
-    camera->position.x = 600;
+    camera->position.x = 1000;
     OrbitControls controls{camera, canvas};
 
     // Scene creation
@@ -49,24 +48,23 @@ int main() {
     myPID.setWindupGuard(0.5f);
 
 //    Controls from GUI
-    ControllableParameters control(myPID);
+    ControllableParameters control(myPID, 100, 0, 10, 500);
     control.setOptions("resources/B737_image_min.jpeg", "Boeing 737-800", 746 * 420,
                        "resources/SAS-A321LR_min.jpeg", "Airbus A320", 1200 * 869,
                        "resources/Cessna_172S_Skyhawk.jpg", "Cessna 172", 220 * 164);
     GUI myUI(canvas, control);
 
+    STLLoader loader;
 //    Create grid object
-    Graph3D graphLift(1000, 20);
+    Graph3D graphLift(1000, 20, loader.load("resources/LiftArrow.stl"));
     graphLift.setPosition();
-    Graph3D graphDrag(1000, 20, 0x000000, 0xFF0000); // Not adding grid to scene only graph line
+    Graph3D graphDrag(1000, 20, loader.load("resources/DragArrow.stl"), 0x000000, 0xFF0000); // Not adding grid to scene only graph line
     graphDrag.setPosition();
     scene->add(graphLift.getGrid());
+    scene->add(graphLift.getMesh());
+    scene->add(graphDrag.getMesh());
 
-//    matplotlibcpp::plot
-FontLoader fontLoader;
-auto font = fontLoader.load("resources/Roboto_Bold.json");
 
-    STLLoader loader;
     auto airflowArrow = getAirflowArrow(loader);
     scene->add(airflowArrow);
 
@@ -74,7 +72,7 @@ auto font = fontLoader.load("resources/Roboto_Bold.json");
     auto airbus = setupAircraft2(loader);
     auto cessna = setupAircraft3(loader);
 
-    std::shared_ptr<AirObject> aircraft = cessna;
+    std::shared_ptr<AirObject> aircraft = boeing;
 
     auto movementShell = Group::create();
 
@@ -96,17 +94,19 @@ switch (control.fileChoice) {
         loopAircraft(scene, movementShell, cessna, boeing, airbus);
         break;
 }
-
-//     Testing line segments
         if (sec >= 0.1) {
-            graphLift.updateLineVectors(aircraft->calculateLift(knotsToMtrPrSec(control.targetAirspeed)), 200);
+            graphLift.updateLineVectors(aircraft->calculateLift(knotsToMtrPrSec(control.targetAirspeed),
+                                                                celsiusToKelvin(control.targetTemp), feetToMtr(control.targetAltitude)), 200);
             graphLift.adjustGraphToFit(aircraft->calculateMaxLift(400));
             graphLift.makeLine(scene);
             scene->add(graphLift.getLine());
-            graphDrag.updateLineVectors(aircraft->calculateDrag(knotsToMtrPrSec(control.targetAirspeed)), 200);
+            graphLift.updateMesh(20);
+            graphDrag.updateLineVectors(aircraft->calculateDrag(knotsToMtrPrSec(control.targetAirspeed),
+                                                                celsiusToKelvin(control.targetTemp), feetToMtr(control.targetAltitude)), 200);
             graphDrag.adjustGraphToFit(aircraft->calculateMaxDrag(knotsToMtrPrSec(400)));
             graphDrag.makeLine(scene);
             scene->add(graphDrag.getLine());
+            graphDrag.updateMesh(100);
             sec = 0;
         }
         float angleGain = myPID.regulate(control.targetAngleOfAttack,

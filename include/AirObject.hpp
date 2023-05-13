@@ -5,13 +5,14 @@
 #ifndef AIS2001_AEROFOILTESTING_AIROBJECT_HPP
 #define AIS2001_AEROFOILTESTING_AIROBJECT_HPP
 
+#include <iostream>
+#include <vector>
 #include "threepp/extras/imgui/imgui_context.hpp"
-#include "iostream"
-#include "vector"
 #include "threepp/core/BufferGeometry.hpp"
 #include "threepp/materials/Material.hpp"
 #include "threepp/objects/Mesh.hpp"
 #include "threepp/math/MathUtils.hpp"
+#include "Utils.hpp"
 
 using namespace threepp;
 
@@ -20,11 +21,10 @@ class AirObject {
 public:
     AirObject(std::shared_ptr<BufferGeometry> geometry, std::shared_ptr<Material> material, float length,
               float wingArea, float liftCoeff,
-              float dragCoeff, float angleOfAttack, float airDensity)
+              float dragCoeff, float angleOfAttack)
             : geometry_(geometry), material_(material), fileLength_(length),
               liftCoefficient_(liftCoeff), dragCoefficient_(dragCoeff),
-              wingArea_(wingArea), angleOfAttack_(angleOfAttack),
-              airDensity_(airDensity) {}
+              wingArea_(wingArea), angleOfAttack_(angleOfAttack) {}
 
 
     void setAngleParameters(float CLstall, float aCrit, float aStall, float stallRate);
@@ -37,15 +37,17 @@ public:
 
     float calcLiftCoeffAngle();
 
-    float calculateLift(float airspeed);
+    float calcAirDensity(float temp, float altitude);
+
+    float calculateLift(float airspeed, float temp, float altitude);
 
     float calculateMaxLift(float airspeed);
 
     void setDragCoeff(float dragCoeff);
 
-    float calculateDragCoeffAngle();
+    float calcDragCoeffAngle();
 
-    float calculateDrag(float airspeed);
+    float calculateDrag(float airspeed, float temp, float altitude);
 
     float calculateMaxDrag(float airspeed);
 
@@ -57,15 +59,13 @@ public:
 
     void centerModel(int gridSize);
 
-    void setAirDensity(float air);
-
     ~AirObject();
 
     static std::shared_ptr<AirObject> create(std::shared_ptr<BufferGeometry> geometry,
                                        std::shared_ptr<Material> material,
                                        float length, float wingArea,
                                        float liftCoeff = 0.77, float dragCoeff = 0.3,
-                                       float angleOfAttack = 0, float airDensity = 1.293);
+                                       float angleOfAttack = 0);
 
 
 private:
@@ -80,14 +80,7 @@ private:
     float aStall_;
     float stallRate_;
 
-
     float angleOfAttack_;
-
-    float airDensity_;
-//    Not needed in the start - using standard density without using temp, pressure & gas constant
-    float temp_;
-    float press_;
-    float gasConst_;
 
 //    Mesh of the aircraft
     std::shared_ptr<BufferGeometry> geometry_;

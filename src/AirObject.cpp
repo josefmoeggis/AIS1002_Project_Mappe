@@ -8,9 +8,9 @@ std::shared_ptr<AirObject> AirObject::create(std::shared_ptr<BufferGeometry> geo
                                              std::shared_ptr<Material> material,
                                              float length, float wingArea,
                                              float liftCoeff, float dragCoeff,
-                                             float angleOfAttack, float airDensity) {
+                                             float angleOfAttack) {
     return std::shared_ptr<AirObject>(new AirObject(geometry, material, length, liftCoeff,
-                                                    dragCoeff, wingArea, angleOfAttack, airDensity));
+                                                    dragCoeff, wingArea, angleOfAttack));
 }
 
 // Setting length of stl file to know bounds and scale
@@ -37,11 +37,11 @@ void AirObject::setControlledAngle(float gain, float maxRadPrSec, float dt) {
 
 float AirObject::calcLiftCoeffAngle() {
     float CLwAngle {};
-    if(-aCrit_ <= angleOfAttack_ <= aCrit_) {
+    if((-aCrit_ <= angleOfAttack_) && (angleOfAttack_ <= aCrit_)) {
         CLwAngle = liftCoefficient_ + 2*math::PI * angleOfAttack_;
-    } else if(aCrit_ < angleOfAttack_ <= aStall_) {
+    } else if((aCrit_ < angleOfAttack_) && (angleOfAttack_ <= aStall_)) {
         CLwAngle = CLstall_ - pow(stallRate_ * (angleOfAttack_ - aCrit_), 2);
-    } else if(-aStall_ <= angleOfAttack_ < -aCrit_) {
+    } else if((-aStall_ <= angleOfAttack_) && (angleOfAttack_ < -aCrit_)) {
         CLwAngle = -CLstall_ + pow(stallRate_ * (angleOfAttack_ + aCrit_), 2);
     } else {
         CLwAngle = 0;
@@ -50,17 +50,31 @@ float AirObject::calcLiftCoeffAngle() {
     return CLwAngle;
 }
 
+float AirObject::calcAirDensity(float temp, float altitude) {
+    float airDensity = 0;
+    if(altitude < 11000) {
+        airDensity = getStdRho() * pow(temp / (temp + (getTempLapsRate() * altitude)), // Combines two equations (finds T from temp laps rate)
+                                       1 + ((getG() * getMolMass()) / (getGasConst() * getTempLapsRate())));
+    } else if (altitude >= 11000) {
+        airDensity = getRho_11km() * exp(-(getG() * getMolMass() * (altitude - 11000)) / (getGasConst() * temp));
+    } else {
+        std::cout << "Altitude or temperature out of bounds" << std::endl;
+    }
+    std::cout << "Air density: " << airDensity << std::endl;
+    return airDensity;
+}
+
 // Calculat lift from different standards
-float AirObject::calculateLift(float airspeed) {
-    float lift = calcLiftCoeffAngle() * 0.5f * airDensity_ * std::pow(airspeed, 2) * wingArea_;
+float AirObject::calculateLift(float airspeed, float temp, float altitude) {
+    float lift = calcLiftCoeffAngle() * 0.5f * calcAirDensity(temp, altitude) * std::pow(airspeed, 2) * wingArea_;
     if (liftCoefficient_ == 0) {
-        std::cout << "Not all parameters are set, resulting in discrepancies calculations" << std::endl; // Use optional later
+        std::cout << "Not all lift parameters are set" << std::endl; // Use optional later
     }
     return lift;
 }
 
 float AirObject::calculateMaxLift(float maxAirspeed) {
-    float maxLift = (liftCoefficient_ + 2*math::PI * aCrit_) * 0.5f * airDensity_ * pow(maxAirspeed, 2) * wingArea_;
+    float maxLift = (liftCoefficient_ + 2*math::PI * 10 * math::DEG2RAD) * 0.5f * 0.5 * pow(maxAirspeed, 2) * wingArea_;
     return maxLift;
 }
 
@@ -68,16 +82,16 @@ void AirObject::setDragCoeff(float dragCoeff) {
     dragCoefficient_ = dragCoeff;
 }
 
-float AirObject::calculateDragCoeffAngle() {
+float AirObject::calcDragCoeffAngle() {
     return dragCoefficient_ + 0.08 * angleOfAttack_ + 0.005 * pow(angleOfAttack_, 2);
 }
 
-float AirObject::calculateDrag(float airspeed) {
-    return 0.5 * airDensity_ * airspeed * calculateDragCoeffAngle() * wingArea_;
+float AirObject::calculateDrag(float airspeed, float temp, float altitude) {
+    return 0.5 * calcAirDensity(temp, altitude) * airspeed * calcDragCoeffAngle() * wingArea_;
 }
 
 float AirObject::calculateMaxDrag(float maxAirspeed) {
-    return 0.5 * airDensity_ * maxAirspeed * dragCoefficient_ +
+    return 0.5 * 1.225 * maxAirspeed * dragCoefficient_ +
     0.08 * angleOfAttack_ + 0.005 * pow(40 * math::DEG2RAD, 2) * wingArea_;
 }
 
@@ -100,10 +114,6 @@ void AirObject::scaleModel(int gridSize) {
 // Set aircraft model to middle position compared to grid
 void AirObject::centerModel(int gridSize) {
     aircraftFuselage_->position.z = -(gridSize / 2);
-}
-
-void AirObject::setAirDensity(float air) {
-    airDensity_ = air;
 }
 
 AirObject::~AirObject() {

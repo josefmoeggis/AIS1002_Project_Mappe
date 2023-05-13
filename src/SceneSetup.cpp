@@ -43,7 +43,6 @@ std::shared_ptr<AirObject> setupAircraft1(STLLoader loader) {
     material->color = Color::beige;
     auto boeing = AirObject::create(fuselage, material, 40000, 470);
     boeing->setAngleParameters(1.6, 14, 20, 1.3);
-    boeing->setAirDensity(1.225);
     boeing->createMesh();
     boeing->scaleModel(1000);
     boeing->centerModel(1000);
@@ -60,7 +59,6 @@ std::shared_ptr<AirObject> setupAircraft2(STLLoader loader) {
     material->color = Color::silver;
     auto airbus = AirObject::create(fuselage, material, 4000, 470, 0.76, 0.26);
     airbus->setAngleParameters(1.6, 14, 20, 1.3);
-    airbus->setAirDensity(1.225);
     airbus->createMesh();
     airbus->scaleModel(1000);
     airbus->centerModel(1000);
@@ -76,7 +74,6 @@ std::shared_ptr<AirObject> setupAircraft3(STLLoader loader) {
     auto cessna = AirObject::create(fuselage, material, 800,
                                     16.17,0.33, 0.035, 0);
     cessna->setAngleParameters(1.5, 12, 18, 1.3);
-    cessna->setAirDensity(1.225);
     cessna->createMesh();
     cessna->scaleModel(700);
     cessna->centerModel(1000);

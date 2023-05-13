@@ -10,7 +10,6 @@
 #include "threepp/loaders/STLLoader.hpp"
 #include "threepp/materials/MeshPhongMaterial.hpp"
 #include "threepp/scenes/Scene.hpp"
-#include "threepp/materials/ShaderMaterial.hpp"
 #include "threepp/materials/RawShaderMaterial.hpp"
 #include "threepp/objects/Group.hpp"
 #include "../include/GUI.hpp"
