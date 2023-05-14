@@ -1,10 +1,11 @@
 ### Candidate number: 
-## AIS1002_Mappe Josef Møgster
+## AIS1002 Aerodynamic force simulation
 
-Welcome to this visualization of aerodynamic forces acting on an aircraft.
+Welcome to this visualization of aerodynamic forces acting upon an aircraft.
 First and foremost, you must understand the concept of this model to learn to appreciate it.
-The two forces being simulated on the 3D graph are Lift and Drag, which, although they are dependant on the same varibales,
-can have varying characteristics.
+The two forces being shown on the 3D graph are Lift and Drag, which, although they are dependent on the same variables, don't
+always correlate. Here you can simulate their characteristics to get a better understanding the forces are 
+affected by airspeed, angle of attack, wing 
 
 #### Goal
 The main goal of this project was my personal growth of knowledge in the field of
