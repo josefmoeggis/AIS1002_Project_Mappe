@@ -8,7 +8,7 @@
 
 #include <catch2/catch.hpp>
 
-TEST_CASE("Aircraft Setup") {
+TEST_CASE("Aircraft Setup and adding to scene") {
     STLLoader loader;
     auto geometry = loader.load("resources/Cessna_172.stl");
     auto material = MeshPhongMaterial::create();
@@ -20,5 +20,4 @@ TEST_CASE("Aircraft Setup") {
 
     scene.add(aircraft->getMesh());
     REQUIRE(scene.getObjectByName("Aircraft"));
-
 }
