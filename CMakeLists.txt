@@ -38,24 +38,24 @@ FETCHCONTENT_DECLARE(
         GIT_TAG v2.13.8
 )
 FETCHCONTENT_MAKEAVAILABLE(Catch2)
+include_directories(${catch2_SOURCE_DIR}/single_include)
 
-enable_testing()
-add_subdirectory(tests)
-add_subdirectory(src)
 
 file(COPY "${CMAKE_SOURCE_DIR}/resources" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 set(SOURCES
         src/AirObject.cpp
         src/Graph3D.cpp
-        tests/test_object.cpp
-        tests/test_object.cpp
-        src/SceneSetup.cpp)
+        tests/test_AirObject.cpp)
 set(HEADERS
         include/PID.hpp
         include/GUI.hpp
-        include/Utils.hpp)
+        include/Utils.hpp
+        src/SceneSetup.cpp
+        tests/test_AirObject.cpp)
 
 add_executable(driveSimulation main.cpp ${SOURCES} ${HEADERS})
-target_link_libraries(driveSimulation PRIVATE threepp::threepp imgui::imgui)
+target_link_libraries(driveSimulation PRIVATE threepp::threepp imgui::imgui headerLib)
+target_include_directories(driveSimulation PRIVATE "${CMAKE_SOURCE_DIR}/include")
+add_subdirectory(tests)
 

@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/AIS1002_Project_Mappe.iml" filepath="$PROJECT_DIR$/.idea/AIS1002_Project_Mappe.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/AIS2001_AerofoilTesting.iml" filepath="$PROJECT_DIR$/.idea/AIS2001_AerofoilTesting.iml" />
     </modules>
   </component>
