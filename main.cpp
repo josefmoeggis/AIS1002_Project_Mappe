@@ -4,7 +4,6 @@
 #include "include/GUI.hpp"
 #include "include/SceneSetup.hpp"
 #include "threepp/renderers/GLRenderer.hpp"
-#include "threepp/helpers/AxesHelper.hpp"
 #include "threepp/cameras/PerspectiveCamera.hpp"
 #include "threepp/controls/OrbitControls.hpp"
 #include "threepp/objects/Group.hpp"
@@ -18,9 +17,6 @@ int main() {
     GLRenderer renderer(canvas);
     renderer.setClearColor(Color::aliceblue);
 
-//    Setting up visual axes
-    auto axes = AxesHelper::create(100);
-
     // Setting up camera
     auto camera = PerspectiveCamera::create(60, canvas.getAspect(), 0.1f, 3000);
     camera->position.x = 1000;
@@ -28,8 +24,6 @@ int main() {
 
     // Scene creation
     auto scene = Scene::create();
-//    scene->add(grid);
-    scene->add(axes);
 
     //    Add light
     auto light = setLight();

@@ -42,6 +42,8 @@ struct ControllableParameters {
     explicit ControllableParameters(PID& pid, float targetAirspeed = 0, float targetAngleOfAttack = 0, float targetTemp = 288.15, float targetAltitude = 5000, int fileChoice = 0)
                                     : targetAirspeed(targetAirspeed), targetAngleOfAttack(targetAngleOfAttack * math::DEG2RAD), targetTemp(targetTemp),
                                     targetAltitude(targetAltitude), fileChoice(fileChoice), pid(pid) {}
+
+                                    // This was meant for adding images of selectable aircraft to ImGui
     void setOptions(std::optional<std::string> path1 = std::nullopt, std::optional<std::string> name1 = std::nullopt, std::optional<float> size1 = std::nullopt,
                      std::optional<std::string> path2 = std::nullopt, std::optional<std::string> name2 = std::nullopt, std::optional<float> size2 = std::nullopt,
                      std::optional<std::string> path3 = std::nullopt, std::optional<std::string> name3 = std::nullopt, std::optional<float> size3 = std::nullopt) {

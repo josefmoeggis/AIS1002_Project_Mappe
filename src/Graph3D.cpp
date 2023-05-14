@@ -3,7 +3,6 @@
 //
 #include "../include/Graph3D.hpp"
 
-//FIX THIS
 void  Graph3D::createGrid(int size, int divisions, Color color) {
     grid_ = GridHelper::create(size, divisions, color, color);
 }
@@ -60,7 +59,6 @@ void Graph3D::adjustGraphToFit(float maxVal) {
     for(int i = 0; i < graphVectors_->size(); i++) {
         scaledVectors_->at(i).y = ((*scaledVectors_)[i].y * *scaleFactor_) - *gridSize_ / 2;
     }
-//    std::cout << "scaleFactor: " << *scaleFactor_ << std::endl;
 }
 
 void Graph3D::updateLineVectors(float graphVal, float resolution) {

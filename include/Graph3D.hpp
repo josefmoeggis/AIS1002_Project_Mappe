@@ -76,7 +76,7 @@ private:
     std::shared_ptr<Color> graphColor_;
     std::shared_ptr<std::vector<Vector3>> graphVectors_;
     std::shared_ptr<std::vector<Vector3>> scaledVectors_;
-    std::shared_ptr<Line> graphLine_;
+    std::shared_ptr<Line> graphLine_ {};
 };
 
 
