@@ -1,22 +1,38 @@
+### Candidate number: 
 ## AIS1002_Mappe Josef Møgster
 
-Dette blir dessverre skrevet i siste liten ettersom jeg ikke får prosjektet til å compile disse siste 10 minuttene
-Laster opp en branch som kan kjøre (main) med det som er helt basic og en med den nyeste koden (sidebranch)
+Welcome to this visualization of aerodynamic forces acting on an aircraft.
+First and foremost, you must understand the concept of this model to learn to appreciate it.
+The two forces being simulated on the 3D graph are Lift and Drag, which, although they often are dependant
+on the same variables can have varying characteristics.
 
-Målet her er å få en 3D-graf som viser løftkraften på flyet
+#### Goal
+The main goal of this project was my personal growth of knowledge in the field of
+objectoriented programming while creating an interactive visualization using the threepp library.
+More specifically I decided that the project would be a fancy looking, but simple,
+interactive aerodynamic force simulation. It would take in different physical parameters and plot
+the calculated lift and drag onto a 3D graph to give better understanding of how these forces are
+affected.
 
-### Det som har blitt gjort
+#### Planning Phase
+It took some time before I landed on this idea as I fist wanted to see what was possible to
+using the threepp library. As I discovered you could do pretty much anything as long as you had time,
+I landed on this idea considering it was quite different from most other projects, which were mainly games.
+In addition, this project, although not useful or accurate enough for real world simulations, seemed
+like something on the more educational side.
+
+### What has been added
 
 * Laget klasse for flyene - startet som en underklasse av mesh men gjorde det om til å bare inkludere mesh
 * Klasse for graf med grid
 * UI som jeg ikke fikk ferdig implementert
 
-### Ting som må forbedres
+### What could be improved
 
 - Alle klassene skal få flere funksjoner
 - Skal basere GUI.hpp på pointers etter hvert
 
-### Det som skal legges til
+### Future additions
 
 1. Logikken slik at det blir mulig å bytte mellom valgt fly
 2. Evt. graf med drag
