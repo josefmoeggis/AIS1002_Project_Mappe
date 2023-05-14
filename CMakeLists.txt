@@ -4,7 +4,7 @@ project(AIS1002_project)
 set(CMAKE_CXX_STANDARD 17)
 find_package(threepp CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
-find_package(Bullet CONFIG)
+#find_package(Bullet CONFIG)
 
 #if (BULLET_FOUND AND NOT TARGET Bullet::Bullet)
 #    add_library(Bullet::Bullet INTERFACE IMPORTED src/SceneSetup.cpp include/SceneSetup.hpp)
@@ -46,16 +46,20 @@ file(COPY "${CMAKE_SOURCE_DIR}/resources" DESTINATION ${CMAKE_CURRENT_BINARY_DIR
 set(SOURCES
         src/AirObject.cpp
         src/Graph3D.cpp
-        tests/test_AirObject.cpp)
+        src/SceneSetup.cpp)
 set(HEADERS
         include/PID.hpp
         include/GUI.hpp
         include/Utils.hpp
-        src/SceneSetup.cpp
-        tests/test_AirObject.cpp)
+        include/AirObject.hpp
+        include/SceneSetup.hpp
+        include/PID.hpp
+)
 
-add_executable(driveSimulation main.cpp ${SOURCES} ${HEADERS})
-target_link_libraries(driveSimulation PRIVATE threepp::threepp imgui::imgui headerLib)
-target_include_directories(driveSimulation PRIVATE "${CMAKE_SOURCE_DIR}/include")
+add_subdirectory(src)
 add_subdirectory(tests)
+add_executable(driveSimulation main.cpp ${SOURCES} ${HEADERS})
+target_link_libraries(driveSimulation PRIVATE threepp::threepp imgui::imgui)
+target_include_directories(driveSimulation PRIVATE "${CMAKE_SOURCE_DIR}/include")
+enable_testing()
 

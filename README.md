@@ -3,8 +3,8 @@
 
 Welcome to this visualization of aerodynamic forces acting on an aircraft.
 First and foremost, you must understand the concept of this model to learn to appreciate it.
-The two forces being simulated on the 3D graph are Lift and Drag, which, although they often are dependant
-on the same variables can have varying characteristics.
+The two forces being simulated on the 3D graph are Lift and Drag, which, although they are dependant on the same varibales,
+can have varying characteristics.
 
 #### Goal
 The main goal of this project was my personal growth of knowledge in the field of
@@ -12,7 +12,7 @@ objectoriented programming while creating an interactive visualization using the
 More specifically I decided that the project would be a fancy looking, but simple,
 interactive aerodynamic force simulation. It would take in different physical parameters and plot
 the calculated lift and drag onto a 3D graph to give better understanding of how these forces are
-affected.
+affected during flight.
 
 #### Planning Phase
 It took some time before I landed on this idea as I fist wanted to see what was possible to
@@ -20,6 +20,16 @@ using the threepp library. As I discovered you could do pretty much anything as 
 I landed on this idea considering it was quite different from most other projects, which were mainly games.
 In addition, this project, although not useful or accurate enough for real world simulations, seemed
 like something on the more educational side.
+
+#### How it works
+The parameters you can change are:
+- Airspeed
+- Angle of attack
+- Temperature at sea level
+- Altitude
+
+In addition, you have the option of switching between three different aircraft.
+
 
 ### What has been added
 
