@@ -1,5 +1,3 @@
-<!-- toc -->
-
 
 ### Candidate number: 
 ## AIS1002 Aerodynamic force simulation
@@ -17,7 +15,8 @@ affected by **airspeed**, **angle of attack**, **altitude** and **temperature** 
 - [How it works](#how-it-works)
 - [Coding](#coding)
 - [Aerodynamics](#aerodynamics)
-- [Future improvements](#future-improvements)
+- [What could be improved](#what-could-be-improved)
+- [Future additions](#future-additions)
 - [Sources](#sources)
   
 #### Purpose
@@ -42,7 +41,7 @@ In addition, you have the option of switching between three different aircraft.
 **DISCLAIMER!** The aerodynamic characteristics in this model are not accurate but calculated estimations using standard
 equations. To get accurate equations you would have to use a wind tunnels and full scale aircraft.
 
-#### Lift
+#### Equasions
 To calculate the lift force in a simple way, this equation can be used:
 
 
@@ -61,19 +60,32 @@ direct speed of airflow relative to the aircraft (see it as a wind tunnel).
 As we add more elements to the formula, we increase the parameters that can be set. For the *AoA* there is no exact equation for
 aircraft in general, but we can estimate formulas as aircraft will act similarly at different angles depending on the aircraft.
 
-<img src ="https://latex.codecogs.com/svg.image?{\color{Emerald}%26space;C_{L}\left%26space;(%26space;\alpha%26space;%26space; \right%26space;)%26space;=%26space;\left\{%26space;C_{0}%26space;&plus;%26space;2\pi%26space;\cdot%26space;\alpha%26space;\right\},%26space;if%26space;-\alpha%26space;_{crit}\leqslant%26space;\alpha%26space;\leqslant%26space;\alpha%26space;_{crit}}" />
+<img src ="https://latex.codecogs.com/svg.image?{\color{Emerald}%26space;C_{L}\left%26space;(%26space;\alpha%26space;%26space;\right%26space;)%26space;=%26space;\left\{%26space;C_{0}%26space;&plus;%26space;2\pi%26space;\cdot%26space;\alpha%26space;\right\},%26space;if%26space;-\alpha%26space;_{crit}\leq%26space;\alpha%26space;\leq%26space;\alpha%26space;_{crit}}" />
 <img src ="https://latex.codecogs.com/svg.image?{\color{Emerald}%26space;C_{L}\left%26space;(%26space;\alpha%26space;%26space;\right%26space;)%26space;=C_{Lstall}-\left%26space;(%26space;k%26space;\cdot%26space;\left%26space;(%26space;\alpha%26space;-\alpha%26space;_{crit}%26space;\right%26space;)%26space;\right%26space;)^{2},%26space;if%26space;\alpha%26space;_{crit}%26space;<%26space;\alpha%26space;\leqslant%26space;\alpha%26space;_{stall}}" />
 <img src ="https://latex.codecogs.com/svg.image?{\color{Emerald}%26space;C_{L}\left%26space;(%26space;\alpha%26space;%26space;\right%26space;)%26space;=-C_{Lstall}&plus;\left%26space;(%26space;k%26space;\cdot%26space;\left%26space;(%26space;\alpha%26space;-\alpha%26space;_{crit}%26space;\right%26space;)%26space;\right%26space;)^{2},%26space;if%26space;-\alpha%26space;_{stall}%26space;\leq%26space;\alpha%26space;<%26space;-\alpha%26space;_{crit}}" />
 
 The values of all these coefficients and angles would all depend on the specific aircraft and therefore would be preset.
 
-To find *&rho;* the calculations done by the international standard atmosphere
+To find *&rho;* the general equations from the International Standard Atmosphere were used. There were two seperate equations. One for
+Altitudes below 11km and one for altitudes above 11km.
+
+Similarly, an equation for drag of the aircraft was added using all the same parameters.
+
+
 
 ### Code
 
-* Laget klasse for flyene - startet som en underklasse av mesh men gjorde det om til å bare inkludere mesh
-* Klasse for graf med grid
-* UI som jeg ikke fikk ferdig implementert
+#### Classes
+My classes consist of AirObject, Graph3D and the PID. In addition, there are three structs in the GUI file,
+that have different purposes regarding the GUI. Utils and SceneSetup consist of only independent functions.
+* AirObject is initialized as a sharepointer, which takes in a few parameters and stores the aircraft mesh. It also includes most
+all the aerodynamic methods which are used to calculate lift and drag of the aircraft.
+* Graph3D is not initialized as sharepointer, although I would have converted it be if I had more time. All the values and the grid and graph meshes are,
+however stored in sharedpointers. Graph3D also inherits from Object3D. This was mainly done for the possibility of moving the coordinates of both the
+grid and the graph lines together. In this case they were best centered.
+* Utils consists of physics constants and some conversion functions.
+* GUI has the ImGui struct in addition to the ControllableOptions struct. There is also a struct for a type that is used in the two other structs called
+Triple. 
 
 ### What could be improved
 
@@ -82,23 +94,9 @@ To find *&rho;* the calculations done by the international standard atmosphere
 
 ### Future additions
 
-1. Logikken slik at det blir mulig å bytte mellom valgt fly
-2. Evt. graf med drag
-3. Kommunikasjonen mellom UI - control - objektene
-4. Øke angrepsvinkel på flyet som også skal gi utslag på grafen
-5. Kanskje få inn litt bevegelse av flyet med kraføkning
-
-### List of points to finish
-- [ ] Create angular movement
-1. -[ ] Make new method for updating angle and returning value depending on elapsed time
-2. -[ ] Inhibit set of new angle until reached previous angle
-
-
-- [ ] Troubleshoot GUI
-1. -[ ] Figure out why nothing shows on screen or it crashes
-2. -[ ] Fix issues with images
-3. -[ ] Try controlling the different states and getting a returned output in terminal
-4. -[ ] Add the different states for different selected aircraft
+1. Adding matplotlib was somthing I wanted to do. If I didn't struggle so much with setting up CMakeLists and targeting the Python.exe file it would have been possible for this version.
+2. I would like to improve the continuous integration as it does not run on linux or macos at the moment. This is mainly because of the struct I created
+and would therefore not be to complicated to fix.
 
 
 ### SOURCES
