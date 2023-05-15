@@ -57,11 +57,15 @@ this will just be a preset value for each aircraft.
 - *v* - Seen in the equation, the velocity will be one of the main factors in increasing lift. We will only take into account
 direct speed of airflow relative to the aircraft (see it as a wind tunnel).
 
+![Alt Text](resources/Angle_of_Attack.jpg)
+
 As we add more elements to the formula, we increase the parameters that can be set. For the *AoA* there is no exact equation for
 aircraft in general, but we can estimate formulas as aircraft will act similarly at different angles depending on the aircraft.
-
+<br>
 <img src ="https://latex.codecogs.com/svg.image?{\color{Emerald}%26space;C_{L}\left%26space;(%26space;\alpha%26space;%26space;\right%26space;)%26space;=%26space;\left\{%26space;C_{0}%26space;&plus;%26space;2\pi%26space;\cdot%26space;\alpha%26space;\right\},%26space;if%26space;-\alpha%26space;_{crit}\leq%26space;\alpha%26space;\leq%26space;\alpha%26space;_{crit}}" />
+<br>
 <img src ="https://latex.codecogs.com/svg.image?{\color{Emerald}%26space;C_{L}\left%26space;(%26space;\alpha%26space;%26space;\right%26space;)%26space;=C_{Lstall}-\left%26space;(%26space;k%26space;\cdot%26space;\left%26space;(%26space;\alpha%26space;-\alpha%26space;_{crit}%26space;\right%26space;)%26space;\right%26space;)^{2},%26space;if%26space;\alpha%26space;_{crit}%26space;<%26space;\alpha%26space;\leqslant%26space;\alpha%26space;_{stall}}" />
+<br>
 <img src ="https://latex.codecogs.com/svg.image?{\color{Emerald}%26space;C_{L}\left%26space;(%26space;\alpha%26space;%26space;\right%26space;)%26space;=-C_{Lstall}&plus;\left%26space;(%26space;k%26space;\cdot%26space;\left%26space;(%26space;\alpha%26space;-\alpha%26space;_{crit}%26space;\right%26space;)%26space;\right%26space;)^{2},%26space;if%26space;-\alpha%26space;_{stall}%26space;\leq%26space;\alpha%26space;<%26space;-\alpha%26space;_{crit}}" />
 
 The values of all these coefficients and angles would all depend on the specific aircraft and therefore would be preset.
@@ -69,7 +73,7 @@ The values of all these coefficients and angles would all depend on the specific
 To find *&rho;* the general equations from the International Standard Atmosphere were used. There were two seperate equations. One for
 Altitudes below 11km and one for altitudes above 11km.
 
-Similarly, an equation for drag of the aircraft was added using all the same parameters.
+Similarly, an equation for drag of the aircraft was added using all the same parameters as the one for lift. *C<sub>D</sub>*.
 
 
 
@@ -78,7 +82,7 @@ Similarly, an equation for drag of the aircraft was added using all the same par
 #### Classes
 My classes consist of AirObject, Graph3D and the PID. In addition, there are three structs in the GUI file,
 that have different purposes regarding the GUI. Utils and SceneSetup consist of only independent functions.
-* AirObject is initialized as a sharepointer, which takes in a few parameters and stores the aircraft mesh. It also includes most
+* AirObject is initialized as a sharepointer, which takes in a few parameters and stores the aircraft mesh. It also includes
 all the aerodynamic methods which are used to calculate lift and drag of the aircraft.
 * Graph3D is not initialized as sharepointer, although I would have converted it be if I had more time. All the values and the grid and graph meshes are,
 however stored in sharedpointers. Graph3D also inherits from Object3D. This was mainly done for the possibility of moving the coordinates of both the
@@ -87,18 +91,31 @@ grid and the graph lines together. In this case they were best centered.
 * GUI has the ImGui struct in addition to the ControllableOptions struct. There is also a struct for a type that is used in the two other structs called
 Triple. 
 
+#### Structure
+
+
 ### What could be improved
 
-- Alle klassene skal få flere funksjoner
-- Skal basere GUI.hpp på pointers etter hvert
+- The accuracy of the equations for *angle of attack* as they would drastically decrease the lift when the *stall angle*
+was reached (too high angle to produce lift).
+- Would have used more sharepointers in initializing of classes.
+- Used more inheritance.
+- Created a SceneSetup class instead of only functions
 
 ### Future additions
 
-1. Adding matplotlib was somthing I wanted to do. If I didn't struggle so much with setting up CMakeLists and targeting the Python.exe file it would have been possible for this version.
+1. Adding matplotlib was somthing I wanted to do. If I didn't struggle so much with setting up CMakeLists and targeting the Python.exe file it would have been possible for this version. As of now,
+there is no way of seeing the actual lift force in Newtons.
 2. I would like to improve the continuous integration as it does not run on linux or macos at the moment. This is mainly because of the struct I created
 and would therefore not be to complicated to fix.
 
 
 ### SOURCES
 
-[//]: # (- https://www.grc.nasa.gov/WWW/K-12/FoilSim/Manual/fsim0007.htm)
+- https://www.grc.nasa.gov/WWW/K-12/FoilSim/Manual/fsim0007.htm
+- https://www.princeton.edu/~maelabs/hpt/mechanics/mecha_62.htm
+- https://www.grc.nasa.gov/www/k-12/WindTunnel/Activities/lift_formula.html
+- https://digitalcommons.calpoly.edu/cgi/viewcontent.cgi?referer=&httpsredir=1&article=1041&context=aerosp
+- http://www.b737.org.uk/techspecsdetailed.htm
+- https://www.translatorscafe.com/unit-converter/de-DE/calculator/altitude/#international-standard-atmosphere-ISA
+- http://fisicaatmo.at.fcen.uba.ar/practicas/ISAweb.pdf
