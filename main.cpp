@@ -98,7 +98,7 @@ switch (control.fileChoice) {
             graphDrag.adjustGraphToFit(aircraft->calculateMaxDrag(knotsToMtrPrSec(400)));
             graphDrag.makeLine(scene);
             scene->add(graphDrag.getLine());
-            graphDrag.updateMesh(-60);
+            graphDrag.updateMesh(-100);
             sec = 0;
         }
         float angleGain = anglePID.regulate(control.targetAngleOfAttack,

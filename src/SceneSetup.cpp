@@ -27,7 +27,7 @@ std::shared_ptr<Mesh> getAirflowArrow(STLLoader loader) {
     material->flatShading = true;
     material->color = Color::lightsteelblue;
     auto arrow = Mesh::create(geometry, material);
-    arrow->position.z = -1000;
+    arrow->position.z = -900;
     arrow->position.y = -50;
     arrow->rotateY(math::PI);
     arrow->rotateX(math::PI);

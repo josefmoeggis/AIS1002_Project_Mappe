@@ -118,6 +118,7 @@ std::shared_ptr<Mesh> Graph3D::createMesh(std::shared_ptr<BufferGeometry> arrowG
     material->color = *graphColor_;
     auto arrow = Mesh::create(arrowGeometry, material);
     arrow->rotateY(math::PI /2);
+    arrow->scale.setScalar( 2);
     return arrow;
 }
 
