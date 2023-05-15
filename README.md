@@ -1,15 +1,5 @@
 <!-- toc -->
-<style>
-    @media only screen and (min-width: 768px) {
-        .container {
-            max-width: 80ch;
-            margin-left: auto;
-            margin-right: auto;
-            padding-left: 15px;
-            padding-right: 15px;
-        }
-    }
-</style>
+
 
 ### Candidate number: 
 ## AIS1002 Aerodynamic force simulation
@@ -75,7 +65,9 @@ aircraft in general, but we can estimate formulas as aircraft will act similarly
 <img src ="https://latex.codecogs.com/svg.image?{\color{Emerald}%26space;C_{L}\left%26space;(%26space;\alpha%26space;%26space;\right%26space;)%26space;=C_{Lstall}-\left%26space;(%26space;k%26space;\cdot%26space;\left%26space;(%26space;\alpha%26space;-\alpha%26space;_{crit}%26space;\right%26space;)%26space;\right%26space;)^{2},%26space;if%26space;\alpha%26space;_{crit}%26space;<%26space;\alpha%26space;\leqslant%26space;\alpha%26space;_{stall}}" />
 <img src ="https://latex.codecogs.com/svg.image?{\color{Emerald}%26space;C_{L}\left%26space;(%26space;\alpha%26space;%26space;\right%26space;)%26space;=-C_{Lstall}&plus;\left%26space;(%26space;k%26space;\cdot%26space;\left%26space;(%26space;\alpha%26space;-\alpha%26space;_{crit}%26space;\right%26space;)%26space;\right%26space;)^{2},%26space;if%26space;-\alpha%26space;_{stall}%26space;\leq%26space;\alpha%26space;<%26space;-\alpha%26space;_{crit}}" />
 
-The values of all these coefficients and angles would all depend on the specific aircraft. 
+The values of all these coefficients and angles would all depend on the specific aircraft and therefore would be preset.
+
+To find *&rho;* the calculations done by the international standard atmosphere
 
 ### Code
 
@@ -111,4 +103,4 @@ The values of all these coefficients and angles would all depend on the specific
 
 ### SOURCES
 
-- https://www.grc.nasa.gov/WWW/K-12/FoilSim/Manual/fsim0007.htm
+[//]: # (- https://www.grc.nasa.gov/WWW/K-12/FoilSim/Manual/fsim0007.htm)
