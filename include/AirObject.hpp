@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <vector>
+#include <cmath>
 #include "threepp/extras/imgui/imgui_context.hpp"
 #include "threepp/core/BufferGeometry.hpp"
 #include "threepp/materials/Material.hpp"

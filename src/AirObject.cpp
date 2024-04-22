@@ -64,7 +64,7 @@ float AirObject::calcAirDensity(float temp, float altitude) {
     return airDensity;
 }
 
-// Calculat lift from different standards
+// Calculate lift from different standards
 float AirObject::calculateLift(float airspeed, float temp, float altitude) {
     float lift = calcLiftCoeffAngle() * 0.5f * calcAirDensity(temp, altitude) * std::pow(airspeed, 2) * wingArea_;
     if (liftCoefficient_ == 0) {
