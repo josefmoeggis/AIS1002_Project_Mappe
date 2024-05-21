@@ -44,6 +44,8 @@ public:
 
     float calculateMaxLift(float airspeed);
 
+    void updateLongitudinal(float elevatorDeflection, float dt);
+
     void setDragCoeff(float dragCoeff);
 
     float calcDragCoeffAngle();
@@ -82,6 +84,39 @@ private:
     float stallRate_;
 
     float angleOfAttack_;
+
+//    Physics parameters
+    float aileronDefl_ = 0;
+    float elevatorDefl_ = 0;
+    float rudderDefl_ = 0;
+    float thrust_ = 0;
+
+    float rollAttitude_ = 0;
+    float pitchAttitude_ = 0;
+    float yawAttitude_ = 0;
+
+    float derivRollAttitude_ = 0;
+    float derivPitchAttitude_ = 0;
+    float derivYawAttitude_ = 0;
+
+    float rollRate_ = 0;
+    float pitchRate_ = 0;
+    float yawRate_ = 0;
+
+    float derivRollRate_ = 0;
+    float derivPitchRate_ = 0;
+    float derivYawRate_ = 0;
+
+    float longitudinalAcc_ = 0;
+    float lateralAcc_ = 0;
+    float normalAcc_ = 0;
+
+    float longitudinalSpeed_ = 0;
+    float lateralSpeed_ = 0;
+    float normalSpeed_ = 0;
+
+    float altitude_ = 0;
+
 
 //    Mesh of the aircraft
     std::shared_ptr<BufferGeometry> geometry_;

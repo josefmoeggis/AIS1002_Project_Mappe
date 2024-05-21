@@ -105,6 +105,7 @@ switch (control.fileChoice) {
                                             aircraft->getAngleOfAttack(), dt);
         aircraft->setControlledAngle(angleGain, 2, dt);
         movementShell->rotation.x = aircraft->getAngleOfAttack();
+        movementShell->rotation.z = 0;
         renderer.render(scene, camera);
         myUI.render();
         controls.enabled = !myUI.getMouseHover();

@@ -78,6 +78,19 @@ float AirObject::calculateMaxLift(float maxAirspeed) {
     return maxLift;
 }
 
+void AirObject::updateLongitudinal(float elevatorDeflection, float dt) {
+    elevatorDefl_ = elevatorDeflection;
+    longitudinalAcc_ = (-0.09148) * longitudinalSpeed_ + 0.04242 * normalSpeed_ - 32.17 * pitchAttitude_;
+    normalAcc_ = 10.51 * longitudinalSpeed_ - 3.066 * normalSpeed_ + 152 * pitchRate_;
+    derivPitchRate_ = 0.2054 * longitudinalSpeed_ - 0.05581 * normalSpeed_ - 2.114 * pitchRate_ - 12.64 * elevatorDefl_;
+    derivPitchAttitude_ = pitchRate_;
+
+    longitudinalSpeed_ =+ longitudinalAcc_ * dt;
+    normalSpeed_ =+ normalSpeed_ * dt;
+    pitchRate_ =+ derivPitchRate_ * dt;
+    pitchAttitude_ =+ derivPitchAttitude_ * dt;
+}
+
 void AirObject::setDragCoeff(float dragCoeff) {
     dragCoefficient_ = dragCoeff;
 }
