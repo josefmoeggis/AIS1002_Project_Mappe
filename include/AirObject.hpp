@@ -44,7 +44,18 @@ public:
 
     float calculateMaxLift(float airspeed);
 
+    void setStartvalues(float longitudinalSpeed, float normalSpeed, float pitchRate, float pitchAttitude,
+                        float lateralSpeed, float rollRate, float yawRate, float rollAttitude);
+
     void updateLongitudinal(float elevatorDeflection, float dt);
+
+    float getPitch();
+
+    void updateLateral(float aileron, float rudder, float dt);
+
+    float getRoll();
+
+    float getYaw();
 
     void setDragCoeff(float dragCoeff);
 
@@ -94,6 +105,10 @@ private:
     float rollAttitude_ = 0;
     float pitchAttitude_ = 0;
     float yawAttitude_ = 0;
+
+    float absRollAttitude_ = 0;
+    float absPitchAttitude_ = 0;
+    float absYawAttitude_ = 0;
 
     float derivRollAttitude_ = 0;
     float derivPitchAttitude_ = 0;

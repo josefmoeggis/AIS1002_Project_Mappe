@@ -30,17 +30,18 @@ public:
 // Inspired from PID regulator code in threepp
 struct ControllableParameters {
     float targetAirspeed;
-    float targetAngleOfAttack;
+    float setAngle;
     float targetTemp;
     float targetAltitude;
     int fileChoice;
+    float prevSetAngle = 0;
     std::vector<Triple<std::optional<std::string>, std::optional<std::string>, std::optional<float>>> imagePaths {}; // storing path string and pixels
 
     PID& pid;
 
 
     explicit ControllableParameters(PID& pid, float targetAirspeed = 0, float targetAngleOfAttack = 0, float targetTemp = 288.15, float targetAltitude = 5000, int fileChoice = 0)
-                                    : targetAirspeed(targetAirspeed), targetAngleOfAttack(targetAngleOfAttack * math::DEG2RAD), targetTemp(targetTemp),
+                                    : targetAirspeed(targetAirspeed), setAngle(setAngle), targetTemp(targetTemp),
                                     targetAltitude(targetAltitude), fileChoice(fileChoice), pid(pid) {}
 
                                     // This was meant for adding images of selectable aircraft to ImGui
@@ -88,9 +89,9 @@ struct GUI : imgui_context {
         ImGui::SetCursorPos(ImVec2(30, 50));
         ImGui::SliderFloat("knots", &controlOptions_.targetAirspeed, 0, 400);
         ImGui::SetCursorPos(ImVec2(65, 80));
-        ImGui::Text("Control Angle of Attack");
+        ImGui::Text("Elevator Angle");
         ImGui::SetCursorPos(ImVec2(30, 100));
-        ImGui::SliderAngle("degrees", &controlOptions_.targetAngleOfAttack, -40, 40);
+        ImGui::SliderAngle("degrees", &controlOptions_.setAngle, -40, 40);
         ImGui::SetCursorPos(ImVec2(185, 140));
         ImGui::TextColored(ImVec4(39, 158, 138, 255), "Altitude");
         ImGui::SetCursorPos(ImVec2(190, 160));

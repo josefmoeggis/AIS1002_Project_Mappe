@@ -61,6 +61,7 @@ int main() {
     auto boeing = setupAircraft1(loader);
     auto airbus = setupAircraft2(loader);
     auto cessna = setupAircraft3(loader);
+    airbus->setStartvalues(100, 0, 0, 30, 0, 0, 0, 20);
 
     std::shared_ptr<AirObject> aircraft = boeing;
 
@@ -101,15 +102,26 @@ switch (control.fileChoice) {
             graphDrag.updateMesh(-100);
             sec = 0;
         }
-        float angleGain = anglePID.regulate(control.targetAngleOfAttack,
+        /*float angleGain = anglePID.regulate(control.setAngle,
                                             aircraft->getAngleOfAttack(), dt);
-        aircraft->setControlledAngle(angleGain, 2, dt);
-        movementShell->rotation.x = aircraft->getAngleOfAttack();
-        movementShell->rotation.z = 0;
+        aircraft->setControlledAngle(angleGain, 2, dt);*/
+
+        if(control.setAngle != 0) {
+            aircraft->updateLongitudinal(control.setAngle * math::RAD2DEG, dt);
+            std::cout <<"Print setAngle: " << control.setAngle * math::RAD2DEG << std::endl;
+            control.setAngle = 0;
+        }
+        else {
+            aircraft->updateLongitudinal(0, dt);
+        }
+        aircraft->updateLateral(0, 0, dt);
+
+        movementShell->rotation.x = aircraft->getPitch();
+        movementShell->rotation.z = aircraft->getRoll();
+        movementShell->rotation.y = aircraft->getYaw();
         renderer.render(scene, camera);
         myUI.render();
         controls.enabled = !myUI.getMouseHover();
-
         t += dt;
         sec += dt;
     });

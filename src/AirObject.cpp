@@ -60,7 +60,7 @@ float AirObject::calcAirDensity(float temp, float altitude) {
     } else {
         std::cout << "Altitude or temperature out of bounds" << std::endl;
     }
-    std::cout << "Air density: " << airDensity << std::endl;
+    //std::cout << "Air density: " << airDensity << std::endl;
     return airDensity;
 }
 
@@ -78,6 +78,18 @@ float AirObject::calculateMaxLift(float maxAirspeed) {
     return maxLift;
 }
 
+void AirObject::setStartvalues(float longitudinalSpeed, float normalSpeed, float pitchRate, float pitchAttitude,
+                               float lateralSpeed, float rollRate, float yawRate, float rollAttitude){
+    longitudinalSpeed_ = longitudinalSpeed;
+    normalSpeed_ = normalSpeed;
+    pitchRate_ = pitchRate;
+    pitchAttitude_ = pitchAttitude;
+    lateralSpeed_ = lateralSpeed;
+    rollRate_ = rollRate;
+    yawRate_ = yawRate;
+    rollAttitude_ = rollAttitude;
+}
+
 void AirObject::updateLongitudinal(float elevatorDeflection, float dt) {
     elevatorDefl_ = elevatorDeflection;
     longitudinalAcc_ = (-0.09148) * longitudinalSpeed_ + 0.04242 * normalSpeed_ - 32.17 * pitchAttitude_;
@@ -85,10 +97,50 @@ void AirObject::updateLongitudinal(float elevatorDeflection, float dt) {
     derivPitchRate_ = 0.2054 * longitudinalSpeed_ - 0.05581 * normalSpeed_ - 2.114 * pitchRate_ - 12.64 * elevatorDefl_;
     derivPitchAttitude_ = pitchRate_;
 
-    longitudinalSpeed_ =+ longitudinalAcc_ * dt;
-    normalSpeed_ =+ normalSpeed_ * dt;
-    pitchRate_ =+ derivPitchRate_ * dt;
-    pitchAttitude_ =+ derivPitchAttitude_ * dt;
+    longitudinalSpeed_ += longitudinalAcc_ * dt;
+    normalSpeed_ += normalAcc_ * dt;
+    pitchRate_ += derivPitchRate_ * dt;
+    pitchAttitude_ += derivPitchAttitude_ * dt;
+
+    absPitchAttitude_ = pitchAttitude_ * math::DEG2RAD;
+    std::cout << "Elevator Deflection: " << elevatorDefl_ << std::endl;
+    std::cout << "Longitudinal Speed: " << longitudinalSpeed_ << std::endl;
+    std::cout << "Normal Speed: " << normalSpeed_ << std::endl;
+    std::cout << "Pitch Rate: " << pitchRate_ << std::endl;
+    std::cout << "Pitch Attitude: " << pitchAttitude_ << std::endl;
+}
+
+float AirObject::getPitch(){
+    return absPitchAttitude_;
+}
+
+void AirObject::updateLateral(float aileronDeflection, float rudderDeflection, float dt) {
+    aileronDefl_ = aileronDeflection;
+    rudderDefl_ = rudderDeflection;
+    lateralAcc_ = -0.093 * lateralSpeed_ - 152.6 * yawRate_ + 32.17 * rollAttitude_ + 3.469 * rudderDefl_;
+    derivRollRate_ = -0.059 * lateralSpeed_ - 5.816 * rollRate_ + 1.854 * yawRate_ + 15.74 * aileronDefl_ + 1.380 * rudderDefl_;
+    derivYawRate_ = 0.030 * lateralSpeed_ - 0.548 * rollRate_ - 0.953 * yawRate_ + 0.486 * aileronDefl_ - 4.288 * rudderDefl_;
+    derivRollAttitude_ = rollRate_;
+
+    // Update the state variables by integrating the derivatives
+    lateralSpeed_ += lateralAcc_ * dt;
+    rollRate_ += derivRollRate_ * dt;
+    yawRate_ += derivYawRate_ * dt;
+    rollAttitude_ += derivRollAttitude_ * dt;
+
+    // Intermediate value that is not included in the state space
+    yawAttitude_ += yawRate_ * dt;
+
+    absRollAttitude_ = rollAttitude_ * math::DEG2RAD;
+    absYawAttitude_ = yawAttitude_ * math::DEG2RAD;
+}
+
+float AirObject::getRoll(){
+    return absRollAttitude_;
+}
+
+float AirObject::getYaw(){
+    return absYawAttitude_;
 }
 
 void AirObject::setDragCoeff(float dragCoeff) {
