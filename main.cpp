@@ -106,14 +106,17 @@ switch (control.fileChoice) {
                                             aircraft->getAngleOfAttack(), dt);
         aircraft->setControlledAngle(angleGain, 2, dt);*/
 
+
         if(control.setAngle != 0) {
             aircraft->updateLongitudinal(control.setAngle * math::RAD2DEG, dt);
             std::cout <<"Print setAngle: " << control.setAngle * math::RAD2DEG << std::endl;
             control.setAngle = 0;
         }
+
         else {
             aircraft->updateLongitudinal(0, dt);
         }
+
         aircraft->updateLateral(0, 0, dt);
 
         movementShell->rotation.x = aircraft->getPitch();
