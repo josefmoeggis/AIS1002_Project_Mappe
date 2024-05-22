@@ -57,6 +57,8 @@ public:
 
     float getYaw();
 
+    void setAirSpeed(float airspeed);
+
     void setDragCoeff(float dragCoeff);
 
     float calcDragCoeffAngle();
@@ -131,6 +133,7 @@ private:
     float normalSpeed_ = 0;
 
     float altitude_ = 0;
+
 
 
 //    Mesh of the aircraft

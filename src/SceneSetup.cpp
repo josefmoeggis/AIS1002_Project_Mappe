@@ -22,17 +22,19 @@ std::shared_ptr<Sky> setSky(std::shared_ptr<DirectionalLight> light) {
 }
 
 std::shared_ptr<Mesh> getAirflowArrow(STLLoader loader) {
-    auto geometry = loader.load("resources/AirflowArrow.stl");
+    auto geometry = loader.load("resources/NavionPlaneModelPropp.stl");
     auto material = MeshPhongMaterial::create();
     material->flatShading = true;
     material->color = Color::lightsteelblue;
     auto arrow = Mesh::create(geometry, material);
-    arrow->position.z = -900;
-    arrow->position.y = -50;
-    arrow->rotateY(math::PI);
-    arrow->rotateX(math::PI);
-    arrow->rotateZ(math::PI / 2);
-    arrow->scale.setScalar(0.5);
+    arrow->scale *= 8;
+    arrow->position.z -= 30;
+    arrow->rotateY(-math::PI /2);
+    arrow->name = "propeller";
+    //arrow->rotateY(math::PI);
+    //arrow->rotateX(math::PI);
+    //arrow->rotateZ(math::PI / 2);
+    //arrow->scale.setScalar(0.5);
     return arrow;
 }
 
@@ -60,8 +62,10 @@ std::shared_ptr<AirObject> setupAircraft2(STLLoader loader) {
     auto airbus = AirObject::create(fuselage, material, 4000, 470, 0.76, 0.26);
     airbus->setAngleParameters(1.6, 14, 20, 1.3);
     airbus->createMesh();
-    airbus->scaleModel(1000);
+    airbus->scaleModel(35000);
     airbus->centerModel(1000);
+    airbus->getMesh()->position.z += 500;
+    airbus->getMesh()->rotateY(-math::PI /2);
     airbus->getMesh()->name = "Airbus";
     return airbus;
 }

@@ -40,7 +40,7 @@ int main() {
 //    Controls from GUI
     ControllableParameters control(anglePID, 100, 0, 0, 0, 10, 500, 1);
     control.setOptions("resources/B737_image_min.jpeg", "Boeing 737-800", 746 * 420,
-                       "resources/SAS-A321LR_min.jpeg", "Airbus A320", 1200 * 869,
+                       "resources/SAS-A321LR_min.jpeg", "Navion", 1200 * 869,
                        "resources/Cessna_172S_Skyhawk.jpg", "Cessna 172", 220 * 164);
     GUI myUI(canvas, control);
 
@@ -60,14 +60,13 @@ int main() {
     auto boeing = setupAircraft1(loader);
     auto navion = setupAircraft2(loader);
     auto cessna = setupAircraft3(loader);
-    navion->setStartvalues(100, 0, 0, 30, 0, 0, 0, 20);
+    navion->setStartvalues(100, 0, 0, 30, 0, 0, 0, -20);
 
     std::shared_ptr<AirObject> aircraft = boeing;
 
     auto movementShell = Group::create();
     movementShell->add(aircraft->getMesh());
-    auto airflowArrow = getAirflowArrow(loader);
-    movementShell->add(airflowArrow);
+    auto propeller = getAirflowArrow(loader);
     scene->add(movementShell);
 
     float t = 0;
@@ -82,6 +81,9 @@ switch (control.fileChoice) {
     case 1:
         aircraft = navion;
         loopAircraft(movementShell, navion, cessna, boeing, switchPID, dt);
+        if (!(movementShell->getObjectByName("propeller"))){
+            movementShell->add(propeller);
+        }
         break;
     case 2:
         aircraft = cessna;
@@ -116,7 +118,7 @@ switch (control.fileChoice) {
             aircraft->updateLongitudinal(0, dt);
         }
         if(control.setAileronAngle != 0 || control.setRudderAngle != 0) {
-            aircraft->updateLateral(control.setAileronAngle * math::RAD2DEG, control.setRudderAngle * math::RAD2DEG, dt);
+            aircraft->updateLateral(control.setAileronAngle * math::RAD2DEG, control.setRudderAngle * math::RAD2DEG * 5, dt);
             control.setAileronAngle = 0;
             control.setRudderAngle = 0;
         }
@@ -124,6 +126,7 @@ switch (control.fileChoice) {
             aircraft->updateLateral(0, 0, dt);
         }
 
+        movementShell->getObjectByName("propeller")->rotateX(control.targetAirspeed * dt * math::DEG2RAD);
 
 
         aircraft->updateLateral(0, 0, dt);
