@@ -53,7 +53,7 @@ std::shared_ptr<AirObject> setupAircraft1(STLLoader loader) {
 }
 
 std::shared_ptr<AirObject> setupAircraft2(STLLoader loader) {
-    auto fuselage = loader.load("resources/A320neo.stl");
+    auto fuselage = loader.load("resources/NavionPlaneModelPlane.stl");
     auto material = MeshPhongMaterial::create();
     material->flatShading = true;
     material->color = Color::silver;

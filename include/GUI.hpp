@@ -30,7 +30,9 @@ public:
 // Inspired from PID regulator code in threepp
 struct ControllableParameters {
     float targetAirspeed;
-    float setAngle;
+    float setElevatorAngle;
+    float setAileronAngle;
+    float setRudderAngle;
     float targetTemp;
     float targetAltitude;
     int fileChoice;
@@ -39,10 +41,14 @@ struct ControllableParameters {
 
     PID& pid;
 
+    bool updateElevator = false;
+    bool updateAileron = false;
+    bool updateRudder = false;
 
-    explicit ControllableParameters(PID& pid, float targetAirspeed = 0, float targetAngleOfAttack = 0, float targetTemp = 288.15, float targetAltitude = 5000, int fileChoice = 0)
-                                    : targetAirspeed(targetAirspeed), setAngle(setAngle), targetTemp(targetTemp),
-                                    targetAltitude(targetAltitude), fileChoice(fileChoice), pid(pid) {}
+    explicit ControllableParameters(PID& pid, float targetAirspeed = 0, float setElevatorAngle = 0, float setAileronAngle = 0, float setRudderAngle = 0, float targetTemp = 288.15, float targetAltitude = 5000, int fileChoice = 0)
+            : targetAirspeed(targetAirspeed), setElevatorAngle(setElevatorAngle), setAileronAngle(setAileronAngle), setRudderAngle(setRudderAngle), targetTemp(targetTemp),
+              targetAltitude(targetAltitude), fileChoice(fileChoice), pid(pid) {}
+
 
                                     // This was meant for adding images of selectable aircraft to ImGui
     void setOptions(std::optional<std::string> path1 = std::nullopt, std::optional<std::string> name1 = std::nullopt, std::optional<float> size1 = std::nullopt,
@@ -79,39 +85,59 @@ struct GUI : imgui_context {
     void onRender() override {
         ImGuiStyle &style = ImGui::GetStyle();
         setStyle(style);
-//        ImGui::SetNextWindowBgAlpha(0.5f);
+
         ImGui::SetNextWindowPos({}, 0, {});
-        ImGui::SetNextWindowSize((ImVec2(350, 300)));
+        ImGui::SetNextWindowSize(ImVec2(350, 400));
         ImGui::Begin("Control Parameters", NULL);
 
         ImGui::SetCursorPos(ImVec2(90, 30));
         ImGui::Text("Control Airspeed");
         ImGui::SetCursorPos(ImVec2(30, 50));
         ImGui::SliderFloat("knots", &controlOptions_.targetAirspeed, 0, 400);
+
         ImGui::SetCursorPos(ImVec2(65, 80));
         ImGui::Text("Elevator Angle");
         ImGui::SetCursorPos(ImVec2(30, 100));
-        ImGui::SliderAngle("degrees", &controlOptions_.setAngle, -40, 40);
-        ImGui::SetCursorPos(ImVec2(185, 140));
+        if (ImGui::SliderAngle("Elevator degrees", &controlOptions_.setElevatorAngle, -40, 40)) {
+            controlOptions_.updateElevator = true;
+        }
+
+        ImGui::SetCursorPos(ImVec2(65, 130));
+        ImGui::Text("Aileron Angle");
+        ImGui::SetCursorPos(ImVec2(30, 150));
+        if (ImGui::SliderAngle("Aileron degrees", &controlOptions_.setAileronAngle, -40, 40)) {
+            controlOptions_.updateAileron = true;
+        }
+
+        ImGui::SetCursorPos(ImVec2(65, 180));
+        ImGui::Text("Rudder Angle");
+        ImGui::SetCursorPos(ImVec2(30, 200));
+        if (ImGui::SliderAngle("Rudder degrees", &controlOptions_.setRudderAngle, -40, 40)) {
+            controlOptions_.updateRudder = true;
+        }
+
+        ImGui::SetCursorPos(ImVec2(185, 250));
         ImGui::TextColored(ImVec4(39, 158, 138, 255), "Altitude");
-        ImGui::SetCursorPos(ImVec2(190, 160));
+        ImGui::SetCursorPos(ImVec2(190, 270));
         ImGui::VSliderFloat("ft", ImVec2(50, 120), &controlOptions_.targetAltitude, 0, 60000);
-        ImGui::SetCursorPos(ImVec2(255, 140));
-        ImGui::TextColored(ImVec4(39, 158, 138, 255), "Temp Sea lvl");
-        ImGui::SetCursorPos(ImVec2(270, 160));
+
+        ImGui::SetCursorPos(ImVec2(255, 250));
+        ImGui::TextColored(ImVec4(39, 278, 138, 255), "Temp Sea lvl");
+        ImGui::SetCursorPos(ImVec2(270, 270));
         ImGui::VSliderFloat("C", ImVec2(50, 120), &controlOptions_.targetTemp, -50, 50);
-        ImGui::SetCursorPos(ImVec2(45, 140));
+
+        ImGui::SetCursorPos(ImVec2(45, 240));
         ImGui::Text("Change Aircraft");
-        ImGui::SetCursorPos(ImVec2(40, 160));
+        ImGui::SetCursorPos(ImVec2(40, 260));
         if (ImGui::Button(controlOptions_.imagePaths.at(0).y->c_str(), ImVec2(120, 30))) {
             controlOptions_.fileChoice = 0;
         }
         ImGui::SetNextWindowBgAlpha(1);
-        ImGui::SetCursorPos(ImVec2(40, 200));
+        ImGui::SetCursorPos(ImVec2(40, 300));
         if (ImGui::Button(controlOptions_.imagePaths.at(1).y->c_str(), ImVec2(120, 30))) {
             controlOptions_.fileChoice = 1;
         }
-        ImGui::SetCursorPos(ImVec2(40, 240));
+        ImGui::SetCursorPos(ImVec2(40, 340));
         if (ImGui::Button(controlOptions_.imagePaths.at(2).y->c_str(), ImVec2(120, 30))) {
             controlOptions_.fileChoice = 2;
         }

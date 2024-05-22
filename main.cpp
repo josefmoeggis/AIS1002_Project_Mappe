@@ -38,7 +38,7 @@ int main() {
     PID switchPID(0.4, 0.01f, 0.0f);
 
 //    Controls from GUI
-    ControllableParameters control(anglePID, 100, 0, 10, 500, 1);
+    ControllableParameters control(anglePID, 100, 0, 0, 0, 10, 500, 1);
     control.setOptions("resources/B737_image_min.jpeg", "Boeing 737-800", 746 * 420,
                        "resources/SAS-A321LR_min.jpeg", "Airbus A320", 1200 * 869,
                        "resources/Cessna_172S_Skyhawk.jpg", "Cessna 172", 220 * 164);
@@ -55,18 +55,19 @@ int main() {
     scene->add(graphDrag.getMesh());
 
 
-    auto airflowArrow = getAirflowArrow(loader);
-    scene->add(airflowArrow);
+
 
     auto boeing = setupAircraft1(loader);
-    auto airbus = setupAircraft2(loader);
+    auto navion = setupAircraft2(loader);
     auto cessna = setupAircraft3(loader);
-    airbus->setStartvalues(100, 0, 0, 30, 0, 0, 0, 20);
+    navion->setStartvalues(100, 0, 0, 30, 0, 0, 0, 20);
 
     std::shared_ptr<AirObject> aircraft = boeing;
 
     auto movementShell = Group::create();
     movementShell->add(aircraft->getMesh());
+    auto airflowArrow = getAirflowArrow(loader);
+    movementShell->add(airflowArrow);
     scene->add(movementShell);
 
     float t = 0;
@@ -76,15 +77,15 @@ int main() {
 switch (control.fileChoice) {
     case 0:
         aircraft = boeing;
-        loopAircraft(movementShell, boeing, airbus, cessna, switchPID, dt);
+        loopAircraft(movementShell, boeing, navion, cessna, switchPID, dt);
         break;
     case 1:
-        aircraft = airbus;
-        loopAircraft(movementShell, airbus, cessna, boeing, switchPID, dt);
+        aircraft = navion;
+        loopAircraft(movementShell, navion, cessna, boeing, switchPID, dt);
         break;
     case 2:
         aircraft = cessna;
-        loopAircraft(movementShell, cessna, boeing, airbus, switchPID, dt);
+        loopAircraft(movementShell, cessna, boeing, navion, switchPID, dt);
         break;
 }
         if (sec >= 0.1) {
@@ -107,15 +108,23 @@ switch (control.fileChoice) {
         aircraft->setControlledAngle(angleGain, 2, dt);*/
 
 
-        if(control.setAngle != 0) {
-            aircraft->updateLongitudinal(control.setAngle * math::RAD2DEG, dt);
-            std::cout <<"Print setAngle: " << control.setAngle * math::RAD2DEG << std::endl;
-            control.setAngle = 0;
+        if(control.setElevatorAngle != 0) {
+            aircraft->updateLongitudinal(control.setElevatorAngle * math::RAD2DEG, dt);
+            control.setElevatorAngle = 0;
         }
-
         else {
             aircraft->updateLongitudinal(0, dt);
         }
+        if(control.setAileronAngle != 0 || control.setRudderAngle != 0) {
+            aircraft->updateLateral(control.setAileronAngle * math::RAD2DEG, control.setRudderAngle * math::RAD2DEG, dt);
+            control.setAileronAngle = 0;
+            control.setRudderAngle = 0;
+        }
+        else {
+            aircraft->updateLateral(0, 0, dt);
+        }
+
+
 
         aircraft->updateLateral(0, 0, dt);
 
