@@ -35,6 +35,7 @@ struct ControllableParameters {
     float setRudderAngle;
     float targetTemp;
     float targetAltitude;
+    bool reset;
     int fileChoice;
     float prevSetAngle = 0;
     std::vector<Triple<std::optional<std::string>, std::optional<std::string>, std::optional<float>>> imagePaths {}; // storing path string and pixels
@@ -45,9 +46,9 @@ struct ControllableParameters {
     bool updateAileron = false;
     bool updateRudder = false;
 
-    explicit ControllableParameters(PID& pid, float targetAirspeed = 0, float setElevatorAngle = 0, float setAileronAngle = 0, float setRudderAngle = 0, float targetTemp = 288.15, float targetAltitude = 5000, int fileChoice = 0)
+    explicit ControllableParameters(PID& pid, float targetAirspeed = 0, float setElevatorAngle = 0, float setAileronAngle = 0, float setRudderAngle = 0, float targetTemp = 288.15, float targetAltitude = 5000, int fileChoice = 0, bool reset = 0)
             : targetAirspeed(targetAirspeed), setElevatorAngle(setElevatorAngle), setAileronAngle(setAileronAngle), setRudderAngle(setRudderAngle), targetTemp(targetTemp),
-              targetAltitude(targetAltitude), fileChoice(fileChoice), pid(pid) {}
+              targetAltitude(targetAltitude), fileChoice(fileChoice), pid(pid), reset(reset) {}
 
 
                                     // This was meant for adding images of selectable aircraft to ImGui
@@ -87,7 +88,7 @@ struct GUI : imgui_context {
         setStyle(style);
 
         ImGui::SetNextWindowPos({}, 0, {});
-        ImGui::SetNextWindowSize(ImVec2(350, 400));
+        ImGui::SetNextWindowSize(ImVec2(350, 420));
         ImGui::Begin("Control Parameters", NULL);
 
         ImGui::SetCursorPos(ImVec2(90, 30));
@@ -140,6 +141,11 @@ struct GUI : imgui_context {
         ImGui::SetCursorPos(ImVec2(40, 340));
         if (ImGui::Button(controlOptions_.imagePaths.at(2).y->c_str(), ImVec2(120, 30))) {
             controlOptions_.fileChoice = 2;
+        }
+
+        ImGui::SetCursorPos(ImVec2(40, 380));
+        if (ImGui::Button("Reset init values", ImVec2(120, 30))) {
+            controlOptions_.reset = true;
         }
 
         mouseHover_ = ImGui::IsWindowHovered();

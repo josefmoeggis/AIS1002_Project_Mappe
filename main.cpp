@@ -13,7 +13,7 @@ using namespace threepp;
 int main() {
     // Canvas creation
     Canvas canvas{Canvas::Parameters().size({1920, 1080}).antialiasing(4)
-                    .title("Aircraft Lift 3D graphLift").favicon("resources/airplane_2_icon.jpeg")};
+                    .title("AIS2102 - Aircraft dynamics").favicon("resources/airplane_2_icon.jpeg")};
     GLRenderer renderer(canvas);
     renderer.setClearColor(Color::aliceblue);
 
@@ -60,7 +60,7 @@ int main() {
     auto boeing = setupAircraft1(loader);
     auto navion = setupAircraft2(loader);
     auto cessna = setupAircraft3(loader);
-    navion->setStartvalues(100, 0, 0, 30, 0, 0, 0, -20);
+    navion->setStartvalues(100, 0, 0, 20, 0, 0, 0, -40);
 
     std::shared_ptr<AirObject> aircraft = boeing;
 
@@ -124,12 +124,15 @@ switch (control.fileChoice) {
         }
         else {
             aircraft->updateLateral(0, 0, dt);
+
         }
 
-        movementShell->getObjectByName("propeller")->rotateX(control.targetAirspeed * dt * math::DEG2RAD);
+        movementShell->getObjectByName("propeller")->rotateX(control.targetAirspeed * dt * math::DEG2RAD * 10);
 
-
-        aircraft->updateLateral(0, 0, dt);
+        if(control.reset){
+            navion->setStartvalues(100, 0, 0, 20, 0, 0, 0, 0);
+            control.reset = false;
+        }
 
         movementShell->rotation.x = aircraft->getPitch();
         movementShell->rotation.z = aircraft->getRoll();
