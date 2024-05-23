@@ -60,7 +60,7 @@ int main() {
     auto boeing = setupAircraft1(loader);
     auto navion = setupAircraft2(loader);
     auto cessna = setupAircraft3(loader);
-    navion->setStartvalues(100, 0, 0, 20, 0, 0, 0, -40);
+    navion->setStartvalues(100, 0, 0, 20, 0, 0, 0, 0);
 
     std::shared_ptr<AirObject> aircraft = boeing;
 
@@ -110,22 +110,13 @@ switch (control.fileChoice) {
         aircraft->setControlledAngle(angleGain, 2, dt);*/
 
 
-        if(control.setElevatorAngle != 0) {
-            aircraft->updateLongitudinal(control.setElevatorAngle * math::RAD2DEG, dt);
-            control.setElevatorAngle = 0;
-        }
-        else {
-            aircraft->updateLongitudinal(0, dt);
-        }
-        if(control.setAileronAngle != 0 || control.setRudderAngle != 0) {
-            aircraft->updateLateral(control.setAileronAngle * math::RAD2DEG, control.setRudderAngle * math::RAD2DEG * 5, dt);
-            control.setAileronAngle = 0;
-            control.setRudderAngle = 0;
-        }
-        else {
-            aircraft->updateLateral(0, 0, dt);
+        aircraft->updateLongitudinal(control.setElevatorAngle * math::RAD2DEG, dt);
+        control.setElevatorAngle = aircraft->getElevatorDefl();
 
-        }
+
+        aircraft->updateLateral(control.setAileronAngle * math::RAD2DEG, control.setRudderAngle * math::RAD2DEG * 5, dt);
+        control.setAileronAngle = 0;
+        control.setRudderAngle = 0;
 
         movementShell->getObjectByName("propeller")->rotateX(control.targetAirspeed * dt * math::DEG2RAD * 10);
 

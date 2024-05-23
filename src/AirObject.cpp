@@ -118,23 +118,34 @@ void AirObject::setStartvalues(float longitudinalSpeed, float normalSpeed, float
     absPitchAttitude_ = pitchAttitude_ * math::DEG2RAD;
 }*/
 
+float AirObject::valueClip(float n, float lower, float upper) {
+    return std::max(lower, std::min(n, upper));
+}
+
 void AirObject::updateLongitudinal(float elevatorDeflection, float dt) {
-    elevatorDefl_ = elevatorDeflection;
-    longitudinalAcc_ = ((-0.1) * longitudinalSpeed_ - 32.2 * pitchAttitude_)*0.1;
-    normalAcc_ = (10.5 * longitudinalSpeed_ - 3.1 * normalSpeed_ + 152 * pitchRate_)*0.1;
-    derivPitchRate_ = (59.4 * longitudinalSpeed_ - 3.5 * normalSpeed_ - 63.1 * pitchRate_ -1388.6 * pitchAttitude_)*0.1 - 12.64 * elevatorDefl_;
-    derivPitchAttitude_ = (pitchRate_)*0.1;
+    longitudinalAcc_ = (-0.09148) * longitudinalSpeed_ + 0.04242 * normalSpeed_ - 32.17 * pitchAttitude_;
+    normalAcc_ = 10.51 * longitudinalSpeed_ - 3.066 * normalSpeed_ + 152 * pitchRate_;
+    derivPitchRate_ = 0.2054 * longitudinalSpeed_ - 0.05581 * normalSpeed_ - 2.114 * pitchRate_ - 12.64 * elevatorDefl_;
+    derivPitchAttitude_ = pitchRate_;
+
+    elevatorDefl_ = -(longitudinalSpeed_ * longk1_ + normalSpeed_ * longk2_ + pitchRate_ * longk3_ + pitchAttitude_ * longk4_) * dt;
+    elevatorDefl_ = valueClip(elevatorDefl_, -40.0, 40.0);
 
     longitudinalSpeed_ += longitudinalAcc_ * dt;
     normalSpeed_ += normalAcc_ * dt;
     pitchRate_ += derivPitchRate_ * dt;
     pitchAttitude_ += derivPitchAttitude_ * dt;
 
+
     absPitchAttitude_ = pitchAttitude_ * math::DEG2RAD;
 }
 
 float AirObject::getPitch(){
     return absPitchAttitude_;
+}
+
+float AirObject::getElevatorDefl() {
+    return elevatorDefl_;
 }
 
 /*void AirObject::updateLateral(float aileronDeflection, float rudderDeflection, float dt) {
@@ -158,13 +169,15 @@ float AirObject::getPitch(){
     absYawAttitude_ = yawAttitude_ * math::DEG2RAD;
 }*/
 
-void AirObject::updateLateral(float aileronDeflection, float rudderDeflection, float dt) {
+/*void AirObject::updateLateral(float aileronDeflection, float rudderDeflection, float dt) {
     aileronDefl_ = aileronDeflection;
     rudderDefl_ = rudderDeflection;
     lateralAcc_ = -3.5174 * lateralSpeed_ - 0.6541 * rollRate_ -126.7452 * yawRate_ + 26.3469 * rollAttitude_ + 3.469 * rudderDefl_;
     derivRollRate_ = -0.3386 * lateralSpeed_ - 17.9619 * rollRate_ + 6.7886 * yawRate_ -17.5854 * rollAttitude_ + 15.74 * aileronDefl_ + 1.380 * rudderDefl_;
     derivYawRate_ = 4.2963 * lateralSpeed_ - 0.1064 * rollRate_ - 33.0771 * yawRate_ + 6.7265 * rollAttitude_ + 0.486 * aileronDefl_ - 4.288 * rudderDefl_;
     derivRollAttitude_ = rollRate_;
+
+
 
     // Update the state variables by integrating the derivatives
     lateralSpeed_ += lateralAcc_ * dt;
@@ -177,6 +190,36 @@ void AirObject::updateLateral(float aileronDeflection, float rudderDeflection, f
 
     absRollAttitude_ = rollAttitude_ * math::DEG2RAD;
     absYawAttitude_ = yawAttitude_ * math::DEG2RAD;
+}*/
+
+void AirObject::updateLateral(float aileronDeflection, float rudderDeflection, float dt) {
+    lateralAcc_ = -0.093 * lateralSpeed_ - 152.6 * yawRate_ + 32.17 * rollAttitude_ + 3.469 * rudderDefl_;
+    derivRollRate_ = -0.059 * lateralSpeed_ - 5.816 * rollRate_ + 1.854 * yawRate_ + 15.74 * aileronDefl_ + 1.380 * rudderDefl_;
+    derivYawRate_ = 0.030 * lateralSpeed_ - 0.548 * rollRate_ - 0.953 * yawRate_ + 0.486 * aileronDefl_ - 4.288 * rudderDefl_;
+    derivRollAttitude_ = rollRate_;
+
+
+    aileronDefl_ = -(lateralSpeed_ * latk1_ + rollRate_ * latk2_ + yawRate_ * latk3_ + rollAttitude_ * latk4_);
+    rudderDefl_ = -(lateralSpeed_ * latk5_ + rollRate_ * latk6_ + yawRate_ * latk7_ + rollAttitude_ * latk8_);
+    // Update the state variables by integrating the derivatives
+    lateralSpeed_ += lateralAcc_ * dt;
+    rollRate_ += derivRollRate_ * dt;
+    yawRate_ += derivYawRate_ * dt;
+    rollAttitude_ += derivRollAttitude_ * dt;
+
+    // Intermediate value that is not included in the state space
+    yawAttitude_ += yawRate_ * dt;
+
+    absRollAttitude_ = rollAttitude_ * math::DEG2RAD;
+    absYawAttitude_ = yawAttitude_ * math::DEG2RAD;
+}
+
+float AirObject::getAileronDefl() {
+    return aileronDefl_;
+}
+
+float AirObject::getRudderDefl() {
+    return rudderDefl_;
 }
 
 float AirObject::getRoll(){

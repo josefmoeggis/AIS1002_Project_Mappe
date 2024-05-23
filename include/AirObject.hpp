@@ -51,7 +51,15 @@ public:
 
     float getPitch();
 
+    float getElevatorDefl();
+
+    float AirObject::valueClip(float n, float lower, float upper);
+
     void updateLateral(float aileron, float rudder, float dt);
+
+    float getAileronDefl();
+
+    float getRudderDefl();
 
     float getRoll();
 
@@ -134,7 +142,20 @@ private:
 
     float altitude_ = 0;
 
+    // K-vals
+    float longk1_ = 4.6794;
+    float longk2_ = -0.27;
+    float longk3_ = -4.8231;
+    float longk4_ = -109.8563;
 
+    float latk1_ = -0.0688;
+    float latk2_ = 0.7551;
+    float latk3_ = 0.3399;
+    float latk4_ = 0.9701;
+    float latk5_ = 0.9871;
+    float latk6_ = 0.1886;
+    float latk7_ = -7.4531;
+    float latk8_ = 1.6786;
 
 //    Mesh of the aircraft
     std::shared_ptr<BufferGeometry> geometry_;
