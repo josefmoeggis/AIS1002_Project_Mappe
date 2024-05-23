@@ -115,13 +115,13 @@ switch (control.fileChoice) {
 
 
         aircraft->updateLateral(control.setAileronAngle * math::RAD2DEG, control.setRudderAngle * math::RAD2DEG * 5, dt);
-        control.setAileronAngle = 0;
-        control.setRudderAngle = 0;
+        control.setAileronAngle = aircraft->getAileronDefl();
+        control.setRudderAngle = aircraft->getRudderDefl();
 
         movementShell->getObjectByName("propeller")->rotateX(control.targetAirspeed * dt * math::DEG2RAD * 10);
 
         if(control.reset){
-            navion->setStartvalues(100, 0, 0, 20, 0, 0, 0, 0);
+            navion->setStartvalues(100, 0, 0, 0, 0, 40, 0, 0);
             control.reset = false;
         }
 

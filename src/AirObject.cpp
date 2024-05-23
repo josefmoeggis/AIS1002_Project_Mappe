@@ -119,7 +119,15 @@ void AirObject::setStartvalues(float longitudinalSpeed, float normalSpeed, float
 }*/
 
 float AirObject::valueClip(float n, float lower, float upper) {
-    return std::max(lower, std::min(n, upper));
+    if(n < lower){
+        return lower;
+    }
+    else if(n > upper){
+        return upper;
+    }
+    else {
+        return n;
+    }
 }
 
 void AirObject::updateLongitudinal(float elevatorDeflection, float dt) {

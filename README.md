@@ -1,4 +1,4 @@
-
+## DISCLAIMER: This README file is not accurate for the AIS2102 project
 ### Candidate number: 
 ## AIS1002 Aerodynamic force simulation
 
