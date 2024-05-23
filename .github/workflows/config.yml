@@ -39,10 +39,10 @@ jobs:
 
     - name: Configure and build
       run: |
-        cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DVCPKG_MANIFEST_FEATURES="imgui;assimp" -DCMAKE_BUILD_TYPE=Release
+        cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DVCPKG_MANIFEST_FEATURES="imgui;assimp;bullet" -DCMAKE_BUILD_TYPE=Release
         cmake --build build
 
-    - name: Test
+    - name: driveSimulation
       run: |
         cd build/tests
         ctest --output-on-failure
@@ -73,7 +73,7 @@ jobs:
           cmake . -A x64 -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake"
           cmake --build build --config Release
 
-      - name: Test
+      - name: driveSimulation
         run: |
           cd build/tests
           ctest -C Release --output-on-failure
@@ -108,7 +108,7 @@ jobs:
           cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DVCPKG_MANIFEST_FEATURES="imgui;assimp" -DCMAKE_BUILD_TYPE="Release"
           cmake --build build
 
-      - name: Test
+      - name: driveSimulation
         run: |
           cd build/tests
           ctest --output-on-failure 

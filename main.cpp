@@ -1,111 +1,136 @@
-// Remember continuous integration kopier fra threepp config file
-#include "threepp/extras/imgui/imgui_context.hpp"
-#include "threepp/threepp.hpp"
-#include <iostream>
-#include "AirObject.hpp"
-#include "Graph3D.hpp"
-#include "GUI.hpp"
-#include "threepp/materials/ShaderMaterial.hpp"
-#include "threepp/objects/Sky.hpp"
-#include "threepp/objects/Line.hpp"
-#include <vector>
-#include <ostream>
 
+#include "include/AirObject.hpp"
+#include "include/Graph3D.hpp"
+#include "include/GUI.hpp"
+#include "include/SceneSetup.hpp"
+#include "threepp/renderers/GLRenderer.hpp"
+#include "threepp/cameras/PerspectiveCamera.hpp"
+#include "threepp/controls/OrbitControls.hpp"
+#include "threepp/objects/Group.hpp"
 
 using namespace threepp;
 
 int main() {
     // Canvas creation
-    Canvas canvas{Canvas::Parameters().size({1280, 720}).antialiasing(1)
-                    .title("Aircraft Lift 3D Graph").favicon("resources/airplane_2_icon.jpeg")};
+    Canvas canvas{Canvas::Parameters().size({1920, 1080}).antialiasing(4)
+                    .title("AIS2102 - Aircraft dynamics").favicon("resources/airplane_2_icon.jpeg")};
     GLRenderer renderer(canvas);
     renderer.setClearColor(Color::aliceblue);
 
-//    Setting up visual axes
-    auto axes = AxesHelper::create(100);
-
     // Setting up camera
     auto camera = PerspectiveCamera::create(60, canvas.getAspect(), 0.1f, 3000);
-    camera->position.x = 600;
+    camera->position.x = 1000;
     OrbitControls controls{camera, canvas};
 
     // Scene creation
     auto scene = Scene::create();
-//    scene->add(grid);
-    scene->add(axes);
 
     //    Add light
-    auto light = DirectionalLight::create(0xffffff);
-    light->position.set(100, 10, 100);
+    auto light = setLight();
     scene->add(light);
 
 //    Setting sky
-    auto mySky = Sky::create();
-    mySky->scale.setScalar(10000);
-    mySky->material()->as<ShaderMaterial>()->uniforms->at("turbidity").value<float>() = 10;
-    mySky->material()->as<ShaderMaterial>()->uniforms->at("rayleigh").value<float>() = 1;
-    mySky->material()->as<ShaderMaterial>()->uniforms->at("mieCoefficient").value<float>() = 0.005;
-    mySky->material()->as<ShaderMaterial>()->uniforms->at("mieDirectionalG").value<float>() = 0.8;
-    mySky->material()->as<ShaderMaterial>()->uniforms->at("sunPosition").value<Vector3>().copy(light->position);
+    auto mySky = setSky(light);
     scene->add(mySky);
 
-    PID myPID(0.4, 0.01f, 0.0f);
-    myPID.setWindupGuard(0.5f);
+    PID anglePID(0.4, 0.01f, 0.0f);
+    anglePID.setWindupGuard(0.5f);
+    PID switchPID(0.4, 0.01f, 0.0f);
 
 //    Controls from GUI
-    ControllableParameters control(myPID,"resources/B737_image_min.jpeg", "resources/SAS-A321LR_min.jpeg");
-
-//    Setting up imgui
+    ControllableParameters control(anglePID, 100, 0, 0, 0, 10, 500, 1);
+    control.setOptions("resources/B737_image_min.jpeg", "Boeing 737-800", 746 * 420,
+                       "resources/SAS-A321LR_min.jpeg", "Navion", 1200 * 869,
+                       "resources/Cessna_172S_Skyhawk.jpg", "Cessna 172", 220 * 164);
     GUI myUI(canvas, control);
 
-//    Testing AirObject
     STLLoader loader;
-    std::shared_ptr<BufferGeometry> aircraft1;
-    if(control.fileChoice == 1) {
-        aircraft1 = loader.load("resources/B737_800.stl");
-    } else if (control.fileChoice == 2) {
-        aircraft1 = loader.load("resources/A320neo.stl");
-    }
-    auto material1 = MeshPhongMaterial::create();
-    material1->flatShading = true;
-    material1->color = Color::beige;
-    AirObject Aircraft1(aircraft1, material1, 40000.0, 0.77, 0.33, 470, 0);
-    Aircraft1.setAngleParameters(1.6, 14, 20, 1.3);
-    Aircraft1.setAirDensity(1.225);
-    Aircraft1.createMesh();
-    Aircraft1.scaleModel(1000);
-    Aircraft1.centerModel(1000);
-    Aircraft1.getMesh()->rotateY(math::PI);
-    scene->add(Aircraft1.getMesh());
-
 //    Create grid object
-    Graph3D Graph(1000, 20);
-    Graph.setPosition();
-    scene->add(Graph.getGrid());
+    Graph3D graphLift(1000, 20, loader.load("resources/LiftArrow.stl"));
+    graphLift.setPosition();
+    Graph3D graphDrag(1000, 20, loader.load("resources/DragArrow.stl"), 0x000000, 0xFF0000); // Not adding grid to scene only graph line
+    graphDrag.setPosition();
+    scene->add(graphLift.getGrid());
+    scene->add(graphLift.getMesh());
+    scene->add(graphDrag.getMesh());
+
+
+
+
+    auto boeing = setupAircraft1(loader);
+    auto navion = setupAircraft2(loader);
+    auto cessna = setupAircraft3(loader);
+    navion->setStartvalues(100, 0, 0, 20, 0, 0, 0, 0);
+
+    std::shared_ptr<AirObject> aircraft = boeing;
+
+    auto movementShell = Group::create();
+    movementShell->add(aircraft->getMesh());
+    auto propeller = getAirflowArrow(loader);
+    scene->add(movementShell);
 
     float t = 0;
     float sec = 0;
 
     canvas.animate([&](float dt) {
-
-
-//     Testing line segments
-        if (sec >= 1) {
-            Graph.updateLineVectors(Aircraft1.calculateLift(control.targetAirspeed), 20);
-            Graph.adjustGraphToFit(Aircraft1.calculateMaxLift(300));
-            Graph.makeLine(scene);
-            scene->add(Graph.getLine());
+switch (control.fileChoice) {
+    case 0:
+        aircraft = boeing;
+        loopAircraft(movementShell, boeing, navion, cessna, switchPID, dt);
+        break;
+    case 1:
+        aircraft = navion;
+        loopAircraft(movementShell, navion, cessna, boeing, switchPID, dt);
+        if (!(movementShell->getObjectByName("propeller"))){
+            movementShell->add(propeller);
+        }
+        break;
+    case 2:
+        aircraft = cessna;
+        loopAircraft(movementShell, cessna, boeing, navion, switchPID, dt);
+        break;
+}
+        if (sec >= 0.1) {
+            graphLift.updateLineVectors(aircraft->calculateLift(knotsToMtrPrSec(control.targetAirspeed),
+                                                                celsiusToKelvin(control.targetTemp), feetToMtr(control.targetAltitude)), 200);
+            graphLift.adjustGraphToFit(aircraft->calculateMaxLift(400));
+            graphLift.makeLine(scene);
+            scene->add(graphLift.getLine());
+            graphLift.updateMesh(-10);
+            graphDrag.updateLineVectors(aircraft->calculateDrag(knotsToMtrPrSec(control.targetAirspeed),
+                                                                celsiusToKelvin(control.targetTemp), feetToMtr(control.targetAltitude)), 200);
+            graphDrag.adjustGraphToFit(aircraft->calculateMaxDrag(knotsToMtrPrSec(400)));
+            graphDrag.makeLine(scene);
+            scene->add(graphDrag.getLine());
+            graphDrag.updateMesh(-100);
             sec = 0;
         }
-        float angleGain = myPID.regulate(control.targetAngleOfAttack,
-                                                  Aircraft1.getAngleOfAttack(), dt);
-        Aircraft1.setControlledAngle(angleGain, 2, dt);
-        Aircraft1.getMesh()->rotation.x = Aircraft1.getAngleOfAttack() + math::PI;
+        /*float angleGain = anglePID.regulate(control.setAngle,
+                                            aircraft->getAngleOfAttack(), dt);
+        aircraft->setControlledAngle(angleGain, 2, dt);*/
+
+
+        aircraft->updateLongitudinal(control.setElevatorAngle * math::RAD2DEG, dt);
+        control.setElevatorAngle = aircraft->getElevatorDefl();
+
+
+        aircraft->updateLateral(control.setAileronAngle * math::RAD2DEG, control.setRudderAngle * math::RAD2DEG * 5, dt);
+        control.setAileronAngle = aircraft->getAileronDefl();
+        control.setRudderAngle = aircraft->getRudderDefl();
+
+        movementShell->getObjectByName("propeller")->rotateX(control.targetAirspeed * dt * math::DEG2RAD * 10);
+
+        if(control.reset){
+            navion->setStartvalues(100, 0, 0, 0, 0, 40, 0, 0);
+            control.reset = false;
+        }
+
+        movementShell->rotation.x = aircraft->getPitch();
+        movementShell->rotation.z = aircraft->getRoll();
+        movementShell->rotation.y = aircraft->getYaw();
         renderer.render(scene, camera);
-//        std::cout << Aircraft1.getAngleOfAttack() * math::RAD2DEG << std::endl;
         myUI.render();
         controls.enabled = !myUI.getMouseHover();
-
         t += dt;
         sec += dt;
     });
